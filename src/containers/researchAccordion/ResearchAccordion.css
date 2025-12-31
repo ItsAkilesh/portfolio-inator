@@ -1,0 +1,13 @@
+.research-accord {
+  margin: 50px;
+}
+
+.accord-panel {
+  font-family: "Google Sans Regular";
+}
+
+@media (max-width: 768px) {
+  .research-accord {
+    margin: 20px;
+  }
+}
