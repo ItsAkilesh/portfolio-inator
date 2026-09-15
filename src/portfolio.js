@@ -9,7 +9,7 @@ const settings = {
 const seo = {
   title: "Akilesh Srinivasa Kumar",
   description:
-    "I’m a passionate and persevering software engineer with experience across AI, XR, cloud infrastructure, and full-stack development, with a growing focus on Generative AI and intelligent systems. | Akilesh Srinivasa Kumar | Akilesh S | VIT Chennai | Vellore Institute of Technology | Research papers |"
+    "Innovative software engineer specializing in Generative AI, XR, and cloud-native solutions, with published research experience and a strong background in full-stack development and intelligent systems. | Akilesh Srinivasa Kumar | Akilesh S | Carnegie Mellon University | CMU | VIT Chennai | Vellore Institute of Technology | Research papers |"
   ,
   og: {
     title: "Akilesh Srinivasa Kumar | Akilesh S",
@@ -24,7 +24,7 @@ const greeting = {
   logo_name: "Akilesh S",
   nickname: "ItsAkilesh",
   subTitle:
-    "I’m a passionate and persevering software engineer with experience across AI, XR, cloud infrastructure, and full-stack development, with a growing focus on Generative AI and intelligent systems.",
+    "Innovative software engineer specializing in Generative AI, XR, and cloud-native solutions, with published research experience and a strong background in full-stack development and intelligent systems.",
   resumeLink:
     "https://drive.google.com/file/d/1_3rSBD241Xi988WnRWA9ICLh6wz4DqdB/view?usp=sharing",
   githubProfile: "https://github.com/itsakilesh",
