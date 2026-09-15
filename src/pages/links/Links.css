@@ -1,0 +1,140 @@
+.links-main {
+  width: 100%;
+}
+
+.basic-links {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.links-heading-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.links-heading-img-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.links-heading-img-div img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.links-heading-text {
+  font-size: 32px;
+  font-weight: 400;
+  font-family: "Google Sans Bold";
+  line-height: 1.2;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+
+.links-section-title {
+  font-size: 24px;
+  font-weight: 400;
+  font-family: "Google Sans Bold";
+  line-height: 1.2;
+  text-align: center;
+  margin: 28px auto 16px;
+}
+
+.links-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 920px;
+  margin: 0 auto 48px;
+  gap: 16px;
+}
+
+.links-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 0 0 168px;
+  width: 168px;
+  aspect-ratio: 1 / 1;
+  padding: 16px 12px;
+  border: solid 1px;
+  border-radius: 16px;
+  text-decoration: none;
+  font-family: "Google Sans Medium";
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: 0.3s ease-in;
+  box-sizing: border-box;
+}
+
+.links-item-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.links-item-icon .iconify {
+  width: 36px;
+  height: 36px;
+}
+
+.links-item-name {
+  text-align: center;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .links-heading-text {
+    font-size: 24px;
+  }
+
+  .links-section-title {
+    font-size: 20px;
+  }
+
+  .links-heading-img-div img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .links-list {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    max-width: 240px;
+    gap: 12px;
+  }
+
+  .links-item {
+    flex: none;
+    width: 100%;
+    font-size: 16px;
+    padding: 16px 12px;
+    border-radius: 16px;
+  }
+
+  .links-item-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 32px;
+  }
+
+  .links-item-icon .iconify {
+    width: 36px;
+    height: 36px;
+  }
+}

@@ -10,6 +10,7 @@ import Projects from "../pages/projects/Projects";
 import { settings } from "../portfolio.js";
 import Error404 from "../pages/errors/error404/Error";
 import Research from "../pages/research/Research";
+import Links from "../pages/links/Links";
 import { pageview } from "../analytics";
 
 // Sitemap component that serves the XML content
@@ -113,6 +114,11 @@ export default class Main extends Component {
           <Route
             path="/contact"
             render={(props) => <Contact {...props} theme={this.props.theme} />}
+          />
+          <Route
+            path="/links"
+            exact
+            render={(props) => <Links {...props} theme={this.props.theme} />}
           />
 
           {settings.isSplash && (

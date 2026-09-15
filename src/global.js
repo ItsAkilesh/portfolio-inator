@@ -12,6 +12,7 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
     display: flex;
+    width: 100%;
     // flex-direction: column;
     // justify-content: center;
     // height: 100vh;
@@ -19,4 +20,8 @@ export const GlobalStyles = createGlobalStyle`
     // padding: 0;
     font-family: BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     transition: all 0.25s linear;
+  }
+
+  #root {
+    width: 100%;
   }`;

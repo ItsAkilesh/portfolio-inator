@@ -2,6 +2,7 @@ import React from "react";
 import "./Greeting.css";
 import SocialMedia from "../../components/socialMedia/SocialMedia";
 import Button from "../../components/button/Button";
+import ResearchMetrics from "../../components/researchMetrics/ResearchMetrics";
 import { greeting } from "../../portfolio";
 import { Fade } from "react-reveal";
 import FeelingProud from "./FeelingProud";
@@ -28,6 +29,10 @@ export default function Greeting(props) {
               >
                 {greeting.subTitle}
               </p>
+              <ResearchMetrics
+                theme={theme}
+                className="research-metrics-greeting"
+              />
               <SocialMedia theme={theme} />
               <div className="portfolio-repo-btn-div">
                 <Button

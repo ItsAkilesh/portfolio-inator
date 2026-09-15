@@ -9,6 +9,7 @@ import {
   contactPageData,
   certifications,
   research,
+  links,
 } from "../../portfolio.js";
 
 function PageSeoHeader() {
@@ -119,6 +120,26 @@ function PageSeoHeader() {
               "JavaScript",
               "Python"
             ],
+          },
+        };
+
+      case "/links":
+        return {
+          title: `${greeting.title} - Links`,
+          description: links.subtitle || `All links from ${greeting.title} in one place.`,
+          keywords: "Akilesh, Links, Social Media, Resume, Portfolio, Contact",
+          structuredData: {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: `${greeting.title} Links`,
+            url: `${seo?.og?.url}/links`,
+            description: links.subtitle,
+            itemListElement: (links.links || []).map((item, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: item.name,
+              url: item.link,
+            })),
           },
         };
 

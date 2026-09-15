@@ -26,7 +26,7 @@ const greeting = {
   subTitle:
     "I’m a passionate and persevering software engineer with experience across AI, XR, cloud infrastructure, and full-stack development, with a growing focus on Generative AI and intelligent systems.",
   resumeLink:
-    "https://drive.google.com/file/d/1wUhw38BIAeBYVY-VfRVDKPYZuXQURuPp/view?usp=sharing",
+    "https://drive.google.com/file/d/1_3rSBD241Xi988WnRWA9ICLh6wz4DqdB/view?usp=sharing",
   githubProfile: "https://github.com/itsakilesh",
 };
 
@@ -53,9 +53,10 @@ const socialMediaLinks = [
   },
   {
     name: "Email",
-    link: "mailto:s.akilesh@outlook.com",
-    fontAwesomeIcon: "fa-google", // Reference https://fontawesome.com/icons/google?style=brands
-    backgroundColor: "#349beb", // Reference https://simpleicons.org/?q=gmail
+    link: "mailto:akilesh.srinivasakumar@gmail.com",
+    fontAwesomeIcon: "fa-envelope",
+    fontAwesomeClass: "fas",
+    backgroundColor: "#349beb",
   },
   {
     name: "Instagram",
@@ -65,7 +66,7 @@ const socialMediaLinks = [
   },
   {
     name: "WhatsApp",
-    link: "https://wa.me/+917338753001",
+    link: "https://wa.me/+14084939366",
     fontAwesomeIcon: "fa-whatsapp", // Reference https://fontawesome.com/icons/instagram?style=brands
     backgroundColor: "#068c59", // Reference https://simpleicons.org/?q=instagram
   },
@@ -370,13 +371,24 @@ const competitiveSites = {
 const degrees = {
   degrees: [
     {
+      title: "Carnegie Mellon University, Pittsburgh",
+      subtitle: "Master of Software Engineering - Scalable Systems",
+      logo_path: "cmu.png",
+      alt_name: "CMU",
+      duration: "Aug 2026 - Dec 2027*",
+      descriptions: [
+        "⚡ Focus on scalable systems, distributed software, and large-scale engineering practices.",
+      ],
+      website_link: "https://www.cmu.edu/",
+    },
+    {
       title: "Vellore Institute of Technology, Chennai",
       subtitle: "M.Tech in Software Engineering",
       logo_path: "vitlogo.png",
       alt_name: "VIT Chennai",
-      duration: "2021 - 2026*",
+      duration: "2021 - 2026",
       descriptions: [
-        "⚡ CGPA: 8.59*",
+        "⚡ CGPA: 8.76",
         "⚡ Core Computer engineering subjects like DS, Algorithms, DBMS, OS, CA, AI etc.",
         "⚡ Degree Specialization includes Software Architecture & Design, Software Project Management, Software Contruction & Maintenance, Agile, Scrum etc."
       ],
@@ -533,6 +545,20 @@ const research = {
   description:
     "I've explored research directions in areas such as artificial intelligence, security, and healthcare, with outcomes shared through peer-reviewed publications and a granted design patent.",
   header_image_path: "research.svg",
+  scholarStats: {
+    citations: 60,
+    hIndex: 3,
+    i10Index: 1,
+    profileUrl:
+      "https://scholar.google.com/citations?user=c3I3YmMAAAAJ&hl=en",
+  },
+  researchGateStats: {
+    interestScore: 27.6,
+    citations: 60,
+    hIndex: 3,
+    profileUrl:
+      "https://www.researchgate.net/profile/Akilesh-Srinivasa-Kumar",
+  },
   sections: [
     {
       title: "Patents",
@@ -690,6 +716,84 @@ const publications = {
   ],
 };
 
+// Links Page
+const links = {
+  title: "Links",
+  subtitle: "Quick access to my profiles, resume, and work.",
+  profile_image_path: "Akilesh_Circle_new_S.png",
+  links: [
+    {
+      name: "Portfolio",
+      link: "/home",
+      fontAwesomeIcon: "fa-globe",
+      fontAwesomeClass: "fas",
+      backgroundColor: "#001C55",
+    },
+    {
+      name: "Resume",
+      link: greeting.resumeLink,
+      fontAwesomeIcon: "fa-file-alt",
+      fontAwesomeClass: "fas",
+      backgroundColor: "#0E6BA8",
+    },
+    {
+      name: "Google Scholar",
+      link: "https://scholar.google.com/citations?user=c3I3YmMAAAAJ&hl=en",
+      iconifyIcon: "simple-icons:googlescholar",
+      backgroundColor: "#4285F4",
+    },
+    {
+      name: "GitHub",
+      link: "https://github.com/itsakilesh",
+      fontAwesomeIcon: "fa-github",
+      fontAwesomeClass: "fab",
+      backgroundColor: "#181717",
+    },
+    {
+      name: "LinkedIn",
+      link: "https://www.linkedin.com/in/itsakilesh/",
+      fontAwesomeIcon: "fa-linkedin-in",
+      fontAwesomeClass: "fab",
+      backgroundColor: "#0077B5",
+    },
+    {
+      name: "ORCiD",
+      link: "https://orcid.org/0009-0006-7862-0447",
+      fontAwesomeIcon: "fa-orcid",
+      fontAwesomeClass: "fab",
+      backgroundColor: "#457412",
+    },
+    {
+      name: "Email",
+      link: "mailto:akilesh.srinivasakumar@gmail.com",
+      fontAwesomeIcon: "fa-envelope",
+      fontAwesomeClass: "fas",
+      backgroundColor: "#349beb",
+    },
+    {
+      name: "Instagram",
+      link: "https://www.instagram.com/akilesh.io",
+      fontAwesomeIcon: "fa-instagram",
+      fontAwesomeClass: "fab",
+      backgroundColor: "#E4405F",
+    },
+    {
+      name: "WhatsApp",
+      link: "https://wa.me/+14084939366",
+      fontAwesomeIcon: "fa-whatsapp",
+      fontAwesomeClass: "fab",
+      backgroundColor: "#068c59",
+    },
+    {
+      name: "ResearchGate",
+      link: "https://www.researchgate.net/profile/Akilesh-Srinivasa-Kumar",
+      fontAwesomeIcon: "fa-researchgate",
+      fontAwesomeClass: "fab",
+      backgroundColor: "#0077B5",
+    },
+  ],
+};
+
 // Contact Page
 const contactPageData = {
   contactSection: {
@@ -699,8 +803,8 @@ const contactPageData = {
   },
 
   phoneSection: {
-    title: "s.akilesh@outlook.com",
-    subtitle: "+91 7338753001",
+    title: "akilesh.srinivasakumar@gmail.com",
+    subtitle: "+14084939366",
   },
 };
 
@@ -719,5 +823,6 @@ export {
   publicationsHeader,
   publications,
   research,
+  links,
   contactPageData,
 };
