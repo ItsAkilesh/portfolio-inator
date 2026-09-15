@@ -112,29 +112,28 @@
   }
 
   .links-list {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    max-width: 240px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 360px;
     gap: 12px;
   }
 
   .links-item {
     flex: none;
     width: 100%;
-    font-size: 16px;
-    padding: 16px 12px;
+    font-size: 14px;
+    padding: 14px 10px;
     border-radius: 16px;
   }
 
   .links-item-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 32px;
+    width: 36px;
+    height: 36px;
+    font-size: 28px;
   }
 
   .links-item-icon .iconify {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
   }
 }
