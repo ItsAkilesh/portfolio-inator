@@ -393,19 +393,7 @@ const degrees = {
         "⚡ Degree Specialization includes Software Architecture & Design, Software Project Management, Software Contruction & Maintenance, Agile, Scrum etc."
       ],
       website_link: "http://chennai.vit.ac.in",
-    },
-    {
-      title: "Alwin Memorial Public School",
-      subtitle: "Higher Secondary",
-      logo_path: "amps.png",
-      alt_name: "AMPS",
-      duration: "2017 - 2021",
-      descriptions: [
-        "⚡ 12th Grade: 94.8% in CBSE",
-        "⚡ 10th Grade: 83.2% in CBSE",
-      ],
-      website_link: "https://alwinmemorialpublicschool.com/",
-    },
+    }
   ],
 };
 
