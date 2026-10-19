@@ -1,0 +1,59 @@
+# File: deploy.yml
+# Purpose: Build the portfolio and publish the build output to ItsAkilesh/itsakilesh.github.io,
+#          using the source commit message and SHA as the deploy commit message.
+# Author: Akilesh S
+# Date: 2026-10-19
+
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-pages-repo
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_OPTIONS: --openssl-legacy-provider
+      CI: false
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4.1.0
+        with:
+          version: 9.15.9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 20.18.1
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Publish build to itsakilesh.github.io
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        with:
+          personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          external_repository: ItsAkilesh/itsakilesh.github.io
+          publish_branch: main
+          publish_dir: ./build
+          user_name: ${{ github.actor }}
+          user_email: ${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com
+          commit_message: "deploy: ${{ github.event.head_commit.message || 'manual deploy' }} (${{ github.sha }})"
