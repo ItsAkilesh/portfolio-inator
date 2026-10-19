@@ -21,12 +21,23 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
     env:
       NODE_OPTIONS: --openssl-legacy-provider
       CI: false
+      GENERATE_SOURCEMAP: false
     steps:
+      - name: Log trigger details
+        run: |
+          echo "::group::Trigger"
+          echo "Event:   ${{ github.event_name }}"
+          echo "Ref:     ${{ github.ref }}"
+          echo "Commit:  ${{ github.sha }}"
+          echo "Actor:   ${{ github.actor }}"
+          echo "Runner:  ${{ runner.os }} / ${{ runner.arch }}"
+          echo "::endgroup::"
+
       - name: Checkout source
         uses: actions/checkout@v4.2.2
 
@@ -42,10 +53,36 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: |
+          echo "Node $(node -v), pnpm $(pnpm -v)"
+          pnpm install --no-frozen-lockfile --prefer-offline --reporter=default
+          echo "Installed $(ls node_modules | wc -l) top-level entries in node_modules"
+
+      - name: Restore build cache
+        uses: actions/cache@v4.2.0
+        with:
+          path: node_modules/.cache
+          key: build-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: build-cache-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Build
-        run: pnpm run build
+        run: |
+          echo "Building with react-scripts (sourcemaps disabled)"
+          pnpm run build
+          echo "::group::Build output"
+          du -sh build
+          find build -type f | wc -l | xargs echo "Files:"
+          echo "::endgroup::"
+
+      - name: Write build summary
+        run: |
+          {
+            echo "### Build complete"
+            echo "- Source commit: \`${{ github.sha }}\`"
+            echo "- Build size: $(du -sh build | cut -f1)"
+            echo "- Files: $(find build -type f | wc -l)"
+            echo "- Target: ItsAkilesh/itsakilesh.github.io (main)"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish build to itsakilesh.github.io
         uses: peaceiris/actions-gh-pages@v4.0.0
@@ -57,3 +94,6 @@ jobs:
           user_name: ${{ github.actor }}
           user_email: ${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com
           commit_message: "deploy: ${{ github.event.head_commit.message || 'manual deploy' }} (${{ github.sha }})"
+
+      - name: Log deploy result
+        run: echo "Published build of ${{ github.sha }} to ItsAkilesh/itsakilesh.github.io"
