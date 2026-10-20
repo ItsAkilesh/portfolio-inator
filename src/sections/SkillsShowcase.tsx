@@ -1,10 +1,10 @@
 /**
  * File: SkillsShowcase.tsx
- * Purpose: "What I do": a tab list of skill groups beside the active group's points and a tool specimen grid.
+ * Purpose: "What I do": every skill group gets its own block, alternating text and tool grid left and right.
  * Author: Akilesh
  * Date: 2026-10-20
  */
-import { useId, useState } from "react";
+import { useId } from "react";
 import { BrandIcon, brandStyle } from "../icons/BrandIcon";
 import { indexLabel, stripLeadingSymbols } from "../lib/text";
 import { skills, ui } from "../portfolio";
@@ -15,7 +15,10 @@ const TOOL_ICON_SIZE = 30;
 
 function ToolGrid({ group }: { readonly group: SkillGroup }) {
   return (
-    <ul className={`plain-list ${styles.specimen}`}>
+    <ul
+      className={`plain-list ${styles.specimen}`}
+      aria-label={`${group.title} tools`}
+    >
       {group.softwareSkills.map((tool) => (
         <li
           key={tool.skillName}
@@ -30,77 +33,55 @@ function ToolGrid({ group }: { readonly group: SkillGroup }) {
   );
 }
 
-interface SkillTabsProps {
-  readonly baseId: string;
-  readonly active: number;
-  readonly onSelect: (index: number) => void;
+interface SkillBlockProps {
+  readonly group: SkillGroup;
+  readonly index: number;
 }
 
-function SkillTabs({ baseId, active, onSelect }: SkillTabsProps) {
+function SkillBlock({ group, index }: SkillBlockProps) {
+  const titleId = useId();
+  const isReversed = index % 2 === 1;
   return (
-    <div role="tablist" aria-label={ui.skillsTitle} className={styles.tabs}>
-      {skills.data.map((item, index) => (
-        <button
-          key={item.title}
-          id={`${baseId}-tab-${index}`}
-          type="button"
-          role="tab"
-          aria-selected={index === active}
-          aria-controls={`${baseId}-panel`}
-          className={
-            index === active ? `${styles.tab} ${styles.on}` : styles.tab
-          }
-          onClick={() => onSelect(index)}
-        >
-          <span className={`mono ${styles.num}`}>{indexLabel(index)}</span>
-          <span className={`display ${styles.tabTitle}`}>{item.title}</span>
-        </button>
-      ))}
-    </div>
+    <article
+      className={`${styles.block} ${isReversed ? styles.reversed : ""}`}
+      aria-labelledby={titleId}
+    >
+      <div className={styles.text}>
+        <span className={`mono ${styles.num}`}>{indexLabel(index)}</span>
+        <h3 id={titleId} className={`display ${styles.groupTitle}`}>
+          {group.title}
+        </h3>
+        <ul className="bullets">
+          {group.skills.map((point) => (
+            <li key={point}>{stripLeadingSymbols(point)}</li>
+          ))}
+        </ul>
+      </div>
+      <ToolGrid group={group} />
+    </article>
   );
 }
 
 export function SkillsShowcase() {
-  const [active, setActive] = useState(0);
-  const baseId = useId();
-  const group = skills.data[active];
+  const titleId = useId();
   const toolCount = skills.data.reduce(
     (total, g) => total + g.softwareSkills.length,
     0,
   );
 
   return (
-    <section
-      className={`wrap ${styles.section}`}
-      aria-labelledby={`${baseId}-title`}
-    >
+    <section className={`wrap ${styles.section}`} aria-labelledby={titleId}>
       <div className={styles.head}>
-        <h2 id={`${baseId}-title`} className={`display ${styles.title}`}>
+        <h2 id={titleId} className={`display ${styles.title}`}>
           {ui.skillsTitle}
         </h2>
         <span className="mono muted">
           {toolCount} {ui.toolsLabel}
         </span>
       </div>
-      <div className={styles.body}>
-        <SkillTabs baseId={baseId} active={active} onSelect={setActive} />
-        {group && (
-          <div
-            key={active}
-            id={`${baseId}-panel`}
-            role="tabpanel"
-            aria-labelledby={`${baseId}-tab-${active}`}
-            className={`enter ${styles.panel}`}
-          >
-            <ul className="bullets">
-              {group.skills.map((point) => (
-                <li key={point}>{stripLeadingSymbols(point)}</li>
-              ))}
-            </ul>
-            <ToolGrid group={group} />
-          </div>
-        )}
-      </div>
+      {skills.data.map((group, index) => (
+        <SkillBlock key={group.title} group={group} index={index} />
+      ))}
     </section>
   );
 }

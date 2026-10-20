@@ -1,6 +1,7 @@
 /**
  * File: SkillsShowcase.module.css
- * Purpose: Styles for SkillsShowcase.
+ * Purpose: Styles for SkillsShowcase. Two columns on wide screens with alternating sides;
+ *          one column on small screens. Blocks fade up as they scroll into view where supported.
  * Author: Akilesh
  * Date: 2026-10-20
  */
@@ -15,7 +16,8 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
-  margin-bottom: clamp(32px, 4vw, 56px);
+  padding-bottom: clamp(24px, 3vw, 40px);
+  border-bottom: 1px solid var(--line);
 }
 
 .title {
@@ -25,76 +27,75 @@
   line-height: 0.95;
 }
 
-.body {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px clamp(40px, 6vw, 96px);
+.block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  padding: clamp(48px, 7vw, 104px) 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.tabs {
-  flex: 1 1 340px;
+.block:last-child {
+  border-bottom: 0;
+}
+
+.text {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--line);
-}
-
-.tab {
-  appearance: none;
-  background: none;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--ink-muted);
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  padding: 14px 0;
-  transition: color 0.5s var(--ease);
-}
-
-.tab:hover,
-.on {
-  color: var(--ink);
+  gap: 20px;
+  font-size: 18px;
 }
 
 .num {
-  width: 28px;
-  flex-shrink: 0;
-  font-size: 13px;
-}
-
-.on .num {
   color: var(--link);
 }
 
-.tabTitle {
-  font-size: clamp(22px, 2.4vw, 32px);
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-  transition:
-    transform 0.6s var(--ease),
-    color 0.5s var(--ease);
-}
-
-.on .tabTitle {
+.groupTitle {
+  font-size: clamp(30px, 3.4vw, 48px);
   font-weight: 700;
-  transform: translateX(6px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  max-width: 16ch;
 }
 
-.panel {
-  flex: 999 1 560px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  font-size: 18px;
+@media (min-width: 900px) {
+  .block {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(48px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .reversed {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  }
+
+  .reversed .text {
+    order: 2;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .block {
+    animation: block-in linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 30%;
+  }
+}
+
+@keyframes block-in {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .specimen {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
   border-top: 1px solid var(--line);
   border-left: 1px solid var(--line);
 }

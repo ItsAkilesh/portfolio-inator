@@ -16,9 +16,9 @@ import {
   links,
   projectsHeader,
   research,
+  skills,
   theme,
 } from "../portfolio";
-import { summaryFor } from "../sections/PageIndex";
 import { venueOptions } from "../sections/PublicationList";
 import { ThemeProvider } from "../theme/ThemeProvider";
 
@@ -46,10 +46,10 @@ describe("routes", () => {
     ).toBeTruthy();
   });
 
-  it("home renders the name and skill tabs", async () => {
+  it("home renders the name and one block per skill group", async () => {
     renderAt("/");
     expect(await screen.findByRole("heading", { level: 1 })).toBeTruthy();
-    expect(screen.getAllByRole("tab").length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("article").length).toBe(skills.data.length);
   });
 
   it("unknown paths render the not found page", async () => {
@@ -89,10 +89,6 @@ describe("config-derived helpers", () => {
   it("titles known routes and falls back for unknown ones", () => {
     expect(titleForPath("/research")).toContain("Research");
     expect(titleForPath("/nowhere")).not.toContain("·");
-  });
-  it("summarizes pages for the home index", () => {
-    expect(summaryFor("/education")).toContain("CMU");
-    expect(summaryFor("/unknown")).toBe("");
   });
   it("lists unique venues after the all option", () => {
     const entries = research.sections.flatMap((s) => s.research);

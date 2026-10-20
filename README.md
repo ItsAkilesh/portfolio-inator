@@ -22,27 +22,27 @@ pnpm fetch-data   # refresh GitHub projects (needs GITHUB_TOKEN and GITHUB_USERN
 
 Node 22.12 or newer is required.
 
-## Customize everything from `src/portfolio/`
+## Customize everything from `src/portfolio.ts`
 
-`src/portfolio/index.ts` plays the role the old `src/portfolio.js` did: every component reads from it,
-and nothing on the site is hardcoded elsewhere. Each concern lives in its own file:
+Like the old `src/portfolio.js`, one file holds everything the site shows, and every component reads
+from it. It is grouped into banner-marked sections, in this order:
 
-| File | What it controls |
+| Section | What it controls |
 | --- | --- |
-| `site.ts` | Splash and dot-field switches, SEO, greeting, social links, navigation, interface copy, analytics IDs |
-| `theme.ts` | Color palettes, active palette, default light/dark mode, fonts |
-| `skills.ts` | "What I do" groups and their tools |
-| `experience.ts` | Experience header and sections (each section becomes a tab) |
-| `education.ts` | Education header and degrees |
-| `research.ts` | Research header, citation stats, patents and publications |
-| `projects.ts` | Projects header and the language-to-icon map |
-| `links.ts` | Links page and Contact page |
+| Site | Splash and dot-field switches, SEO, greeting, social links, navigation, interface copy, analytics IDs |
+| Theme | Color palettes, active palette, default light/dark mode, fonts |
+| Skills | "What I do" groups and their tools |
+| Experience | Experience header and sections (each section becomes a tab) |
+| Education | Education header and degrees |
+| Research | Research header, citation stats, patents and publications |
+| Projects | Projects header and the language-to-icon map |
+| Links | Links page and Contact page |
 
 Everything is typed (`src/types/`), so a typo in a field name or icon key fails the build.
 
 ### Colors
 
-Pick a palette in `theme.ts`:
+Pick a palette in the Theme section:
 
 ```ts
 activePalette: "klein", // or "forest", "oxblood", "graphite"
@@ -75,13 +75,13 @@ A test fails if a referenced image is missing.
 
 1. Create `src/pages/MyPage.tsx` using `PageBand` and any section components.
 2. Add a lazy route in `src/App.tsx`.
-3. Add it to `navigation` in `src/portfolio/site.ts`.
+3. Add it to `navigation` in `src/portfolio.ts`.
 
 ## Structure
 
 ```
 src/
-  portfolio/    content and theme config (edit this)
+  portfolio.ts  content and theme config (edit this)
   components/   layout (Header, Footer, PageBand, Splash) and ui primitives
   sections/     page sections built from config (SkillsShowcase, TimelineList, PublicationList, ...)
   pages/        one file per route, code-split
