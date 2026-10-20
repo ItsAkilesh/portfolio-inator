@@ -10,23 +10,12 @@ import { SmartLink } from "../components/ui/SmartLink";
 import { FitWord } from "../components/ui/FitWord";
 import { BrandIcon } from "../icons/BrandIcon";
 import { splitName } from "../lib/text";
-import {
-  greeting,
-  research,
-  settings,
-  socialMediaLinks,
-  ui,
-} from "../portfolio";
+import { greeting, settings, socialMediaLinks, ui } from "../portfolio";
 import styles from "./HomeHero.module.css";
 
 const SOCIAL_ICON_SIZE = 19;
 const FIRST_NAME_MAX_PX = 144;
-const REST_NAME_MAX_PX = 56;
-
-function scholarLine(): string {
-  const stats = research.scholarStats;
-  return `${stats.citations} citations · h-index ${stats.hIndex} · i10-index ${stats.i10Index}`;
-}
+const REST_NAME_MAX_PX = 96;
 
 export function HomeHero() {
   const { first, rest } = splitName(greeting.title);
@@ -34,15 +23,6 @@ export function HomeHero() {
     <section className={band.band} aria-labelledby="hero-name">
       {settings.showDotField && <DotField />}
       <div className={`wrap ${styles.inner}`}>
-        <div className={`mono enter ${styles.meta}`}>
-          <span>( {greeting.nickname} )</span>
-          <a
-            href={research.scholarStats.profileUrl}
-            className={styles.metaLink}
-          >
-            {scholarLine()}
-          </a>
-        </div>
         <h1 id="hero-name" className={`display ${styles.name}`}>
           <FitWord
             word={first}
