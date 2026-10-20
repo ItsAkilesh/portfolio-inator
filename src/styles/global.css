@@ -167,9 +167,8 @@ button:hover .arrow {
 .section-title {
   font-family: var(--font-display);
   font-size: clamp(32px, 4vw, 56px);
-  font-weight: 800;
-  font-stretch: 115%;
-  letter-spacing: -0.025em;
+  font-weight: 700;
+  letter-spacing: -0.035em;
   line-height: 1;
 }
 

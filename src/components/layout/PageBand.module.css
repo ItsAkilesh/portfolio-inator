@@ -41,10 +41,12 @@
 }
 
 .title {
-  font-size: clamp(56px, 10vw, 168px);
-  font-weight: 800;
-  line-height: 0.88;
-  animation: band-title 1.4s var(--ease) both;
+  font-size: clamp(44px, 8vw, 120px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  overflow-wrap: anywhere;
+  animation: band-title 1.2s var(--ease) both;
 }
 
 .description {
@@ -65,11 +67,11 @@
 
 @keyframes band-title {
   from {
-    font-stretch: 50%;
     opacity: 0;
+    transform: translateY(0.25em);
   }
   to {
-    font-stretch: 100%;
     opacity: 1;
+    transform: none;
   }
 }

@@ -63,14 +63,13 @@
 
 .big {
   flex: 999 1 auto;
-  font-size: clamp(40px, 7.4vw, 112px);
-  font-weight: 800;
-  font-stretch: 90%;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  transition: font-stretch 0.8s var(--ease);
+  font-size: clamp(36px, 6vw, 88px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  transition: transform 0.7s var(--ease);
 }
 
 .row:hover .big {
-  font-stretch: 135%;
+  transform: translateX(clamp(8px, 1.5vw, 24px));
 }

@@ -18,8 +18,9 @@
 }
 
 .name {
-  font-weight: 800;
-  font-size: clamp(40px, 9vw, 120px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  font-size: clamp(40px, 8vw, 104px);
   animation: splash-name 2s var(--ease) both;
 }
 
@@ -35,15 +36,12 @@
 
 @keyframes splash-name {
   0% {
-    font-stretch: 50%;
     opacity: 0;
+    transform: translateY(0.3em);
   }
-  35% {
-    opacity: 1;
-  }
-  70%,
+  35%,
   100% {
-    font-stretch: 150%;
     opacity: 1;
+    transform: none;
   }
 }

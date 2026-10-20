@@ -19,9 +19,9 @@
 }
 
 .title {
-  font-size: clamp(44px, 6vw, 88px);
-  font-weight: 800;
-  font-stretch: 120%;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
   line-height: 0.95;
 }
 
@@ -69,18 +69,18 @@
 }
 
 .tabTitle {
-  font-size: clamp(26px, 3vw, 40px);
-  font-weight: 600;
-  font-stretch: 78%;
-  line-height: 1.05;
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   transition:
-    font-stretch 0.7s var(--ease),
-    font-weight 0.7s var(--ease);
+    transform 0.6s var(--ease),
+    color 0.5s var(--ease);
 }
 
 .on .tabTitle {
-  font-stretch: 125%;
-  font-weight: 800;
+  font-weight: 700;
+  transform: translateX(6px);
 }
 
 .panel {

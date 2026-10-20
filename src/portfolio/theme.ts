@@ -51,10 +51,10 @@ export const theme: ThemeConfig = {
     },
   },
   fonts: {
-    display: "'Anybody', system-ui, sans-serif",
-    body: "'Hanken Grotesk', system-ui, sans-serif",
+    display: "'Geist', system-ui, sans-serif",
+    body: "'Geist', system-ui, sans-serif",
     mono: "'Geist Mono', ui-monospace, monospace",
     stylesheet:
-      "https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&family=Hanken+Grotesk:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap",
+      "https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500&display=swap",
   },
 };

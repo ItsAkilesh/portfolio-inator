@@ -29,8 +29,8 @@
   min-height: 44px;
   color: var(--ink);
   font-size: 21px;
-  font-weight: 800;
-  font-stretch: 135%;
+  font-weight: 700;
+  letter-spacing: -0.035em;
 }
 
 .logo:hover {
@@ -91,4 +91,34 @@
 .toggle:hover {
   transform: rotate(-30deg);
   background: var(--surface);
+}
+
+@media (max-width: 640px) {
+  .links {
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+  }
+
+  .links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .link {
+    flex-shrink: 0;
+  }
+
+  .toggle {
+    position: absolute;
+    top: 10px;
+    right: var(--gutter);
+    margin-left: 0;
+  }
+
+  .nav {
+    position: relative;
+  }
 }

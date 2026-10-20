@@ -1,13 +1,13 @@
 /**
  * File: HomeHero.tsx
- * Purpose: Home page hero on the accent color: stretching name, summary, résumé link and social icons.
+ * Purpose: Home page hero on the accent color: name sized to fit, summary, résumé link and social icons.
  * Author: Akilesh
  * Date: 2026-10-20
  */
 import band from "../components/layout/PageBand.module.css";
 import { DotField } from "../components/ui/DotField";
 import { SmartLink } from "../components/ui/SmartLink";
-import { StretchWord } from "../components/ui/StretchWord";
+import { FitWord } from "../components/ui/FitWord";
 import { BrandIcon } from "../icons/BrandIcon";
 import { splitName } from "../lib/text";
 import {
@@ -20,6 +20,8 @@ import {
 import styles from "./HomeHero.module.css";
 
 const SOCIAL_ICON_SIZE = 19;
+const FIRST_NAME_MAX_PX = 144;
+const REST_NAME_MAX_PX = 56;
 
 function scholarLine(): string {
   const stats = research.scholarStats;
@@ -42,8 +44,18 @@ export function HomeHero() {
           </a>
         </div>
         <h1 id="hero-name" className={`display ${styles.name}`}>
-          <StretchWord word={first} className={styles.first} />
-          <span className={`enter ${styles.rest}`}>{rest}</span>
+          <FitWord
+            word={first}
+            maxSize={FIRST_NAME_MAX_PX}
+            className={styles.first}
+          />
+          {rest && (
+            <FitWord
+              word={rest}
+              maxSize={REST_NAME_MAX_PX}
+              className={styles.rest}
+            />
+          )}
         </h1>
         <div className={styles.footer}>
           <p className={`enter ${styles.summary}`}>{greeting.subTitle}</p>

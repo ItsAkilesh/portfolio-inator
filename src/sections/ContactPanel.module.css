@@ -25,7 +25,6 @@
   color: var(--ink);
   font-size: clamp(26px, 4vw, 56px);
   font-weight: 700;
-  font-stretch: 90%;
   line-height: 1.05;
   overflow-wrap: anywhere;
 }

@@ -1,0 +1,35 @@
+/**
+ * File: FitWord.module.css
+ * Purpose: Container-relative sizing and staggered letter reveal for FitWord.
+ *          Font size = container width / (letters x average glyph width), capped at --max-size.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.fit {
+  display: block;
+  container-type: inline-size;
+}
+
+.word {
+  display: block;
+  white-space: nowrap;
+  font-size: min(calc(100cqi / (var(--chars) * 0.64)), var(--max-size));
+  line-height: 0.9;
+}
+
+.letter {
+  display: inline-block;
+  white-space: pre;
+  animation: letter-in 1s var(--ease) both;
+}
+
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
