@@ -5,12 +5,51 @@
  * Date: 2026-10-20
  */
 .header {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  inset: 0 0 auto;
   z-index: 30;
-  background: var(--bg);
+  background: color-mix(in oklch, var(--bg) 68%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   border-bottom: 1px solid var(--line);
-  transition: background-color 0.6s var(--ease);
+  transition:
+    background-color 0.5s var(--ease),
+    border-color 0.5s var(--ease);
+}
+
+/* Over an accent band the glass takes the band's color and the text turns light. */
+:global(html[data-accent-under-header="true"]) .header {
+  background: color-mix(in oklch, var(--accent) 55%, transparent);
+  border-bottom-color: var(--on-accent-line);
+}
+
+:global(html[data-accent-under-header="true"]) .logo,
+:global(html[data-accent-under-header="true"]) .active,
+:global(html[data-accent-under-header="true"]) .link:hover,
+:global(html[data-accent-under-header="true"]) .toggle {
+  color: var(--on-accent);
+}
+
+:global(html[data-accent-under-header="true"]) .link {
+  color: var(--on-accent-muted);
+}
+
+:global(html[data-accent-under-header="true"]) .active {
+  text-decoration-color: var(--on-accent);
+}
+
+:global(html[data-accent-under-header="true"]) .toggle {
+  border-color: var(--on-accent-line);
+}
+
+:global(html[data-accent-under-header="true"]) .toggle:hover {
+  background: oklch(1 0 0 / 0.12);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .header {
+    background: var(--bg);
+  }
 }
 
 .nav {

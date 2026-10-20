@@ -5,7 +5,13 @@
  * Date: 2026-10-20
  */
 import { describe, expect, it } from "vitest";
-import { fibonacciSphere, project, rotate } from "./sphere";
+import {
+  fibonacciOffsets,
+  fibonacciSphere,
+  neighborEdges,
+  project,
+  rotate,
+} from "./sphere";
 
 const length = (p: { x: number; y: number; z: number }) =>
   Math.hypot(p.x, p.y, p.z);
@@ -65,5 +71,41 @@ describe("project", () => {
       y: -100,
     });
     expect(project({ x: 0, y: 0, z: 5 }, 10).scale).toBe(1);
+  });
+});
+
+describe("fibonacciOffsets", () => {
+  it("lists Fibonacci numbers below the limit", () => {
+    expect(fibonacciOffsets(30)).toEqual([1, 2, 3, 5, 8, 13, 21]);
+  });
+  it("is empty for tiny limits", () => {
+    expect(fibonacciOffsets(1)).toEqual([]);
+    expect(fibonacciOffsets(0)).toEqual([]);
+  });
+});
+
+describe("neighborEdges", () => {
+  it.each([6, 12, 34, 60])(
+    "connects every one of %i vertices to 3 or more neighbors",
+    (n) => {
+      const edges = neighborEdges(fibonacciSphere(n));
+      const degree = new Array<number>(n).fill(0);
+      for (const [a, b] of edges) {
+        degree[a] = (degree[a] ?? 0) + 1;
+        degree[b] = (degree[b] ?? 0) + 1;
+      }
+      expect(Math.min(...degree)).toBeGreaterThanOrEqual(3);
+      expect(Math.max(...degree)).toBeLessThanOrEqual(8);
+    },
+  );
+  it("returns unique, ordered pairs", () => {
+    const edges = neighborEdges(fibonacciSphere(34));
+    const keys = edges.map(([a, b]) => `${a}-${b}`);
+    expect(new Set(keys).size).toBe(keys.length);
+    expect(edges.every(([a, b]) => a < b)).toBe(true);
+  });
+  it("handles empty and single-point inputs", () => {
+    expect(neighborEdges([])).toEqual([]);
+    expect(neighborEdges(fibonacciSphere(1))).toEqual([]);
   });
 });

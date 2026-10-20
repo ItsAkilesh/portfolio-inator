@@ -1,14 +1,14 @@
 /**
  * File: useIconCloud.ts
- * Purpose: Animates the children of a container as a rotating sphere. Writes transforms directly to the
- *          DOM (no React re-render per frame), steers with the pointer, pauses off-screen, and draws one
- *          still frame when motion is reduced.
+ * Purpose: Animates an icon polyhedron: rotates lattice points, positions the icon chips and the SVG edges
+ *          between neighbors. Writes to the DOM directly (no React re-render per frame), steers with the
+ *          pointer, pauses off-screen, and draws one still frame when motion is reduced.
  * Author: Akilesh
  * Date: 2026-10-20
  */
 import { useEffect, type RefObject } from "react";
 import { describeError, logger } from "../lib/logger";
-import { fibonacciSphere, project, rotate, type Point3 } from "../lib/sphere";
+import { project, rotate, type Point3, type Projected } from "../lib/sphere";
 
 const RADIUS_RATIO = 0.4;
 const BASE_SPEED_X = 0.00012;
@@ -16,6 +16,13 @@ const BASE_SPEED_Y = 0.00028;
 const STEER_SPEED = 0.0006;
 const EASE = 0.05;
 const INITIAL_TILT = 0.35;
+const EDGE_OPACITY = 0.55;
+const MAX_FRAME_MS = 64;
+const DEFAULT_FRAME_MS = 16;
+
+export const CLOUD_ITEM_ATTR = "data-cloud-item";
+export const CLOUD_EDGE_ATTR = "data-cloud-edge";
+export const CLOUD_ORIGIN_ATTR = "data-cloud-origin";
 
 interface CloudState {
   angleX: number;
@@ -27,27 +34,69 @@ interface CloudState {
   last: number;
 }
 
+interface Scene {
+  readonly container: HTMLElement;
+  readonly items: readonly HTMLElement[];
+  readonly lines: readonly SVGLineElement[];
+  readonly origin: SVGGElement | null;
+  readonly points: readonly Point3[];
+  readonly edges: ReadonlyArray<readonly [number, number]>;
+}
+
 type Cleanup = () => void;
 
-function layout(
-  container: HTMLElement,
-  points: readonly Point3[],
-  state: CloudState,
-): void {
-  const radius = container.clientWidth * RADIUS_RATIO;
-  const items = container.children;
-  points.forEach((point, index) => {
-    const el = items[index] as HTMLElement | undefined;
+const initialState = (): CloudState => ({
+  angleX: INITIAL_TILT,
+  angleY: 0,
+  speedX: BASE_SPEED_X,
+  speedY: BASE_SPEED_Y,
+  targetX: BASE_SPEED_X,
+  targetY: BASE_SPEED_Y,
+  last: 0,
+});
+
+function placeItems(scene: Scene, projected: readonly Projected[]): void {
+  projected.forEach((p, index) => {
+    const el = scene.items[index];
     if (!el) return;
-    const p = project(rotate(point, state.angleX, state.angleY), radius);
     el.style.transform = `translate3d(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px, 0) scale(${p.scale.toFixed(3)})`;
     el.style.opacity = p.opacity.toFixed(3);
-    el.style.zIndex = String(p.layer);
+    el.style.zIndex = String(p.layer + 1);
   });
 }
 
+function placeEdges(scene: Scene, projected: readonly Projected[]): void {
+  scene.edges.forEach(([from, to], index) => {
+    const line = scene.lines[index];
+    const a = projected[from];
+    const b = projected[to];
+    if (!line || !a || !b) return;
+    line.setAttribute("x1", a.x.toFixed(1));
+    line.setAttribute("y1", a.y.toFixed(1));
+    line.setAttribute("x2", b.x.toFixed(1));
+    line.setAttribute("y2", b.y.toFixed(1));
+    line.setAttribute(
+      "stroke-opacity",
+      (Math.min(a.opacity, b.opacity) * EDGE_OPACITY).toFixed(3),
+    );
+  });
+}
+
+function layout(scene: Scene, state: CloudState): void {
+  const size = scene.container.clientWidth;
+  const radius = size * RADIUS_RATIO;
+  const projected = scene.points.map((point) =>
+    project(rotate(point, state.angleX, state.angleY), radius),
+  );
+  scene.origin?.setAttribute("transform", `translate(${size / 2} ${size / 2})`);
+  placeItems(scene, projected);
+  placeEdges(scene, projected);
+}
+
 function advance(state: CloudState, now: number): void {
-  const elapsed = state.last ? Math.min(now - state.last, 64) : 16;
+  const elapsed = state.last
+    ? Math.min(now - state.last, MAX_FRAME_MS)
+    : DEFAULT_FRAME_MS;
   state.last = now;
   state.speedX += (state.targetX - state.speedX) * EASE;
   state.speedY += (state.targetY - state.speedY) * EASE;
@@ -75,22 +124,7 @@ function bindSteering(container: HTMLElement, state: CloudState): Cleanup {
   };
 }
 
-const initialState = (): CloudState => ({
-  angleX: INITIAL_TILT,
-  angleY: 0,
-  speedX: BASE_SPEED_X,
-  speedY: BASE_SPEED_Y,
-  targetX: BASE_SPEED_X,
-  targetY: BASE_SPEED_Y,
-  last: 0,
-});
-
-function runCloud(
-  container: HTMLElement,
-  count: number,
-  isAnimated: boolean,
-): Cleanup {
-  const points = fibonacciSphere(count);
+function runCloud(scene: Scene, isAnimated: boolean): Cleanup {
   const state = initialState();
   let frame = 0;
   let isVisible = true;
@@ -98,21 +132,21 @@ function runCloud(
     frame = 0;
     if (!isVisible) return;
     advance(state, now);
-    layout(container, points, state);
+    layout(scene, state);
     frame = requestAnimationFrame(tick);
   };
-  const sizeObserver = new ResizeObserver(() =>
-    layout(container, points, state),
-  );
+  const sizeObserver = new ResizeObserver(() => layout(scene, state));
   const viewObserver = new IntersectionObserver(([entry]) => {
     isVisible = entry?.isIntersecting ?? true;
     state.last = 0;
     if (isVisible && isAnimated && !frame) frame = requestAnimationFrame(tick);
   });
-  sizeObserver.observe(container);
-  viewObserver.observe(container);
-  const unbind = isAnimated ? bindSteering(container, state) : () => undefined;
-  layout(container, points, state);
+  sizeObserver.observe(scene.container);
+  viewObserver.observe(scene.container);
+  const unbind = isAnimated
+    ? bindSteering(scene.container, state)
+    : () => undefined;
+  layout(scene, state);
   return () => {
     cancelAnimationFrame(frame);
     sizeObserver.disconnect();
@@ -121,19 +155,37 @@ function runCloud(
   };
 }
 
+function collectScene(
+  container: HTMLElement,
+  points: readonly Point3[],
+  edges: ReadonlyArray<readonly [number, number]>,
+): Scene {
+  return {
+    container,
+    items: [...container.querySelectorAll<HTMLElement>(`[${CLOUD_ITEM_ATTR}]`)],
+    lines: [
+      ...container.querySelectorAll<SVGLineElement>(`[${CLOUD_EDGE_ATTR}]`),
+    ],
+    origin: container.querySelector<SVGGElement>(`[${CLOUD_ORIGIN_ATTR}]`),
+    points,
+    edges,
+  };
+}
+
 export function useIconCloud(
   containerRef: RefObject<HTMLElement | null>,
-  count: number,
+  points: readonly Point3[],
+  edges: ReadonlyArray<readonly [number, number]>,
   isAnimated: boolean,
 ): void {
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || count <= 0) return undefined;
+    if (!container || points.length === 0) return undefined;
     try {
-      return runCloud(container, count, isAnimated);
+      return runCloud(collectScene(container, points, edges), isAnimated);
     } catch (error) {
       logger.warn("iconCloud.start", describeError(error));
       return undefined;
     }
-  }, [containerRef, count, isAnimated]);
+  }, [containerRef, points, edges, isAnimated]);
 }

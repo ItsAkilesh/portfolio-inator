@@ -58,3 +58,45 @@ export function project(point: Point3, radius: number): Projected {
     layer: Math.round(depth * LAYER_RANGE),
   };
 }
+
+/** Max edge length relative to a point's nearest neighbor; 1.45 links the ring of 5-6 neighbors. */
+const EDGE_REACH = 1.45;
+
+const distance = (a: Point3, b: Point3): number =>
+  Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
+
+/** Fibonacci numbers below `limit`; on a Fibonacci lattice, neighbors sit at these index offsets. */
+export function fibonacciOffsets(limit: number): number[] {
+  const offsets: number[] = [];
+  for (let a = 1, b = 2; a < limit; [a, b] = [b, a + b]) offsets.push(a);
+  return offsets;
+}
+
+/**
+ * Edges joining each lattice point to its nearest neighbors, forming a geodesic mesh.
+ * Only Fibonacci index offsets are checked, so the cost is O(n log n), not O(n^2).
+ * Points must come from fibonacciSphere(). Returns unique [lower, higher] index pairs.
+ */
+export function neighborEdges(
+  points: readonly Point3[],
+): Array<[number, number]> {
+  const offsets = fibonacciOffsets(points.length);
+  const seen = new Set<string>();
+  const edges: Array<[number, number]> = [];
+  points.forEach((point, i) => {
+    const candidates = offsets.flatMap((offset) =>
+      [i - offset, i + offset]
+        .filter((j) => j >= 0 && j < points.length)
+        .map((j) => ({ j, d: distance(point, points[j] as Point3) })),
+    );
+    const nearest = Math.min(...candidates.map((c) => c.d));
+    for (const { j, d } of candidates) {
+      if (d > nearest * EDGE_REACH) continue;
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      edges.push(i < j ? [i, j] : [j, i]);
+    }
+  });
+  return edges;
+}

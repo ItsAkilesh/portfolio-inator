@@ -22,17 +22,20 @@ describe("uniqueIcons", () => {
 });
 
 describe("IconCloud", () => {
-  it("renders one hidden-from-assistive-tech item per unique icon", () => {
+  it("renders one vertex per unique icon and edges between neighbors", () => {
     const { container } = render(
-      <IconCloud icons={["react", "python", "react"]} />,
+      <IconCloud icons={["react", "python", "react", "rust", "docker"]} />,
     );
     const cloud = container.firstElementChild;
     expect(cloud?.getAttribute("aria-hidden")).toBe("true");
-    expect(cloud?.children).toHaveLength(2);
-    expect(cloud?.querySelectorAll("svg")).toHaveLength(2);
+    expect(cloud?.querySelectorAll("[data-cloud-item]")).toHaveLength(4);
+    expect(cloud?.querySelectorAll("[data-cloud-edge]").length).toBeGreaterThan(
+      0,
+    );
   });
-  it("renders an empty container without icons", () => {
+  it("renders no vertices or edges without icons", () => {
     const { container } = render(<IconCloud icons={[]} />);
-    expect(container.firstElementChild?.children).toHaveLength(0);
+    expect(container.querySelectorAll("[data-cloud-item]")).toHaveLength(0);
+    expect(container.querySelectorAll("[data-cloud-edge]")).toHaveLength(0);
   });
 });
