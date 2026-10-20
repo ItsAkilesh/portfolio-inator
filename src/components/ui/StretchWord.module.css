@@ -1,0 +1,36 @@
+/**
+ * File: StretchWord.module.css
+ * Purpose: Load-in stretch and per-letter hover compression for StretchWord.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.word {
+  display: block;
+  animation: stretch-in 1.6s var(--ease) 0.15s both;
+}
+
+.letter {
+  display: inline-block;
+  font-stretch: 118%;
+  transition:
+    font-stretch 0.9s var(--ease),
+    font-weight 0.9s var(--ease);
+}
+
+.letter:hover {
+  font-stretch: 52%;
+  font-weight: 300;
+}
+
+@keyframes stretch-in {
+  from {
+    font-stretch: 50%;
+    opacity: 0;
+    letter-spacing: 0.2em;
+  }
+  to {
+    font-stretch: 100%;
+    opacity: 1;
+    letter-spacing: -0.02em;
+  }
+}

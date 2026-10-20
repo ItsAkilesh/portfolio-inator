@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+// Uses the built-in fetch available in Node 18+ (node-fetch is no longer a dependency).
 import fs from "fs";
 import dotenv from "dotenv";
 

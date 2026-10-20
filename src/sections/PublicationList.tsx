@@ -1,0 +1,122 @@
+/**
+ * File: PublicationList.tsx
+ * Purpose: Filterable bibliography for "list" research sections: venue filter, highlighted author,
+ *          and an expandable summary per entry.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+import { useId, useMemo, useState } from "react";
+import { Expander } from "../components/ui/Expander";
+import { SegmentedControl } from "../components/ui/SegmentedControl";
+import { SmartLink } from "../components/ui/SmartLink";
+import { imageUrl } from "../lib/assets";
+import { indexLabel, splitAuthors, staggerDelay } from "../lib/text";
+import { greeting, ui } from "../portfolio";
+import type { ResearchSection, TimelineEntry } from "../types/portfolio";
+import lists from "./Lists.module.css";
+import styles from "./PublicationList.module.css";
+
+/** Unique venues in order of first appearance, preceded by the "all" option. */
+export function venueOptions(
+  entries: readonly TimelineEntry[],
+  allLabel: string,
+): string[] {
+  return [allLabel, ...new Set(entries.map((entry) => entry.location))];
+}
+
+interface PublicationProps {
+  readonly entry: TimelineEntry;
+  readonly number: string;
+  readonly delay: string;
+}
+
+function Publication({ entry, number, delay }: PublicationProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const panelId = useId();
+  const authors = splitAuthors(entry.company, greeting.title);
+  return (
+    <li
+      className={`hover-row enter ${styles.item}`}
+      style={{ animationDelay: delay }}
+    >
+      <span className={`mono ${styles.num}`}>{number}</span>
+      <div className={styles.body}>
+        <SmartLink href={entry.company_url} className={styles.title}>
+          {entry.title}{" "}
+          <span className={`arrow ${styles.arrow}`} aria-hidden="true">
+            ↗
+          </span>
+        </SmartLink>
+        <p className={`muted ${styles.authors}`}>
+          {authors.before}
+          {authors.highlight && <strong>{authors.highlight}</strong>}
+          {authors.after}
+        </p>
+        <div className={styles.meta}>
+          <span className={styles.venue}>
+            <img src={imageUrl(entry.logo_path)} alt="" loading="lazy" />
+            {entry.location}
+          </span>
+          <button
+            type="button"
+            className={styles.toggle}
+            aria-expanded={isOpen}
+            aria-controls={panelId}
+            onClick={() => setIsOpen((open) => !open)}
+          >
+            {isOpen ? ui.hideSummary : ui.readSummary}
+          </button>
+        </div>
+        <Expander id={panelId} isOpen={isOpen}>
+          <p className={`muted ${styles.summary}`}>
+            {entry.description.trim()}
+          </p>
+        </Expander>
+      </div>
+    </li>
+  );
+}
+
+export function PublicationList({
+  section,
+}: {
+  readonly section: ResearchSection;
+}) {
+  const [venue, setVenue] = useState(ui.allFilter);
+  const options = useMemo(
+    () => venueOptions(section.research, ui.allFilter),
+    [section.research],
+  );
+  const numbered = section.research.map((entry, index) => ({
+    entry,
+    number: indexLabel(index),
+  }));
+  const visible =
+    venue === ui.allFilter
+      ? numbered
+      : numbered.filter(({ entry }) => entry.location === venue);
+
+  return (
+    <section aria-label={section.title}>
+      <div className={lists.toolbar}>
+        <h2 className="section-title">{section.title}</h2>
+        <SegmentedControl
+          label={`Filter ${section.title}`}
+          options={options.map((value) => ({ value, label: value }))}
+          value={venue}
+          onChange={setVenue}
+        />
+      </div>
+      <ol className={`plain-list ${lists.list}`}>
+        {visible.map(({ entry, number }, index) => (
+          <Publication
+            key={`${venue}-${number}`}
+            entry={entry}
+            number={number}
+            delay={staggerDelay(index)}
+          />
+        ))}
+      </ol>
+    </section>
+  );
+}

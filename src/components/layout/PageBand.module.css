@@ -1,0 +1,75 @@
+/**
+ * File: PageBand.module.css
+ * Purpose: Styles for PageBand. The .band surface is reused by the home hero.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.band {
+  position: relative;
+  overflow: hidden;
+  background: var(--accent);
+  color: var(--on-accent);
+  transition: background-color 0.6s var(--ease);
+}
+
+.inner {
+  position: relative;
+  pointer-events: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px 56px;
+  padding-top: clamp(72px, 11vw, 160px);
+  padding-bottom: clamp(44px, 6vw, 80px);
+}
+
+.inner > * {
+  pointer-events: auto;
+}
+
+.text {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.kicker {
+  color: var(--on-accent-muted);
+}
+
+.title {
+  font-size: clamp(56px, 10vw, 168px);
+  font-weight: 800;
+  line-height: 0.88;
+  animation: band-title 1.4s var(--ease) both;
+}
+
+.description {
+  max-width: 60ch;
+  font-size: clamp(17px, 1.5vw, 20px);
+  color: var(--on-accent-muted);
+  animation-delay: 0.16s;
+}
+
+.portrait {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--on-accent-line);
+  animation-delay: 0.24s;
+}
+
+@keyframes band-title {
+  from {
+    font-stretch: 50%;
+    opacity: 0;
+  }
+  to {
+    font-stretch: 100%;
+    opacity: 1;
+  }
+}

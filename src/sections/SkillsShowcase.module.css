@@ -1,0 +1,130 @@
+/**
+ * File: SkillsShowcase.module.css
+ * Purpose: Styles for SkillsShowcase.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.section {
+  padding-top: clamp(80px, 11vw, 160px);
+  padding-bottom: clamp(64px, 8vw, 120px);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.title {
+  font-size: clamp(44px, 6vw, 88px);
+  font-weight: 800;
+  font-stretch: 120%;
+  line-height: 0.95;
+}
+
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px clamp(40px, 6vw, 96px);
+}
+
+.tabs {
+  flex: 1 1 340px;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.tab {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-muted);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 14px 0;
+  transition: color 0.5s var(--ease);
+}
+
+.tab:hover,
+.on {
+  color: var(--ink);
+}
+
+.num {
+  width: 28px;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.on .num {
+  color: var(--link);
+}
+
+.tabTitle {
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 600;
+  font-stretch: 78%;
+  line-height: 1.05;
+  transition:
+    font-stretch 0.7s var(--ease),
+    font-weight 0.7s var(--ease);
+}
+
+.on .tabTitle {
+  font-stretch: 125%;
+  font-weight: 800;
+}
+
+.panel {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-size: 18px;
+}
+
+.specimen {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.tile {
+  background: var(--bg);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 112px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  transition: background-color 0.4s var(--ease);
+}
+
+.tile svg {
+  transition:
+    color 0.4s var(--ease),
+    transform 0.6s var(--ease);
+}
+
+.tile:hover {
+  background: var(--surface);
+}
+
+.tile:hover svg {
+  color: var(--brand);
+  transform: scale(1.12) rotate(-6deg);
+}
