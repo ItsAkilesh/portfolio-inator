@@ -120,8 +120,10 @@ export const analytics: AnalyticsIds = {
 /* ---------------------------------------------------------------------- */
 
 export const theme: ThemeConfig = {
-  /** "system" follows the visitor's OS setting until they press the toggle. */
+  /** "light", "dark", or "system" (follow the visitor's OS setting until they press the toggle). */
   defaultMode: "system",
+  /** false hides the toggle and forces defaultMode for every visitor. */
+  showThemeToggle: true,
   activePalette: "klein",
   palettes: {
     /** International Klein Blue. */

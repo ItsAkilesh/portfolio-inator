@@ -32,13 +32,38 @@
   pointer-events: none;
 }
 
+.faces {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/*
+ * One frosted facet. The hook sizes it to the triangle's bounding box and clips it to the
+ * triangle; --glint (0..1) carries the lighting, so lit faces read brighter and more reflective.
+ */
+.face {
+  --glint: 0;
+  position: absolute;
+  visibility: hidden;
+  -webkit-backdrop-filter: blur(6px) saturate(150%);
+  backdrop-filter: blur(6px) saturate(150%);
+  background: linear-gradient(
+    135deg,
+    oklch(1 0 0 / calc(0.06 + var(--glint) * 0.9)),
+    oklch(1 0 0 / calc(0.02 + var(--glint) * 0.25)) 60%,
+    oklch(1 0 0 / 0.01)
+  );
+}
+
 .mesh {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   overflow: visible;
-  z-index: 0;
+  z-index: 1;
 }
 
 .edges {
@@ -62,7 +87,14 @@
   background: var(--accent);
   border: 1px solid var(--on-accent);
   opacity: 0;
+  z-index: 2;
   will-change: transform, opacity;
+}
+
+/* Darker discs in dark mode so the icons sit deeper in the glass. */
+:global(html[data-theme="dark"]) .item {
+  background: color-mix(in oklch, var(--accent) 45%, var(--bg));
+  border-color: oklch(1 0 0 / 0.75);
 }
 
 @keyframes cloud-in {

@@ -1,12 +1,12 @@
 /**
  * File: IconCloud.tsx
  * Purpose: Decorative rotating glass polyhedron of brand icons: one vertex per icon, white edges between
- *          neighbors, translucent reflective faces, inside a frosted glass sphere. Receives icon keys, so
+ *          neighbors, frosted reflective faces, inside a frosted glass sphere. Receives icon keys, so
  *          any section can reuse it; the home hero feeds it every tool from the "What I do" groups.
  * Author: Akilesh
  * Date: 2026-10-20
  */
-import { useId, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import {
   CLOUD_EDGE_ATTR,
   CLOUD_FACE_ATTR,
@@ -44,28 +44,27 @@ export function buildMesh(count: number): CloudMesh {
   return { points, edges, faces: triangleFaces(edges, points.length) };
 }
 
-function MeshLayer({ mesh }: { readonly mesh: CloudMesh }) {
-  const gradientId = useId();
+function FaceLayer({ mesh }: { readonly mesh: CloudMesh }) {
+  return (
+    <div className={styles.faces}>
+      {mesh.faces.map((face) => (
+        <span
+          key={face.join("-")}
+          className={styles.face}
+          {...{ [CLOUD_FACE_ATTR]: "" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function EdgeLayer({ mesh }: { readonly mesh: CloudMesh }) {
   return (
     <svg className={styles.mesh} focusable="false">
-      <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity="1" />
-          <stop offset="0.55" stopColor="#fff" stopOpacity="0.35" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0.05" />
-        </linearGradient>
-      </defs>
-      <g {...{ [CLOUD_ORIGIN_ATTR]: "" }}>
-        <g fill={`url(#${gradientId})`} stroke="none">
-          {mesh.faces.map((face) => (
-            <polygon key={face.join("-")} {...{ [CLOUD_FACE_ATTR]: "" }} />
-          ))}
-        </g>
-        <g className={styles.edges}>
-          {mesh.edges.map(([from, to]) => (
-            <line key={`${from}-${to}`} {...{ [CLOUD_EDGE_ATTR]: "" }} />
-          ))}
-        </g>
+      <g className={styles.edges} {...{ [CLOUD_ORIGIN_ATTR]: "" }}>
+        {mesh.edges.map(([from, to]) => (
+          <line key={`${from}-${to}`} {...{ [CLOUD_EDGE_ATTR]: "" }} />
+        ))}
       </g>
     </svg>
   );
@@ -84,7 +83,8 @@ export function IconCloud({ icons, className }: IconCloudProps) {
       aria-hidden="true"
     >
       {keys.length > 0 && <div className={styles.glass} />}
-      <MeshLayer mesh={mesh} />
+      <FaceLayer mesh={mesh} />
+      <EdgeLayer mesh={mesh} />
       {keys.map((key) => (
         <span key={key} className={styles.item} {...{ [CLOUD_ITEM_ATTR]: "" }}>
           <BrandIcon name={key} size={ICON_SIZE} />

@@ -17,6 +17,7 @@ import { makePalette } from "./makePalette";
 const fonts = { display: "A", body: "B", mono: "C", stylesheet: "" };
 const config = (overrides: Partial<ThemeConfig> = {}): ThemeConfig => ({
   defaultMode: "system",
+  showThemeToggle: true,
   activePalette: "klein",
   palettes: {
     klein: makePalette({ hue: 266 }),

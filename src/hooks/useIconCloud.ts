@@ -47,7 +47,7 @@ interface Scene {
   readonly container: HTMLElement;
   readonly items: readonly HTMLElement[];
   readonly lines: readonly SVGLineElement[];
-  readonly polygons: readonly SVGPolygonElement[];
+  readonly faceEls: readonly HTMLElement[];
   readonly origin: SVGGElement | null;
   readonly mesh: CloudMesh;
 }
@@ -70,7 +70,7 @@ function placeItems(scene: Scene, projected: readonly Projected[]): void {
     if (!el) return;
     el.style.transform = `translate3d(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px, 0) scale(${p.scale.toFixed(3)})`;
     el.style.opacity = p.opacity.toFixed(3);
-    el.style.zIndex = String(p.layer + 1);
+    el.style.zIndex = String(p.layer + 2);
   });
 }
 
@@ -91,22 +91,45 @@ function placeEdges(scene: Scene, projected: readonly Projected[]): void {
   });
 }
 
-const toPoints = (...vertices: Projected[]): string =>
-  vertices.map((v) => `${v.x.toFixed(1)},${v.y.toFixed(1)}`).join(" ");
+/**
+ * Positions one frosted face: a box around the triangle, clipped to the triangle, so the
+ * backdrop blur only covers the facet. Coordinates are relative to the container center.
+ */
+function placeFace(
+  el: HTMLElement,
+  center: number,
+  a: Projected,
+  b: Projected,
+  c: Projected,
+): void {
+  const left = Math.min(a.x, b.x, c.x);
+  const top = Math.min(a.y, b.y, c.y);
+  const corner = (p: Projected) =>
+    `${(p.x - left).toFixed(1)}px ${(p.y - top).toFixed(1)}px`;
+  el.style.left = `${(center + left).toFixed(1)}px`;
+  el.style.top = `${(center + top).toFixed(1)}px`;
+  el.style.width = `${(Math.max(a.x, b.x, c.x) - left).toFixed(1)}px`;
+  el.style.height = `${(Math.max(a.y, b.y, c.y) - top).toFixed(1)}px`;
+  el.style.clipPath = `polygon(${corner(a)}, ${corner(b)}, ${corner(c)})`;
+}
 
 function placeFaces(
   scene: Scene,
   rotated: readonly Point3[],
   projected: readonly Projected[],
+  center: number,
 ): void {
   scene.mesh.faces.forEach(([a, b, c], index) => {
-    const polygon = scene.polygons[index];
+    const el = scene.faceEls[index];
     const [ra, rb, rc] = [rotated[a], rotated[b], rotated[c]];
     const [pa, pb, pc] = [projected[a], projected[b], projected[c]];
-    if (!polygon || !ra || !rb || !rc || !pa || !pb || !pc) return;
+    if (!el || !ra || !rb || !rc || !pa || !pb || !pc) return;
     const shade = shadeFace(ra, rb, rc);
-    polygon.setAttribute("points", toPoints(pa, pb, pc));
-    polygon.setAttribute("fill-opacity", shade.opacity.toFixed(3));
+    /* Back faces are skipped entirely: hidden elements cost no blur. */
+    el.style.visibility = shade.isFront ? "visible" : "hidden";
+    if (!shade.isFront) return;
+    placeFace(el, center, pa, pb, pc);
+    el.style.setProperty("--glint", shade.opacity.toFixed(3));
   });
 }
 
@@ -118,7 +141,7 @@ function layout(scene: Scene, state: CloudState): void {
   );
   const projected = rotated.map((point) => project(point, radius));
   scene.origin?.setAttribute("transform", `translate(${size / 2} ${size / 2})`);
-  placeFaces(scene, rotated, projected);
+  placeFaces(scene, rotated, projected, size / 2);
   placeItems(scene, projected);
   placeEdges(scene, projected);
 }
@@ -192,8 +215,8 @@ function collectScene(container: HTMLElement, mesh: CloudMesh): Scene {
     lines: [
       ...container.querySelectorAll<SVGLineElement>(`[${CLOUD_EDGE_ATTR}]`),
     ],
-    polygons: [
-      ...container.querySelectorAll<SVGPolygonElement>(`[${CLOUD_FACE_ATTR}]`),
+    faceEls: [
+      ...container.querySelectorAll<HTMLElement>(`[${CLOUD_FACE_ATTR}]`),
     ],
     origin: container.querySelector<SVGGElement>(`[${CLOUD_ORIGIN_ATTR}]`),
     mesh,

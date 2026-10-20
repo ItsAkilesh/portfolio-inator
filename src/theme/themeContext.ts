@@ -10,6 +10,8 @@ import type { ColorMode } from "../types/theme";
 export interface ThemeContextValue {
   readonly mode: ColorMode;
   readonly toggle: () => void;
+  /** False when the config hides the toggle and forces a mode. */
+  readonly canToggle: boolean;
 }
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null);

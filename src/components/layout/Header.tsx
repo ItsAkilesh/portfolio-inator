@@ -55,7 +55,7 @@ function useHeaderHeight(ref: RefObject<HTMLElement | null>): void {
 }
 
 export function Header() {
-  const { mode, toggle } = useTheme();
+  const { mode, toggle, canToggle } = useTheme();
   const headerRef = useRef<HTMLElement>(null);
   const isDark = mode === "dark";
   useHeaderHeight(headerRef);
@@ -68,16 +68,18 @@ export function Header() {
         </Link>
         <div className={styles.links}>
           <NavLinks />
-          <button
-            type="button"
-            className={styles.toggle}
-            onClick={toggle}
-            aria-label={
-              isDark ? "Switch to light theme" : "Switch to dark theme"
-            }
-          >
-            <UiIcon name={isDark ? "sun" : "moon"} />
-          </button>
+          {canToggle && (
+            <button
+              type="button"
+              className={styles.toggle}
+              onClick={toggle}
+              aria-label={
+                isDark ? "Switch to light theme" : "Switch to dark theme"
+              }
+            >
+              <UiIcon name={isDark ? "sun" : "moon"} />
+            </button>
+          )}
         </div>
       </nav>
     </header>

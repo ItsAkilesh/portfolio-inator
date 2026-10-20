@@ -34,7 +34,9 @@ function initialMode(config: ThemeConfig): {
   mode: ColorMode;
   isExplicit: boolean;
 } {
-  const stored = readStored("local", STORAGE_KEY);
+  const stored = config.showThemeToggle
+    ? readStored("local", STORAGE_KEY)
+    : null;
   if (isColorMode(stored)) return { mode: stored, isExplicit: true };
   if (config.defaultMode !== "system")
     return { mode: config.defaultMode, isExplicit: false };
@@ -94,9 +96,10 @@ export function ThemeProvider({ config, children }: ThemeProviderProps) {
     });
   }, []);
 
+  const canToggle = config.showThemeToggle;
   const value = useMemo<ThemeContextValue>(
-    () => ({ mode, toggle }),
-    [mode, toggle],
+    () => ({ mode, toggle, canToggle }),
+    [mode, toggle, canToggle],
   );
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

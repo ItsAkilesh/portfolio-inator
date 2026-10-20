@@ -48,6 +48,11 @@ export interface FontConfig {
 
 export interface ThemeConfig {
   readonly defaultMode: ModePreference;
+  /**
+   * Shows the light/dark toggle in the header. Set to false to force `defaultMode`:
+   * the toggle disappears and any mode a visitor saved earlier is ignored.
+   */
+  readonly showThemeToggle: boolean;
   readonly activePalette: string;
   readonly palettes: Readonly<Record<string, Palette>>;
   readonly fonts: FontConfig;
