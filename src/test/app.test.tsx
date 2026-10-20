@@ -19,7 +19,7 @@ import {
   skills,
   theme,
 } from "../portfolio";
-import { venueOptions } from "../sections/PublicationList";
+import { numberedForVenue, venueOptions } from "../sections/PublicationList";
 import { ThemeProvider } from "../theme/ThemeProvider";
 
 function renderAt(path: string) {
@@ -89,6 +89,15 @@ describe("config-derived helpers", () => {
   it("titles known routes and falls back for unknown ones", () => {
     expect(titleForPath("/research")).toContain("Research");
     expect(titleForPath("/nowhere")).not.toContain("·");
+  });
+  it("keeps original numbering when filtering by venue", () => {
+    const entries = research.sections.flatMap((s) => s.research);
+    const all = numberedForVenue(entries, "All", "All");
+    expect(all).toHaveLength(entries.length);
+    const ssrn = numberedForVenue(entries, "SSRN", "All");
+    expect(ssrn.every(({ entry }) => entry.location === "SSRN")).toBe(true);
+    expect(ssrn[0]?.number).not.toBe("01");
+    expect(numberedForVenue(entries, "Nowhere", "All")).toEqual([]);
   });
   it("lists unique venues after the all option", () => {
     const entries = research.sections.flatMap((s) => s.research);

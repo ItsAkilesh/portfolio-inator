@@ -41,6 +41,26 @@ function initialMode(config: ThemeConfig): {
   return { mode: systemMode(), isExplicit: false };
 }
 
+/** Follows OS light/dark changes until the visitor has chosen a mode explicitly. */
+function useSystemModeSync(
+  isDisabled: boolean,
+  onChange: (mode: ColorMode) => void,
+): void {
+  useEffect(() => {
+    if (isDisabled) return undefined;
+    let query: MediaQueryList;
+    try {
+      query = window.matchMedia(DARK_QUERY);
+    } catch {
+      return undefined;
+    }
+    const listener = (event: MediaQueryListEvent) =>
+      onChange(event.matches ? "dark" : "light");
+    query.addEventListener("change", listener);
+    return () => query.removeEventListener("change", listener);
+  }, [isDisabled, onChange]);
+}
+
 interface ThemeProviderProps {
   readonly config: ThemeConfig;
   readonly children: ReactNode;
@@ -57,19 +77,14 @@ export function ThemeProvider({ config, children }: ThemeProviderProps) {
     loadFontStylesheet(document, config.fonts.stylesheet);
   }, [config.fonts.stylesheet]);
 
-  useEffect(() => {
-    if (isExplicit || config.defaultMode !== "system") return undefined;
-    let query: MediaQueryList;
-    try {
-      query = window.matchMedia(DARK_QUERY);
-    } catch {
-      return undefined;
-    }
-    const onChange = (event: MediaQueryListEvent) =>
-      setState({ mode: event.matches ? "dark" : "light", isExplicit: false });
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
-  }, [isExplicit, config.defaultMode]);
+  const syncFromSystem = useCallback(
+    (next: ColorMode) => setState({ mode: next, isExplicit: false }),
+    [],
+  );
+  useSystemModeSync(
+    isExplicit || config.defaultMode !== "system",
+    syncFromSystem,
+  );
 
   const toggle = useCallback(() => {
     setState((prev) => {

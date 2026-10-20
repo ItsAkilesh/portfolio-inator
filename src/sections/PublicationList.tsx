@@ -30,10 +30,39 @@ interface PublicationProps {
   readonly delay: string;
 }
 
+/** Entries numbered by original position, then filtered to one venue (or all). */
+export function numberedForVenue(
+  entries: readonly TimelineEntry[],
+  venue: string,
+  allLabel: string,
+): Array<{ entry: TimelineEntry; number: string }> {
+  return entries
+    .map((entry, index) => ({ entry, number: indexLabel(index) }))
+    .filter(({ entry }) => venue === allLabel || entry.location === venue);
+}
+
+function PublicationHeading({ entry }: { readonly entry: TimelineEntry }) {
+  const authors = splitAuthors(entry.company, greeting.title);
+  return (
+    <>
+      <SmartLink href={entry.company_url} className={styles.title}>
+        {entry.title}{" "}
+        <span className={`arrow ${styles.arrow}`} aria-hidden="true">
+          ↗
+        </span>
+      </SmartLink>
+      <p className={`muted ${styles.authors}`}>
+        {authors.before}
+        {authors.highlight && <strong>{authors.highlight}</strong>}
+        {authors.after}
+      </p>
+    </>
+  );
+}
+
 function Publication({ entry, number, delay }: PublicationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const panelId = useId();
-  const authors = splitAuthors(entry.company, greeting.title);
   return (
     <li
       className={`hover-row enter ${styles.item}`}
@@ -41,17 +70,7 @@ function Publication({ entry, number, delay }: PublicationProps) {
     >
       <span className={`mono ${styles.num}`}>{number}</span>
       <div className={styles.body}>
-        <SmartLink href={entry.company_url} className={styles.title}>
-          {entry.title}{" "}
-          <span className={`arrow ${styles.arrow}`} aria-hidden="true">
-            ↗
-          </span>
-        </SmartLink>
-        <p className={`muted ${styles.authors}`}>
-          {authors.before}
-          {authors.highlight && <strong>{authors.highlight}</strong>}
-          {authors.after}
-        </p>
+        <PublicationHeading entry={entry} />
         <div className={styles.meta}>
           <span className={styles.venue}>
             <img src={imageUrl(entry.logo_path)} alt="" loading="lazy" />
@@ -87,14 +106,7 @@ export function PublicationList({
     () => venueOptions(section.research, ui.allFilter),
     [section.research],
   );
-  const numbered = section.research.map((entry, index) => ({
-    entry,
-    number: indexLabel(index),
-  }));
-  const visible =
-    venue === ui.allFilter
-      ? numbered
-      : numbered.filter(({ entry }) => entry.location === venue);
+  const visible = numberedForVenue(section.research, venue, ui.allFilter);
 
   return (
     <section aria-label={section.title}>
