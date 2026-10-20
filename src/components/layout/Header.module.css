@@ -31,10 +31,21 @@
   font-size: 21px;
   font-weight: 700;
   letter-spacing: -0.035em;
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.4s var(--ease),
+    visibility 0.4s;
 }
 
 .logo:hover {
   text-decoration: none;
+}
+
+/* The home hero already shows the name; hide the header copy while it is on screen. */
+:global(html[data-hero-in-view="true"]) .logo {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
 }
 
 .links {

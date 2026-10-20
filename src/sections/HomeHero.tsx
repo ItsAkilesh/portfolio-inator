@@ -1,26 +1,65 @@
 /**
  * File: HomeHero.tsx
- * Purpose: Home page hero on the accent color: name sized to fit, summary, résumé link and social icons.
+ * Purpose: Home page hero on the accent color: name sized to fit, then summary, résumé link and
+ *          social icons stacked beneath it. Flags its visibility so the header can hide its logo.
  * Author: Akilesh
  * Date: 2026-10-20
  */
+import { useRef } from "react";
 import band from "../components/layout/PageBand.module.css";
 import { DotField } from "../components/ui/DotField";
-import { SmartLink } from "../components/ui/SmartLink";
 import { FitWord } from "../components/ui/FitWord";
+import { SmartLink } from "../components/ui/SmartLink";
+import { useInViewFlag } from "../hooks/useInViewFlag";
 import { BrandIcon } from "../icons/BrandIcon";
 import { splitName } from "../lib/text";
 import { greeting, settings, socialMediaLinks, ui } from "../portfolio";
 import styles from "./HomeHero.module.css";
 
 const SOCIAL_ICON_SIZE = 19;
-const FIRST_NAME_MAX_PX = 144;
-const REST_NAME_MAX_PX = 96;
+const FIRST_NAME_MAX_PX = 112;
+const REST_NAME_MAX_PX = 72;
+/** Read by Header.module.css to hide the header logo while the hero shows the name. */
+export const HERO_IN_VIEW_ATTRIBUTE = "data-hero-in-view";
+
+function HeroActions() {
+  return (
+    <div className={`enter ${styles.actions}`}>
+      <SmartLink href={greeting.resumeLink} className={styles.pill}>
+        {ui.resumeLabel}{" "}
+        <span className="arrow" aria-hidden="true">
+          ↗
+        </span>
+      </SmartLink>
+      <SmartLink href={greeting.connectLink} className={styles.ghost}>
+        {ui.connectLabel}{" "}
+        <span className="arrow" aria-hidden="true">
+          ↗
+        </span>
+      </SmartLink>
+      <div className={styles.socials}>
+        {socialMediaLinks.map((item) => (
+          <SmartLink
+            key={item.name}
+            href={item.link}
+            className={styles.social}
+            aria-label={item.name}
+            title={item.name}
+          >
+            <BrandIcon name={item.icon} size={SOCIAL_ICON_SIZE} />
+          </SmartLink>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function HomeHero() {
+  const sectionRef = useRef<HTMLElement>(null);
   const { first, rest } = splitName(greeting.title);
+  useInViewFlag(sectionRef, HERO_IN_VIEW_ATTRIBUTE);
   return (
-    <section className={band.band} aria-labelledby="hero-name">
+    <section ref={sectionRef} className={band.band} aria-labelledby="hero-name">
       {settings.showDotField && <DotField />}
       <div className={`wrap ${styles.inner}`}>
         <h1 id="hero-name" className={`display ${styles.name}`}>
@@ -37,30 +76,8 @@ export function HomeHero() {
             />
           )}
         </h1>
-        <div className={styles.footer}>
-          <p className={`enter ${styles.summary}`}>{greeting.subTitle}</p>
-          <div className={`enter ${styles.actions}`}>
-            <SmartLink href={greeting.resumeLink} className={styles.pill}>
-              {ui.resumeLabel}{" "}
-              <span className="arrow" aria-hidden="true">
-                ↗
-              </span>
-            </SmartLink>
-            <div className={styles.socials}>
-              {socialMediaLinks.map((item) => (
-                <SmartLink
-                  key={item.name}
-                  href={item.link}
-                  className={styles.social}
-                  aria-label={item.name}
-                  title={item.name}
-                >
-                  <BrandIcon name={item.icon} size={SOCIAL_ICON_SIZE} />
-                </SmartLink>
-              ))}
-            </div>
-          </div>
-        </div>
+        <p className={`enter ${styles.summary}`}>{greeting.subTitle}</p>
+        <HeroActions />
       </div>
     </section>
   );

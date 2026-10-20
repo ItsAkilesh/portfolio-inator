@@ -45,6 +45,9 @@ describe("portfolio config", () => {
 
   it("uses only safe link schemes", () => {
     for (const item of allLinks) expect(safeHref(item.link)).toBe(item.link);
+    const { connectLink, resumeLink } = portfolio.greeting;
+    for (const link of [connectLink, resumeLink])
+      expect(safeHref(link)).toBe(link);
   });
 
   it("points internal links and navigation at real routes", () => {

@@ -25,6 +25,8 @@ export interface Greeting {
   readonly subTitle: string;
   readonly resumeLink: string;
   readonly githubProfile: string;
+  /** Target of the secondary hero button, e.g. a LinkedIn profile. */
+  readonly connectLink: string;
 }
 
 export interface LinkItem {
@@ -122,6 +124,7 @@ export interface UiCopy {
   readonly skillsTitle: string;
   readonly toolsLabel: string;
   readonly resumeLabel: string;
+  readonly connectLabel: string;
   readonly moreProjectsLabel: string;
   readonly readSummary: string;
   readonly hideSummary: string;

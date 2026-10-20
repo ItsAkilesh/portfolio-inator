@@ -52,6 +52,7 @@ export const greeting: Greeting = {
   resumeLink:
     "https://drive.google.com/file/d/1_3rSBD241Xi988WnRWA9ICLh6wz4DqdB/view?usp=sharing",
   githubProfile: "https://github.com/itsakilesh",
+  connectLink: "https://www.linkedin.com/in/itsakilesh/",
 };
 
 export const socialMediaLinks: readonly LinkItem[] = [
@@ -97,7 +98,8 @@ export const navigation: readonly NavItem[] = [
 export const ui: UiCopy = {
   skillsTitle: "What I do",
   toolsLabel: "tools",
-  resumeLabel: "See my résumé",
+  resumeLabel: "See my resume",
+  connectLabel: "Connect with me",
   moreProjectsLabel: "More on GitHub",
   readSummary: "Read summary",
   hideSummary: "Hide summary",
