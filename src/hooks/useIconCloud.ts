@@ -1,13 +1,14 @@
 /**
  * File: useIconCloud.ts
- * Purpose: Animates an icon polyhedron: rotates lattice points, positions the icon chips and the SVG edges
- *          between neighbors. Writes to the DOM directly (no React re-render per frame), steers with the
+ * Purpose: Animates an icon polyhedron: rotates lattice points, positions the icon chips, the SVG edges
+ *          between neighbors and the shaded glass faces. Writes to the DOM directly (no React re-render per frame), steers with the
  *          pointer, pauses off-screen, and draws one still frame when motion is reduced.
  * Author: Akilesh
  * Date: 2026-10-20
  */
 import { useEffect, type RefObject } from "react";
 import { describeError, logger } from "../lib/logger";
+import { shadeFace } from "../lib/glassShading";
 import { project, rotate, type Point3, type Projected } from "../lib/sphere";
 
 const RADIUS_RATIO = 0.4;
@@ -23,6 +24,14 @@ const DEFAULT_FRAME_MS = 16;
 export const CLOUD_ITEM_ATTR = "data-cloud-item";
 export const CLOUD_EDGE_ATTR = "data-cloud-edge";
 export const CLOUD_ORIGIN_ATTR = "data-cloud-origin";
+export const CLOUD_FACE_ATTR = "data-cloud-face";
+
+/** Geometry of the polyhedron: vertices, neighbor edges and triangular faces (index triples). */
+export interface CloudMesh {
+  readonly points: readonly Point3[];
+  readonly edges: ReadonlyArray<readonly [number, number]>;
+  readonly faces: ReadonlyArray<readonly [number, number, number]>;
+}
 
 interface CloudState {
   angleX: number;
@@ -38,9 +47,9 @@ interface Scene {
   readonly container: HTMLElement;
   readonly items: readonly HTMLElement[];
   readonly lines: readonly SVGLineElement[];
+  readonly polygons: readonly SVGPolygonElement[];
   readonly origin: SVGGElement | null;
-  readonly points: readonly Point3[];
-  readonly edges: ReadonlyArray<readonly [number, number]>;
+  readonly mesh: CloudMesh;
 }
 
 type Cleanup = () => void;
@@ -66,7 +75,7 @@ function placeItems(scene: Scene, projected: readonly Projected[]): void {
 }
 
 function placeEdges(scene: Scene, projected: readonly Projected[]): void {
-  scene.edges.forEach(([from, to], index) => {
+  scene.mesh.edges.forEach(([from, to], index) => {
     const line = scene.lines[index];
     const a = projected[from];
     const b = projected[to];
@@ -82,13 +91,34 @@ function placeEdges(scene: Scene, projected: readonly Projected[]): void {
   });
 }
 
+const toPoints = (...vertices: Projected[]): string =>
+  vertices.map((v) => `${v.x.toFixed(1)},${v.y.toFixed(1)}`).join(" ");
+
+function placeFaces(
+  scene: Scene,
+  rotated: readonly Point3[],
+  projected: readonly Projected[],
+): void {
+  scene.mesh.faces.forEach(([a, b, c], index) => {
+    const polygon = scene.polygons[index];
+    const [ra, rb, rc] = [rotated[a], rotated[b], rotated[c]];
+    const [pa, pb, pc] = [projected[a], projected[b], projected[c]];
+    if (!polygon || !ra || !rb || !rc || !pa || !pb || !pc) return;
+    const shade = shadeFace(ra, rb, rc);
+    polygon.setAttribute("points", toPoints(pa, pb, pc));
+    polygon.setAttribute("fill-opacity", shade.opacity.toFixed(3));
+  });
+}
+
 function layout(scene: Scene, state: CloudState): void {
   const size = scene.container.clientWidth;
   const radius = size * RADIUS_RATIO;
-  const projected = scene.points.map((point) =>
-    project(rotate(point, state.angleX, state.angleY), radius),
+  const rotated = scene.mesh.points.map((point) =>
+    rotate(point, state.angleX, state.angleY),
   );
+  const projected = rotated.map((point) => project(point, radius));
   scene.origin?.setAttribute("transform", `translate(${size / 2} ${size / 2})`);
+  placeFaces(scene, rotated, projected);
   placeItems(scene, projected);
   placeEdges(scene, projected);
 }
@@ -155,37 +185,34 @@ function runCloud(scene: Scene, isAnimated: boolean): Cleanup {
   };
 }
 
-function collectScene(
-  container: HTMLElement,
-  points: readonly Point3[],
-  edges: ReadonlyArray<readonly [number, number]>,
-): Scene {
+function collectScene(container: HTMLElement, mesh: CloudMesh): Scene {
   return {
     container,
     items: [...container.querySelectorAll<HTMLElement>(`[${CLOUD_ITEM_ATTR}]`)],
     lines: [
       ...container.querySelectorAll<SVGLineElement>(`[${CLOUD_EDGE_ATTR}]`),
     ],
+    polygons: [
+      ...container.querySelectorAll<SVGPolygonElement>(`[${CLOUD_FACE_ATTR}]`),
+    ],
     origin: container.querySelector<SVGGElement>(`[${CLOUD_ORIGIN_ATTR}]`),
-    points,
-    edges,
+    mesh,
   };
 }
 
 export function useIconCloud(
   containerRef: RefObject<HTMLElement | null>,
-  points: readonly Point3[],
-  edges: ReadonlyArray<readonly [number, number]>,
+  mesh: CloudMesh,
   isAnimated: boolean,
 ): void {
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || points.length === 0) return undefined;
+    if (!container || mesh.points.length === 0) return undefined;
     try {
-      return runCloud(collectScene(container, points, edges), isAnimated);
+      return runCloud(collectScene(container, mesh), isAnimated);
     } catch (error) {
       logger.warn("iconCloud.start", describeError(error));
       return undefined;
     }
-  }, [containerRef, points, edges, isAnimated]);
+  }, [containerRef, mesh, isAnimated]);
 }

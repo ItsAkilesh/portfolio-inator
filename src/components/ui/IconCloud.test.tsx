@@ -6,7 +6,7 @@
  */
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { IconCloud, uniqueIcons } from "./IconCloud";
+import { buildMesh, IconCloud, uniqueIcons } from "./IconCloud";
 
 describe("uniqueIcons", () => {
   it("drops duplicates and keeps first-seen order", () => {
@@ -32,10 +32,26 @@ describe("IconCloud", () => {
     expect(cloud?.querySelectorAll("[data-cloud-edge]").length).toBeGreaterThan(
       0,
     );
+    expect(cloud?.querySelectorAll("[data-cloud-face]").length).toBe(
+      buildMesh(4).faces.length,
+    );
   });
   it("renders no vertices or edges without icons", () => {
     const { container } = render(<IconCloud icons={[]} />);
     expect(container.querySelectorAll("[data-cloud-item]")).toHaveLength(0);
     expect(container.querySelectorAll("[data-cloud-edge]")).toHaveLength(0);
+    expect(container.querySelectorAll("[data-cloud-face]")).toHaveLength(0);
+  });
+});
+
+describe("buildMesh", () => {
+  it("builds vertices, edges and faces for the given count", () => {
+    const mesh = buildMesh(34);
+    expect(mesh.points).toHaveLength(34);
+    expect(mesh.edges.length).toBeGreaterThan(34);
+    expect(mesh.faces.length).toBeGreaterThan(34);
+  });
+  it("is empty for zero vertices", () => {
+    expect(buildMesh(0)).toEqual({ points: [], edges: [], faces: [] });
   });
 });

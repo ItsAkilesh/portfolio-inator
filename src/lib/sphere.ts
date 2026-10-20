@@ -100,3 +100,31 @@ export function neighborEdges(
   });
   return edges;
 }
+
+/**
+ * Triangular faces of the mesh: every triple of mutually connected vertices.
+ * Each edge checks only its endpoints' neighbor lists (degree <= ~8), so the cost is O(edges).
+ */
+export function triangleFaces(
+  edges: ReadonlyArray<readonly [number, number]>,
+  count: number,
+): Array<[number, number, number]> {
+  const neighbors = Array.from({ length: count }, () => new Set<number>());
+  for (const [a, b] of edges) {
+    neighbors[a]?.add(b);
+    neighbors[b]?.add(a);
+  }
+  const seen = new Set<string>();
+  const faces: Array<[number, number, number]> = [];
+  for (const [a, b] of edges) {
+    for (const c of neighbors[a] ?? []) {
+      if (c === b || !neighbors[b]?.has(c)) continue;
+      const face = [a, b, c].sort((x, y) => x - y) as [number, number, number];
+      const key = face.join("-");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      faces.push(face);
+    }
+  }
+  return faces;
+}
