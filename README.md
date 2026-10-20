@@ -45,7 +45,7 @@ Everything is typed (`src/types/`), so a typo in a field name or icon key fails 
 Pick a palette in the Theme section:
 
 ```ts
-activePalette: "klein", // or "forest", "oxblood", "graphite"
+activePalette: "ink", // or "klein", "forest", "oxblood", "graphite"
 ```
 
 Make a new one from a single hue (OKLCH, 0 to 360):

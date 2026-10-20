@@ -12,7 +12,7 @@ import { DotField } from "../components/ui/DotField";
 import { FitWord } from "../components/ui/FitWord";
 import { IconCloud } from "../components/ui/IconCloud";
 import { SmartLink } from "../components/ui/SmartLink";
-import { useAccentUnderHeader, useInViewFlag } from "../hooks/useInViewFlag";
+import { useInViewFlag } from "../hooks/useInViewFlag";
 import { BrandIcon } from "../icons/BrandIcon";
 import { splitName } from "../lib/text";
 import { greeting, settings, skills, socialMediaLinks, ui } from "../portfolio";
@@ -66,7 +66,6 @@ export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const { first, rest } = splitName(greeting.title);
   useInViewFlag(sectionRef, HERO_IN_VIEW_ATTRIBUTE);
-  useAccentUnderHeader(sectionRef);
   return (
     <section ref={sectionRef} className={band.band} aria-labelledby="hero-name">
       {settings.showDotField && <DotField />}

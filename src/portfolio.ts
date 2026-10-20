@@ -124,8 +124,10 @@ export const theme: ThemeConfig = {
   defaultMode: "system",
   /** false hides the toggle and forces defaultMode for every visitor. */
   showThemeToggle: true,
-  activePalette: "klein",
+  activePalette: "ink",
   palettes: {
+    /** Deep ink navy: calm, low-saturation blue. */
+    ink: makePalette({ hue: 262, chroma: 0.07, lightness: 0.3 }),
     /** International Klein Blue. */
     klein: makePalette({ hue: 266 }),
     /** Deep racing green. */

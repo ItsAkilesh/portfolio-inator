@@ -11,11 +11,6 @@ import { describeError, logger } from "../lib/logger";
 /** Portion of the element that must remain visible for it to count as in view. */
 const VISIBLE_THRESHOLD = 0.15;
 
-/** Set while an accent band sits under the fixed header (header switches to light-on-accent). */
-export const ACCENT_UNDER_HEADER_ATTRIBUTE = "data-accent-under-header";
-/** Watches only a thin strip at the top of the viewport, where the header sits. */
-const HEADER_STRIP_MARGIN = "0px 0px -92% 0px";
-
 interface InViewOptions {
   readonly threshold?: number;
   readonly rootMargin?: string;
@@ -49,12 +44,4 @@ export function useInViewFlag(
       root.removeAttribute(attribute);
     };
   }, [ref, attribute, threshold, rootMargin]);
-}
-
-/** Flags when the referenced accent band is behind the fixed header. */
-export function useAccentUnderHeader(ref: RefObject<HTMLElement | null>): void {
-  useInViewFlag(ref, ACCENT_UNDER_HEADER_ATTRIBUTE, {
-    threshold: 0,
-    rootMargin: HEADER_STRIP_MARGIN,
-  });
 }

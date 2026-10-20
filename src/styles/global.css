@@ -6,17 +6,17 @@
  * Date: 2026-10-20
  */
 :root {
-  --bg: oklch(0.975 0.005 266);
-  --surface: oklch(0.945 0.01 266);
-  --ink: oklch(0.2 0.03 266);
-  --ink-muted: oklch(0.44 0.03 266);
-  --line: oklch(0.2 0.03 266 / 0.13);
-  --accent: oklch(0.42 0.23 266);
-  --on-accent: oklch(0.975 0.01 266);
-  --on-accent-muted: oklch(0.975 0.01 266 / 0.74);
-  --on-accent-line: oklch(0.975 0.01 266 / 0.3);
-  --link: oklch(0.45 0.2 266);
-  --tint: oklch(0.42 0.23 266 / 0.07);
+  --bg: oklch(0.975 0.005 262);
+  --surface: oklch(0.945 0.01 262);
+  --ink: oklch(0.2 0.03 262);
+  --ink-muted: oklch(0.44 0.03 262);
+  --line: oklch(0.2 0.03 262 / 0.13);
+  --accent: oklch(0.3 0.07 262);
+  --on-accent: oklch(0.975 0.01 262);
+  --on-accent-muted: oklch(0.975 0.01 262 / 0.74);
+  --on-accent-line: oklch(0.975 0.01 262 / 0.3);
+  --link: oklch(0.45 0.07 262);
+  --tint: oklch(0.3 0.07 262 / 0.07);
   --font-display: system-ui, sans-serif;
   --font-body: system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;

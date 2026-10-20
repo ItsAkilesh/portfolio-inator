@@ -12,26 +12,6 @@
   animation: cloud-in 1.4s var(--ease) 0.3s both;
 }
 
-/* Frosted glass sphere: blurs the dot field behind it, with a soft top-left highlight and rim light. */
-.glass {
-  position: absolute;
-  inset: 8%;
-  border-radius: 50%;
-  -webkit-backdrop-filter: blur(4px) saturate(140%);
-  backdrop-filter: blur(4px) saturate(140%);
-  background:
-    radial-gradient(circle at 30% 24%, oklch(1 0 0 / 0.22), transparent 38%),
-    radial-gradient(circle at 72% 82%, oklch(1 0 0 / 0.08), transparent 45%),
-    oklch(1 0 0 / 0.03);
-  box-shadow:
-    inset 0 1px 0 oklch(1 0 0 / 0.35),
-    inset 0 0 48px oklch(1 0 0 / 0.08),
-    inset -24px -32px 64px oklch(0 0 0 / 0.14),
-    0 30px 80px oklch(0 0 0 / 0.18);
-  border: 1px solid var(--on-accent-line);
-  pointer-events: none;
-}
-
 .faces {
   position: absolute;
   inset: 0;

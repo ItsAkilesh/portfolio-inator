@@ -1,7 +1,7 @@
 /**
  * File: IconCloud.tsx
  * Purpose: Decorative rotating glass polyhedron of brand icons: one vertex per icon, white edges between
- *          neighbors, frosted reflective faces, inside a frosted glass sphere. Receives icon keys, so
+ *          neighbors and frosted reflective faces. Receives icon keys, so
  *          any section can reuse it; the home hero feeds it every tool from the "What I do" groups.
  * Author: Akilesh
  * Date: 2026-10-20
@@ -82,7 +82,6 @@ export function IconCloud({ icons, className }: IconCloudProps) {
       className={`${styles.cloud} ${className ?? ""}`}
       aria-hidden="true"
     >
-      {keys.length > 0 && <div className={styles.glass} />}
       <FaceLayer mesh={mesh} />
       <EdgeLayer mesh={mesh} />
       {keys.map((key) => (

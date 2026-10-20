@@ -4,8 +4,7 @@
  * Author: Akilesh
  * Date: 2026-10-20
  */
-import { useRef, type ReactNode } from "react";
-import { useAccentUnderHeader } from "../../hooks/useInViewFlag";
+import type { ReactNode } from "react";
 import { imageUrl } from "../../lib/assets";
 import { settings } from "../../portfolio";
 import { DotField } from "../ui/DotField";
@@ -19,10 +18,8 @@ interface PageBandProps {
 }
 
 export function PageBand({ title, kicker, description, image }: PageBandProps) {
-  const bandRef = useRef<HTMLElement>(null);
-  useAccentUnderHeader(bandRef);
   return (
-    <section ref={bandRef} className={styles.band} aria-labelledby="page-title">
+    <section className={styles.band} aria-labelledby="page-title">
       {settings.showDotField && <DotField />}
       <div className={`wrap ${styles.inner}`}>
         <div className={styles.text}>
