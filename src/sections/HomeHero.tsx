@@ -1,8 +1,8 @@
 /**
  * File: HomeHero.tsx
  * Purpose: Home page hero on the accent color: name, summary, call-to-action buttons and social icons
- *          on the left; a rotating cloud of skill icons on the right. Flags its visibility so the
- *          header can hide its logo.
+ *          on the left; a rotating cloud of skill icons with research-profile cards below it on the
+ *          right. Flags its visibility so the header can hide its logo.
  * Author: Akilesh
  * Date: 2026-10-20
  */
@@ -13,6 +13,7 @@ import { FitWord } from "../components/ui/FitWord";
 import { IconCloud } from "../components/ui/IconCloud";
 import { SmartLink } from "../components/ui/SmartLink";
 import { useInViewFlag } from "../hooks/useInViewFlag";
+import { ResearchCards } from "./ResearchCards";
 import { BrandIcon } from "../icons/BrandIcon";
 import { splitName } from "../lib/text";
 import { greeting, settings, skills, socialMediaLinks, ui } from "../portfolio";
@@ -88,7 +89,12 @@ export function HomeHero() {
           <p className={`enter ${styles.summary}`}>{greeting.subTitle}</p>
           <HeroActions />
         </div>
-        <IconCloud icons={SKILL_ICONS} className={styles.cloud} />
+        <div className={styles.aside}>
+          <IconCloud icons={SKILL_ICONS} className={styles.cloud} />
+          {settings.showResearchCards && (
+            <ResearchCards className={`enter ${styles.cards}`} />
+          )}
+        </div>
       </div>
     </section>
   );

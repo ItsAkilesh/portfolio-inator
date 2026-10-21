@@ -35,6 +35,7 @@ import type { ThemeConfig } from "./types/theme";
 export const settings: Settings = {
   isSplash: true,
   showDotField: true,
+  showResearchCards: true,
 };
 
 export const seo: Seo = {
@@ -107,6 +108,14 @@ export const ui: UiCopy = {
   footer: "Made by Akilesh Srinivasa Kumar",
   notFoundTitle: "Lost?",
   notFoundText: "This page does not exist. Try one of these instead.",
+  researchCards: {
+    scholar: "Google Scholar",
+    researchGate: "ResearchGate",
+    citations: "Citations",
+    hIndex: "h-index",
+    i10Index: "i10-index",
+    interestScore: "Interest Score",
+  },
 };
 
 /** Leave an ID empty to disable that provider. */
@@ -530,6 +539,7 @@ export const research: PageHeader & {
   subtitle: "Patents and Publications",
   description:
     "I've explored research directions in areas such as artificial intelligence, security, and healthcare, with outcomes shared through peer-reviewed publications and a granted design patent.",
+  /* Shown on the Research page and the home hero cards. Update these by hand. */
   scholarStats: {
     citations: 60,
     hIndex: 3,

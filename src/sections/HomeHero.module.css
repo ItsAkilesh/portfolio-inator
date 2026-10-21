@@ -22,8 +22,20 @@
   align-items: flex-start;
 }
 
+.aside {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(16px, 2vw, 28px);
+}
+
 .cloud {
   display: none;
+}
+
+.cards {
+  animation-delay: 0.4s;
 }
 
 @media (min-width: 960px) {
@@ -32,10 +44,18 @@
     gap: clamp(32px, 4vw, 72px);
   }
 
-  .cloud {
-    display: block;
+  .aside {
+    width: 100%;
     max-width: 520px;
     justify-self: end;
+    /* Pulls the polyhedron up so the cards below it stay in the first screen. */
+    margin-top: clamp(-48px, -3vw, -16px);
+  }
+
+  .cloud {
+    display: block;
+    width: 88%;
+    align-self: center;
   }
 }
 

@@ -11,6 +11,8 @@ export interface Settings {
   readonly isSplash: boolean;
   /** Animated dot field behind page headers. */
   readonly showDotField: boolean;
+  /** Google Scholar and ResearchGate cards under the icon cloud in the home hero. */
+  readonly showResearchCards: boolean;
 }
 
 export interface Seo {
@@ -132,4 +134,15 @@ export interface UiCopy {
   readonly footer: string;
   readonly notFoundTitle: string;
   readonly notFoundText: string;
+  readonly researchCards: ResearchCardLabels;
+}
+
+/** Labels on the home hero research-profile cards. */
+export interface ResearchCardLabels {
+  readonly scholar: string;
+  readonly researchGate: string;
+  readonly citations: string;
+  readonly hIndex: string;
+  readonly i10Index: string;
+  readonly interestScore: string;
 }
