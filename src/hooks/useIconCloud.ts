@@ -125,9 +125,11 @@ function placeFaces(
     const [pa, pb, pc] = [projected[a], projected[b], projected[c]];
     if (!el || !ra || !rb || !rc || !pa || !pb || !pc) return;
     const shade = shadeFace(ra, rb, rc);
-    /* Back faces are skipped entirely: hidden elements cost no blur. */
-    el.style.visibility = shade.isFront ? "visible" : "hidden";
-    if (!shade.isFront) return;
+    /*
+     * Back faces stay visible as a cheap tint (no blur) so gaps between front faces never
+     * expose the dot field; only front faces pay for the backdrop blur.
+     */
+    el.dataset.side = shade.isFront ? "front" : "back";
     placeFace(el, center, pa, pb, pc);
     el.style.setProperty("--glint", shade.opacity.toFixed(3));
   });

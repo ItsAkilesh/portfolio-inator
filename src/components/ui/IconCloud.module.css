@@ -9,6 +9,10 @@
   width: 100%;
   aspect-ratio: 1;
   touch-action: pan-y;
+  /*
+   * Entrance uses transform only. Opacity, filter or scale animations here would make this
+   * element a backdrop root, and the faces' backdrop blur could no longer reach the dot field.
+   */
   animation: cloud-in 1.4s var(--ease) 0.3s both;
 }
 
@@ -26,15 +30,21 @@
 .face {
   --glint: 0;
   position: absolute;
-  visibility: hidden;
-  -webkit-backdrop-filter: blur(6px) saturate(150%);
-  backdrop-filter: blur(6px) saturate(150%);
-  background: linear-gradient(
-    135deg,
-    oklch(1 0 0 / calc(0.06 + var(--glint) * 0.9)),
-    oklch(1 0 0 / calc(0.02 + var(--glint) * 0.25)) 60%,
-    oklch(1 0 0 / 0.01)
-  );
+  background: color-mix(in oklch, var(--accent) 80%, transparent);
+}
+
+/* Front faces: heavy blur and a strong accent tint hide the dot field; the glint adds reflections. */
+.face[data-side="front"] {
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+  backdrop-filter: blur(32px) saturate(140%);
+  background:
+    linear-gradient(
+      135deg,
+      oklch(1 0 0 / calc(0.06 + var(--glint) * 0.9)),
+      oklch(1 0 0 / calc(0.02 + var(--glint) * 0.25)) 60%,
+      oklch(1 0 0 / 0.01)
+    ),
+    color-mix(in oklch, var(--accent) 75%, transparent);
 }
 
 .mesh {
@@ -79,11 +89,9 @@
 
 @keyframes cloud-in {
   from {
-    opacity: 0;
-    scale: 0.85;
+    transform: translateY(24px);
   }
   to {
-    opacity: 1;
-    scale: 1;
+    transform: none;
   }
 }
