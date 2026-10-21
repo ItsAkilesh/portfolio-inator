@@ -7,7 +7,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import { contactPageData, socialMediaLinks } from "../portfolio";
+import { socialLinks } from "../portfolio";
 import { ContactPanel, contactFitChars } from "./ContactPanel";
 
 describe("contactFitChars", () => {
@@ -22,14 +22,16 @@ describe("contactFitChars", () => {
   });
 });
 
+const EMAIL = "someone@example.com";
+
 describe("ContactPanel", () => {
   it("links the email, the phone and every social profile", () => {
     render(
       <MemoryRouter>
-        <ContactPanel />
+        <ContactPanel email={EMAIL} phone="+1 555 000 0000" />
       </MemoryRouter>,
     );
-    const { title: email } = contactPageData.phoneSection;
+    const email = EMAIL;
     expect(
       screen
         .getByRole("link", { name: new RegExp(email) })
@@ -37,6 +39,6 @@ describe("ContactPanel", () => {
     ).toBe(`mailto:${email}`);
     expect(
       screen.getByRole("list", { name: "Social links" }).children,
-    ).toHaveLength(socialMediaLinks.length);
+    ).toHaveLength(socialLinks.length);
   });
 });

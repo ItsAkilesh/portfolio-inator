@@ -4,7 +4,7 @@
  *          on the left; a rotating cloud of skill icons with research-profile cards below it on the
  *          right. Flags its visibility so the header can hide its logo.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
 import { useRef } from "react";
 import band from "../components/layout/PageBand.module.css";
@@ -16,7 +16,7 @@ import { useInViewFlag } from "../hooks/useInViewFlag";
 import { ResearchCards } from "./ResearchCards";
 import { BrandIcon } from "../icons/BrandIcon";
 import { splitName } from "../lib/text";
-import { greeting, settings, skills, socialMediaLinks, ui } from "../portfolio";
+import { profile, settings, skills, socialLinks } from "../portfolio";
 import styles from "./HomeHero.module.css";
 
 const SOCIAL_ICON_SIZE = 19;
@@ -25,7 +25,7 @@ const REST_NAME_MAX_PX = 72;
 /** Read by Header.module.css to hide the header logo while the hero shows the name. */
 export const HERO_IN_VIEW_ATTRIBUTE = "data-hero-in-view";
 
-const SKILL_ICONS = skills.data.flatMap((group) =>
+const SKILL_ICONS = skills.flatMap((group) =>
   group.softwareSkills.map((tool) => tool.icon),
 );
 
@@ -33,24 +33,24 @@ function HeroActions() {
   return (
     <div className={`enter ${styles.actions}`}>
       <div className={styles.buttons}>
-        <SmartLink href={greeting.resumeLink} className={styles.pill}>
-          {ui.resumeLabel}{" "}
+        <SmartLink href={profile.resumeLink} className={styles.pill}>
+          {profile.resumeLabel}{" "}
           <span className="arrow" aria-hidden="true">
             ↗
           </span>
         </SmartLink>
         <SmartLink
-          href={greeting.connectLink}
+          href={profile.connectLink}
           className={`frost ${styles.ghost}`}
         >
-          {ui.connectLabel}{" "}
+          {profile.connectLabel}{" "}
           <span className="arrow" aria-hidden="true">
             ↗
           </span>
         </SmartLink>
       </div>
       <div className={styles.socials}>
-        {socialMediaLinks.map((item) => (
+        {socialLinks.map((item) => (
           <SmartLink
             key={item.name}
             href={item.link}
@@ -66,9 +66,14 @@ function HeroActions() {
   );
 }
 
-export function HomeHero() {
+interface HomeHeroProps {
+  /** Google Scholar and ResearchGate cards under the icon cloud. */
+  readonly showResearchCards: boolean;
+}
+
+export function HomeHero({ showResearchCards }: HomeHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { first, rest } = splitName(greeting.title);
+  const { first, rest } = splitName(profile.title);
   useInViewFlag(sectionRef, HERO_IN_VIEW_ATTRIBUTE);
   return (
     <section ref={sectionRef} className={band.band} aria-labelledby="hero-name">
@@ -89,12 +94,12 @@ export function HomeHero() {
               />
             )}
           </h1>
-          <p className={`enter ${styles.summary}`}>{greeting.subTitle}</p>
+          <p className={`enter ${styles.summary}`}>{profile.subTitle}</p>
           <HeroActions />
         </div>
         <div className={styles.aside}>
           <IconCloud icons={SKILL_ICONS} className={styles.cloud} />
-          {settings.showResearchCards && (
+          {showResearchCards && (
             <ResearchCards className={`enter ${styles.cards}`} />
           )}
         </div>

@@ -6,7 +6,7 @@
  */
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { research, ui } from "../portfolio";
+import { researchProfiles, ui } from "../portfolio";
 import { profileCards, ResearchCards } from "./ResearchCards";
 
 describe("profileCards", () => {
@@ -20,9 +20,9 @@ describe("profileCards", () => {
   });
   it("uses the merged config numbers", () => {
     const [scholar, gate] = profileCards();
-    expect(scholar?.stats[0]?.value).toBe(research.scholarStats.citations);
+    expect(scholar?.stats[0]?.value).toBe(researchProfiles.scholar.citations);
     expect(gate?.stats[0]?.value).toBe(
-      research.researchGateStats.interestScore,
+      researchProfiles.researchGate.interestScore,
     );
   });
 });
@@ -36,16 +36,18 @@ describe("ResearchCards", () => {
     const gate = screen.getByRole("link", {
       name: new RegExp(ui.researchCards.researchGate),
     });
-    expect(scholar.getAttribute("href")).toBe(research.scholarStats.profileUrl);
+    expect(scholar.getAttribute("href")).toBe(
+      researchProfiles.scholar.profileUrl,
+    );
     expect(gate.getAttribute("href")).toBe(
-      research.researchGateStats.profileUrl,
+      researchProfiles.researchGate.profileUrl,
     );
   });
   it("shows labels and values", () => {
     render(<ResearchCards />);
     expect(screen.getAllByText(ui.researchCards.citations)).toHaveLength(2);
     expect(
-      screen.getByText(String(research.researchGateStats.interestScore)),
+      screen.getByText(String(researchProfiles.researchGate.interestScore)),
     ).toBeTruthy();
   });
 });

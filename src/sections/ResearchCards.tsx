@@ -3,12 +3,12 @@
  * Purpose: Google Scholar and ResearchGate profile cards (logo, name, three headline numbers), each
  *          linking to the profile. Numbers come from portfolio.ts, refreshed at dev/build time.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
 import { SmartLink } from "../components/ui/SmartLink";
 import type { IconKey } from "../icons/registry";
 import { BrandIcon } from "../icons/BrandIcon";
-import { research, ui } from "../portfolio";
+import { researchProfiles, ui } from "../portfolio";
 import styles from "./ResearchCards.module.css";
 
 const LOGO_SIZE = 18;
@@ -27,7 +27,7 @@ interface ProfileCard {
 
 /** Builds the two cards from config; exported for tests. */
 export function profileCards(): readonly ProfileCard[] {
-  const { scholarStats: scholar, researchGateStats: gate } = research;
+  const { scholar, researchGate: gate } = researchProfiles;
   const labels = ui.researchCards;
   return [
     {

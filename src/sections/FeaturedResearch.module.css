@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: clamp(64px, 8vw, 112px);
 }
 
 .grid {

@@ -2,12 +2,12 @@
  * File: SkillsShowcase.tsx
  * Purpose: "What I do": every skill group gets its own block, alternating text and tool grid left and right.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
 import { useId } from "react";
 import { BrandIcon, brandStyle } from "../icons/BrandIcon";
 import { stripLeadingSymbols } from "../lib/text";
-import { skills, ui } from "../portfolio";
+import { skills } from "../portfolio";
 import type { SkillGroup } from "../types/portfolio";
 import styles from "./SkillsShowcase.module.css";
 
@@ -61,16 +61,16 @@ function SkillBlock({ group, index }: SkillBlockProps) {
   );
 }
 
-export function SkillsShowcase() {
+export function SkillsShowcase({ title }: { readonly title: string }) {
   const titleId = useId();
   return (
     <section className={`wrap ${styles.section}`} aria-labelledby={titleId}>
       <div className={styles.head}>
         <h2 id={titleId} className={`display ${styles.title}`}>
-          {ui.skillsTitle}
+          {title}
         </h2>
       </div>
-      {skills.data.map((group, index) => (
+      {skills.map((group, index) => (
         <SkillBlock key={group.title} group={group} index={index} />
       ))}
     </section>

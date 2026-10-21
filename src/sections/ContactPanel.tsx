@@ -7,7 +7,7 @@
  */
 import type { CSSProperties } from "react";
 import { LinkGrid } from "../components/ui/LinkGrid";
-import { contactPageData, socialMediaLinks } from "../portfolio";
+import { socialLinks } from "../portfolio";
 import styles from "./ContactPanel.module.css";
 
 const NON_DIGITS = /[^\d+]/g;
@@ -18,8 +18,12 @@ const ARROW_CHARS = 2;
 export const contactFitChars = (email: string, phone: string): number =>
   Math.max(email.length + ARROW_CHARS, phone.length, 1);
 
-export function ContactPanel() {
-  const { title: email, subtitle: phone } = contactPageData.phoneSection;
+interface ContactPanelProps {
+  readonly email: string;
+  readonly phone: string;
+}
+
+export function ContactPanel({ email, phone }: ContactPanelProps) {
   const fitStyle = {
     "--fit-chars": contactFitChars(email, phone),
   } as CSSProperties;
@@ -39,7 +43,7 @@ export function ContactPanel() {
           {phone}
         </a>
       </div>
-      <LinkGrid items={socialMediaLinks} label="Social links" />
+      <LinkGrid items={socialLinks} label="Social links" />
     </div>
   );
 }

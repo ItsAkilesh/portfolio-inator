@@ -3,7 +3,7 @@
  * Purpose: Filterable bibliography for "list" research sections: venue filter, highlighted author,
  *          and an expandable summary per entry.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
 import { useId, useMemo, useState } from "react";
 import { Expander } from "../components/ui/Expander";
@@ -11,8 +11,8 @@ import { SegmentedControl } from "../components/ui/SegmentedControl";
 import { SmartLink } from "../components/ui/SmartLink";
 import { imageUrl } from "../lib/assets";
 import { indexLabel, splitAuthors, staggerDelay } from "../lib/text";
-import { greeting, ui } from "../portfolio";
-import type { ResearchSection, TimelineEntry } from "../types/portfolio";
+import { profile, ui } from "../portfolio";
+import type { TimelineEntry } from "../types/portfolio";
 import lists from "./Lists.module.css";
 import styles from "./PublicationList.module.css";
 
@@ -41,7 +41,7 @@ export function numberedForVenue(
 }
 
 function PublicationHeading({ entry }: { readonly entry: TimelineEntry }) {
-  const authors = splitAuthors(entry.company, greeting.title);
+  const authors = splitAuthors(entry.company, profile.title);
   return (
     <>
       <SmartLink href={entry.company_url} className={styles.title}>
@@ -94,24 +94,22 @@ function Publication({ entry, delay }: PublicationProps) {
   );
 }
 
-export function PublicationList({
-  section,
-}: {
-  readonly section: ResearchSection;
-}) {
+interface PublicationListProps {
+  readonly title: string;
+  readonly entries: readonly TimelineEntry[];
+}
+
+export function PublicationList({ title, entries }: PublicationListProps) {
   const [venue, setVenue] = useState(ui.allFilter);
-  const options = useMemo(
-    () => venueOptions(section.research, ui.allFilter),
-    [section.research],
-  );
-  const visible = numberedForVenue(section.research, venue, ui.allFilter);
+  const options = useMemo(() => venueOptions(entries, ui.allFilter), [entries]);
+  const visible = numberedForVenue(entries, venue, ui.allFilter);
 
   return (
-    <section aria-label={section.title}>
+    <section aria-label={title}>
       <div className={lists.toolbar}>
-        <h2 className="section-title">{section.title}</h2>
+        <h2 className="section-title">{title}</h2>
         <SegmentedControl
-          label={`Filter ${section.title}`}
+          label={`Filter ${title}`}
           options={options.map((value) => ({ value, label: value }))}
           value={venue}
           onChange={setVenue}

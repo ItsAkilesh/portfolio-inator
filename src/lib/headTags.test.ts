@@ -23,6 +23,8 @@ const SEO: Seo = {
   favicon: "icons/me.png",
   themeColor: "#112233",
   social: {
+    title: "",
+    description: "",
     image: "icons/me.png",
     imageAlt: "Jane",
     twitterCard: "summary",
@@ -101,7 +103,10 @@ describe("personJsonLd", () => {
   it("is empty when disabled", () => {
     expect(
       personJsonLd(
-        { ...SEO, structuredData: { isEnabled: false, jobTitle: "" } },
+        {
+          ...SEO,
+          structuredData: { isEnabled: false, jobTitle: "", worksFor: "" },
+        },
         [],
       ),
     ).toBe("");

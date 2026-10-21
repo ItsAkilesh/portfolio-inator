@@ -1,13 +1,13 @@
 /**
  * File: FeaturedResearch.tsx
- * Purpose: Large blocks for "featured" research sections such as patents.
+ * Purpose: Large cards for featured entries such as patents.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
 import { SmartLink } from "../components/ui/SmartLink";
 import { imageUrl } from "../lib/assets";
 import { staggerDelay } from "../lib/text";
-import type { ResearchSection, TimelineEntry } from "../types/portfolio";
+import type { TimelineEntry } from "../types/portfolio";
 import styles from "./FeaturedResearch.module.css";
 
 function FeaturedCard({
@@ -48,16 +48,17 @@ function FeaturedCard({
   );
 }
 
-export function FeaturedResearch({
-  section,
-}: {
-  readonly section: ResearchSection;
-}) {
+interface FeaturedResearchProps {
+  readonly title: string;
+  readonly entries: readonly TimelineEntry[];
+}
+
+export function FeaturedResearch({ title, entries }: FeaturedResearchProps) {
   return (
-    <section className={styles.section} aria-label={section.title}>
-      <h2 className="section-title">{section.title}</h2>
+    <section className={styles.section} aria-label={title}>
+      <h2 className="section-title">{title}</h2>
       <div className={styles.grid}>
-        {section.research.map((item, index) => (
+        {entries.map((item, index) => (
           <FeaturedCard key={item.title} item={item} index={index} />
         ))}
       </div>

@@ -2,12 +2,12 @@
  * File: Header.tsx
  * Purpose: Sticky site header: logo, navigation from config, and the light/dark toggle.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
 import { useEffect, useRef, type RefObject } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { UiIcon } from "../../icons/UiIcon";
-import { greeting, navigation } from "../../portfolio";
+import { navigation, profile } from "../../portfolio";
 import { useTheme } from "../../theme/themeContext";
 import styles from "./Header.module.css";
 
@@ -64,7 +64,7 @@ export function Header() {
     <header ref={headerRef} className={styles.header}>
       <nav aria-label="Primary" className={`wrap ${styles.nav}`}>
         <Link to={HOME_PATH} className={`display ${styles.logo}`}>
-          {greeting.logo_name}
+          {profile.logo_name}
         </Link>
         <div className={styles.links}>
           <NavLinks />

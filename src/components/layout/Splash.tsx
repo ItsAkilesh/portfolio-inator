@@ -2,12 +2,12 @@
  * File: Splash.tsx
  * Purpose: Name intro shown once per browser session when settings.isSplash is on.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
 import { useState } from "react";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { readStored, writeStored } from "../../lib/storage";
-import { greeting, settings } from "../../portfolio";
+import { profile, settings } from "../../portfolio";
 import styles from "./Splash.module.css";
 
 const SEEN_KEY = "portfolio.splashSeen";
@@ -33,7 +33,7 @@ export function Splash() {
         event.target === event.currentTarget && finish()
       }
     >
-      <span className={`display ${styles.name}`}>{greeting.logo_name}</span>
+      <span className={`display ${styles.name}`}>{profile.logo_name}</span>
     </div>
   );
 }
