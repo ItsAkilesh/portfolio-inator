@@ -13,7 +13,7 @@
    * Entrance uses transform only. Opacity, filter or scale animations here would make this
    * element a backdrop root, and the faces' backdrop blur could no longer reach the dot field.
    */
-  animation: cloud-in 1.4s var(--ease) 0.3s both;
+  animation: cloud-in 1.4s var(--ease) 0.3s backwards;
 }
 
 .faces {
