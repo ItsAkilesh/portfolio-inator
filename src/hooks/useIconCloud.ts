@@ -8,10 +8,10 @@
  */
 import { useEffect, type RefObject } from "react";
 import { describeError, logger } from "../lib/logger";
+import { cloudRadius } from "../lib/cloudSizing";
 import { shadeFace } from "../lib/glassShading";
 import { project, rotate, type Point3, type Projected } from "../lib/sphere";
 
-const RADIUS_RATIO = 0.4;
 const BASE_SPEED_X = 0.00012;
 const BASE_SPEED_Y = 0.00028;
 const STEER_SPEED = 0.0006;
@@ -137,7 +137,7 @@ function placeFaces(
 
 function layout(scene: Scene, state: CloudState): void {
   const size = scene.container.clientWidth;
-  const radius = size * RADIUS_RATIO;
+  const radius = cloudRadius(size, scene.mesh.points.length);
   const rotated = scene.mesh.points.map((point) =>
     rotate(point, state.angleX, state.angleY),
   );

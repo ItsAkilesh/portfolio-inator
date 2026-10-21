@@ -6,7 +6,7 @@
  * Author: Akilesh
  * Date: 2026-10-20
  */
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, type CSSProperties } from "react";
 import {
   CLOUD_EDGE_ATTR,
   CLOUD_FACE_ATTR,
@@ -17,6 +17,7 @@ import {
 } from "../../hooks/useIconCloud";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { BrandIcon } from "../../icons/BrandIcon";
+import { discSize, iconSize } from "../../lib/cloudSizing";
 import type { IconKey } from "../../icons/registry";
 import {
   fibonacciSphere,
@@ -24,8 +25,6 @@ import {
   triangleFaces,
 } from "../../lib/sphere";
 import styles from "./IconCloud.module.css";
-
-const ICON_SIZE = 24;
 
 interface IconCloudProps {
   readonly icons: readonly IconKey[];
@@ -76,17 +75,19 @@ export function IconCloud({ icons, className }: IconCloudProps) {
   const keys = useMemo(() => uniqueIcons(icons), [icons]);
   const mesh = useMemo(() => buildMesh(keys.length), [keys.length]);
   useIconCloud(containerRef, mesh, !isReduced);
+  const discStyle = { "--disc": `${discSize(keys.length)}px` } as CSSProperties;
   return (
     <div
       ref={containerRef}
       className={`${styles.cloud} ${className ?? ""}`}
+      style={discStyle}
       aria-hidden="true"
     >
       <FaceLayer mesh={mesh} />
       <EdgeLayer mesh={mesh} />
       {keys.map((key) => (
         <span key={key} className={styles.item} {...{ [CLOUD_ITEM_ATTR]: "" }}>
-          <BrandIcon name={key} size={ICON_SIZE} />
+          <BrandIcon name={key} size={iconSize(keys.length)} />
         </span>
       ))}
     </div>

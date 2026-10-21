@@ -68,9 +68,10 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 48px;
-  height: 48px;
-  margin: -24px 0 0 -24px;
+  /* --disc is set from the icon count by IconCloud.tsx. */
+  width: var(--disc, 48px);
+  height: var(--disc, 48px);
+  margin: calc(var(--disc, 48px) / -2) 0 0 calc(var(--disc, 48px) / -2);
   display: flex;
   align-items: center;
   justify-content: center;
