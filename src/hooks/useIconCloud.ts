@@ -25,6 +25,8 @@ export const CLOUD_ITEM_ATTR = "data-cloud-item";
 export const CLOUD_EDGE_ATTR = "data-cloud-edge";
 export const CLOUD_ORIGIN_ATTR = "data-cloud-origin";
 export const CLOUD_FACE_ATTR = "data-cloud-face";
+/** CSS variable the hook sets to the polyhedron's on-screen diameter. */
+const CLOUD_DIAMETER_VAR = "--cloud-d";
 
 /** Geometry of the polyhedron: vertices, neighbor edges and triangular faces (index triples). */
 export interface CloudMesh {
@@ -47,7 +49,7 @@ interface Scene {
   readonly container: HTMLElement;
   readonly items: readonly HTMLElement[];
   readonly lines: readonly SVGLineElement[];
-  readonly faceEls: readonly HTMLElement[];
+  readonly faceEls: readonly SVGPolygonElement[];
   readonly origin: SVGGElement | null;
   readonly mesh: CloudMesh;
 }
@@ -91,33 +93,14 @@ function placeEdges(scene: Scene, projected: readonly Projected[]): void {
   });
 }
 
-/**
- * Positions one frosted face: a box around the triangle, clipped to the triangle, so the
- * backdrop blur only covers the facet. Coordinates are relative to the container center.
- */
-function placeFace(
-  el: HTMLElement,
-  center: number,
-  a: Projected,
-  b: Projected,
-  c: Projected,
-): void {
-  const left = Math.min(a.x, b.x, c.x);
-  const top = Math.min(a.y, b.y, c.y);
-  const corner = (p: Projected) =>
-    `${(p.x - left).toFixed(1)}px ${(p.y - top).toFixed(1)}px`;
-  el.style.left = `${(center + left).toFixed(1)}px`;
-  el.style.top = `${(center + top).toFixed(1)}px`;
-  el.style.width = `${(Math.max(a.x, b.x, c.x) - left).toFixed(1)}px`;
-  el.style.height = `${(Math.max(a.y, b.y, c.y) - top).toFixed(1)}px`;
-  el.style.clipPath = `polygon(${corner(a)}, ${corner(b)}, ${corner(c)})`;
-}
+/** Corner list for one face polygon; coordinates are relative to the container center. */
+const facePoints = (a: Projected, b: Projected, c: Projected): string =>
+  [a, b, c].map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
 
 function placeFaces(
   scene: Scene,
   rotated: readonly Point3[],
   projected: readonly Projected[],
-  center: number,
 ): void {
   scene.mesh.faces.forEach(([a, b, c], index) => {
     const el = scene.faceEls[index];
@@ -125,12 +108,8 @@ function placeFaces(
     const [pa, pb, pc] = [projected[a], projected[b], projected[c]];
     if (!el || !ra || !rb || !rc || !pa || !pb || !pc) return;
     const shade = shadeFace(ra, rb, rc);
-    /*
-     * Back faces stay visible as a cheap tint (no blur) so gaps between front faces never
-     * expose the dot field; only front faces pay for the backdrop blur.
-     */
     el.dataset.side = shade.isFront ? "front" : "back";
-    placeFace(el, center, pa, pb, pc);
+    el.setAttribute("points", facePoints(pa, pb, pc));
     el.style.setProperty("--glint", shade.opacity.toFixed(3));
   });
 }
@@ -143,7 +122,12 @@ function layout(scene: Scene, state: CloudState): void {
   );
   const projected = rotated.map((point) => project(point, radius));
   scene.origin?.setAttribute("transform", `translate(${size / 2} ${size / 2})`);
-  placeFaces(scene, rotated, projected, size / 2);
+  /* The static frosted disc only changes size on resize, never per frame. */
+  const diameter = `${Math.round(radius * 2)}px`;
+  if (scene.container.style.getPropertyValue(CLOUD_DIAMETER_VAR) !== diameter) {
+    scene.container.style.setProperty(CLOUD_DIAMETER_VAR, diameter);
+  }
+  placeFaces(scene, rotated, projected);
   placeItems(scene, projected);
   placeEdges(scene, projected);
 }
@@ -218,7 +202,7 @@ function collectScene(container: HTMLElement, mesh: CloudMesh): Scene {
       ...container.querySelectorAll<SVGLineElement>(`[${CLOUD_EDGE_ATTR}]`),
     ],
     faceEls: [
-      ...container.querySelectorAll<HTMLElement>(`[${CLOUD_FACE_ATTR}]`),
+      ...container.querySelectorAll<SVGPolygonElement>(`[${CLOUD_FACE_ATTR}]`),
     ],
     origin: container.querySelector<SVGGElement>(`[${CLOUD_ORIGIN_ATTR}]`),
     mesh,

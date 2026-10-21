@@ -18,35 +18,39 @@
   animation: cloud-in 1.4s var(--ease) 0.3s backwards;
 }
 
-.faces {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
 /*
- * One frosted facet. The hook sizes it to the triangle's bounding box and clips it to the
- * triangle; --glint (0..1) carries the lighting, so lit faces read brighter and more reflective.
+ * One static frosted disc behind the whole polyhedron. It never moves, so the browser blurs one
+ * region instead of re-blurring every moving face each frame. --cloud-d is set by the hook.
  */
-.face {
-  --glint: 0;
+.frost {
   position: absolute;
-  background: color-mix(in oklch, var(--accent) 80%, transparent);
-}
-
-/* Front faces: heavy blur and a strong accent tint hide the dot field; the glint adds reflections. */
-.face[data-side="front"] {
+  left: 50%;
+  top: 50%;
+  width: calc(var(--cloud-d, 0px) * 0.94);
+  height: calc(var(--cloud-d, 0px) * 0.94);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
   -webkit-backdrop-filter: blur(32px) saturate(140%);
   backdrop-filter: blur(32px) saturate(140%);
-  background:
-    linear-gradient(
-      135deg,
-      oklch(1 0 0 / calc(0.06 + var(--glint) * 0.9)),
-      oklch(1 0 0 / calc(0.02 + var(--glint) * 0.25)) 60%,
-      oklch(1 0 0 / 0.01)
-    ),
-    color-mix(in oklch, var(--accent) 75%, transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glass facets: back faces are a flat tint, front faces brighten with --glint (0..1). */
+.face {
+  --glint: 0;
+  fill: var(--accent);
+  fill-opacity: 0.8;
+  stroke: none;
+}
+
+.face[data-side="front"] {
+  fill: color-mix(
+    in oklch,
+    oklch(1 0 0) calc(6% + var(--glint) * 60%),
+    var(--accent)
+  );
+  fill-opacity: 0.75;
 }
 
 .mesh {
@@ -77,9 +81,10 @@
   justify-content: center;
   border-radius: 50%;
   color: var(--on-accent);
-  /* Same frosted material as the hero cards, with a tighter shadow for the small discs. */
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
+  /*
+   * Same look as the frosted cards, without a per-disc backdrop blur: the discs move every
+   * frame, and the glass faces behind them are already frosted.
+   */
   background: var(--glass-fill);
   border: 1px solid oklch(1 0 0 / 0.22);
   box-shadow: 0 6px 18px oklch(0 0 0 / 0.28);

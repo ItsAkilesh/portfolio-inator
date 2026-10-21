@@ -1,7 +1,7 @@
 /**
  * File: IconCloud.tsx
  * Purpose: Decorative rotating glass polyhedron of brand icons: one vertex per icon, white edges between
- *          neighbors and frosted reflective faces. Receives icon keys, so
+ *          neighbors and shaded glass faces over one static frosted disc. Receives icon keys, so
  *          any section can reuse it; the home hero feeds it every tool from the "What I do" groups.
  * Author: Akilesh
  * Date: 2026-10-20
@@ -43,27 +43,28 @@ export function buildMesh(count: number): CloudMesh {
   return { points, edges, faces: triangleFaces(edges, points.length) };
 }
 
-function FaceLayer({ mesh }: { readonly mesh: CloudMesh }) {
-  return (
-    <div className={styles.faces}>
-      {mesh.faces.map((face) => (
-        <span
-          key={face.join("-")}
-          className={styles.face}
-          {...{ [CLOUD_FACE_ATTR]: "" }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function EdgeLayer({ mesh }: { readonly mesh: CloudMesh }) {
+/**
+ * Faces and edges share one SVG, so a frame repaints a single layer instead of one clipped,
+ * blurred element per face. Faces sit under the edges.
+ */
+function MeshLayer({ mesh }: { readonly mesh: CloudMesh }) {
   return (
     <svg className={styles.mesh} focusable="false">
-      <g className={styles.edges} {...{ [CLOUD_ORIGIN_ATTR]: "" }}>
-        {mesh.edges.map(([from, to]) => (
-          <line key={`${from}-${to}`} {...{ [CLOUD_EDGE_ATTR]: "" }} />
-        ))}
+      <g {...{ [CLOUD_ORIGIN_ATTR]: "" }}>
+        <g className={styles.faces}>
+          {mesh.faces.map((face) => (
+            <polygon
+              key={face.join("-")}
+              className={styles.face}
+              {...{ [CLOUD_FACE_ATTR]: "" }}
+            />
+          ))}
+        </g>
+        <g className={styles.edges}>
+          {mesh.edges.map(([from, to]) => (
+            <line key={`${from}-${to}`} {...{ [CLOUD_EDGE_ATTR]: "" }} />
+          ))}
+        </g>
       </g>
     </svg>
   );
@@ -83,8 +84,8 @@ export function IconCloud({ icons, className }: IconCloudProps) {
       style={discStyle}
       aria-hidden="true"
     >
-      <FaceLayer mesh={mesh} />
-      <EdgeLayer mesh={mesh} />
+      <span className={styles.frost} />
+      <MeshLayer mesh={mesh} />
       {keys.map((key) => (
         <span key={key} className={styles.item} {...{ [CLOUD_ITEM_ATTR]: "" }}>
           <BrandIcon name={key} size={iconSize(keys.length)} />
