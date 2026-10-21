@@ -6,8 +6,8 @@
  * Date: 2026-10-20
  */
 .section {
-  padding-top: clamp(80px, 11vw, 160px);
-  padding-bottom: clamp(64px, 8vw, 120px);
+  padding-top: clamp(56px, 7vw, 104px);
+  padding-bottom: clamp(40px, 5vw, 72px);
 }
 
 .head {
@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
-  padding-bottom: clamp(24px, 3vw, 40px);
+  padding-bottom: clamp(20px, 2.4vw, 32px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -30,8 +30,8 @@
 .block {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 32px;
-  padding: clamp(48px, 7vw, 104px) 0;
+  gap: 28px;
+  padding: clamp(36px, 4.5vw, 64px) 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -42,7 +42,7 @@
 .text {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   font-size: 18px;
 }
 
@@ -57,7 +57,7 @@
 @media (min-width: 900px) {
   .block {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: clamp(48px, 6vw, 96px);
+    gap: clamp(40px, 5vw, 80px);
     align-items: center;
   }
 
@@ -91,7 +91,7 @@
 
 .specimen {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
   border-top: 1px solid var(--line);
   border-left: 1px solid var(--line);
 }
@@ -100,11 +100,11 @@
   background: var(--bg);
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 20px 16px 16px;
+  padding: 16px 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  min-height: 112px;
+  gap: 12px;
+  min-height: 96px;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
