@@ -1,0 +1,1801 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "site": {
+      "type": "object",
+      "properties": {
+        "settings": {
+          "type": "object",
+          "properties": {
+            "isSplash": {
+              "type": "boolean",
+              "title": "Intro splash",
+              "description": "Shows the name intro once per visit"
+            },
+            "showDotField": {
+              "type": "boolean",
+              "title": "Dot field",
+              "description": "Animated dots behind page headers"
+            }
+          },
+          "required": [
+            "isSplash",
+            "showDotField"
+          ],
+          "additionalProperties": false,
+          "title": "Settings"
+        },
+        "seo": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "title": "Site title",
+              "description": "Tab and search title; pages prefix it"
+            },
+            "description": {
+              "type": "string",
+              "widget": "multiline",
+              "title": "Description"
+            },
+            "author": {
+              "type": "string",
+              "title": "Author"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "title": "Keyword"
+              },
+              "title": "Keywords"
+            },
+            "siteUrl": {
+              "type": "string",
+              "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+              "title": "Site address",
+              "description": "Public URL with a trailing slash"
+            },
+            "language": {
+              "type": "string",
+              "title": "Language",
+              "description": "e.g. \"en-US\""
+            },
+            "favicon": {
+              "type": "string",
+              "title": "Favicon",
+              "description": "Path under public/, e.g. icons/me.png"
+            },
+            "themeColor": {
+              "type": "string",
+              "title": "Mobile browser colour",
+              "widget": "color"
+            },
+            "social": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "title": "Preview title",
+                  "description": "Empty uses the site title"
+                },
+                "description": {
+                  "type": "string",
+                  "widget": "multiline",
+                  "title": "Preview description",
+                  "description": "Empty uses the description"
+                },
+                "image": {
+                  "type": "string",
+                  "title": "Preview image",
+                  "description": "Path under public/ or an https URL"
+                },
+                "imageAlt": {
+                  "type": "string",
+                  "title": "Preview image description"
+                },
+                "twitterCard": {
+                  "type": "string",
+                  "enum": [
+                    "summary",
+                    "summary_large_image"
+                  ],
+                  "title": "X/Twitter card"
+                },
+                "twitterHandle": {
+                  "type": "string",
+                  "title": "X/Twitter handle",
+                  "description": "Without \"@\"; empty omits it"
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "image",
+                "imageAlt",
+                "twitterCard",
+                "twitterHandle"
+              ],
+              "additionalProperties": false,
+              "title": "Link previews"
+            },
+            "verification": {
+              "type": "object",
+              "properties": {
+                "google": {
+                  "type": "string",
+                  "title": "Google site verification"
+                },
+                "bing": {
+                  "type": "string",
+                  "title": "Bing site verification"
+                }
+              },
+              "required": [
+                "google",
+                "bing"
+              ],
+              "additionalProperties": false,
+              "title": "Search console",
+              "description": "Empty values are left out"
+            },
+            "structuredData": {
+              "type": "object",
+              "properties": {
+                "isEnabled": {
+                  "type": "boolean",
+                  "title": "schema.org profile data"
+                },
+                "jobTitle": {
+                  "type": "string",
+                  "title": "Job title"
+                },
+                "worksFor": {
+                  "type": "string",
+                  "title": "Organisation"
+                }
+              },
+              "required": [
+                "isEnabled",
+                "jobTitle",
+                "worksFor"
+              ],
+              "additionalProperties": false,
+              "title": "Search profile"
+            }
+          },
+          "required": [
+            "title",
+            "description",
+            "author",
+            "keywords",
+            "siteUrl",
+            "language",
+            "favicon",
+            "themeColor",
+            "social",
+            "verification",
+            "structuredData"
+          ],
+          "additionalProperties": false,
+          "title": "SEO"
+        },
+        "profile": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "title": "Full name"
+            },
+            "logo_name": {
+              "type": "string",
+              "title": "Header name"
+            },
+            "nickname": {
+              "type": "string",
+              "title": "Nickname"
+            },
+            "subTitle": {
+              "type": "string",
+              "widget": "multiline",
+              "title": "Summary"
+            },
+            "resumeLink": {
+              "type": "string",
+              "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+              "title": "Resume link"
+            },
+            "resumeLabel": {
+              "type": "string",
+              "title": "Resume button"
+            },
+            "connectLink": {
+              "type": "string",
+              "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+              "title": "Second button link"
+            },
+            "connectLabel": {
+              "type": "string",
+              "title": "Second button"
+            },
+            "githubProfile": {
+              "type": "string",
+              "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+              "title": "GitHub profile"
+            }
+          },
+          "required": [
+            "title",
+            "logo_name",
+            "nickname",
+            "subTitle",
+            "resumeLink",
+            "resumeLabel",
+            "connectLink",
+            "connectLabel",
+            "githubProfile"
+          ],
+          "additionalProperties": false,
+          "title": "Profile"
+        },
+        "socialLinks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "link": {
+                "type": "string",
+                "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+                "title": "Link",
+                "description": "External URL, mailto:, tel: or a page path"
+              },
+              "icon": {
+                "type": "string",
+                "enum": [
+                  "linkedin",
+                  "csharp",
+                  "windows",
+                  "aws",
+                  "azure",
+                  "web",
+                  "resume",
+                  "code",
+                  "openai",
+                  "android",
+                  "blender",
+                  "c",
+                  "cplusplus",
+                  "css",
+                  "dart",
+                  "django",
+                  "docker",
+                  "dotnet",
+                  "figma",
+                  "firebase",
+                  "flask",
+                  "flutter",
+                  "gemini",
+                  "github",
+                  "githubactions",
+                  "gmail",
+                  "go",
+                  "googlecloud",
+                  "googlescholar",
+                  "graphql",
+                  "hadoop",
+                  "helm",
+                  "html5",
+                  "huggingface",
+                  "instagram",
+                  "java",
+                  "javascript",
+                  "jenkins",
+                  "jupyter",
+                  "kubernetes",
+                  "langchain",
+                  "langgraph",
+                  "mcp",
+                  "mlflow",
+                  "mongodb",
+                  "neo4j",
+                  "nextjs",
+                  "nginx",
+                  "nodejs",
+                  "numpy",
+                  "ollama",
+                  "opencv",
+                  "opentelemetry",
+                  "orcid",
+                  "pandas",
+                  "postgresql",
+                  "python",
+                  "pytorch",
+                  "react",
+                  "redis",
+                  "researchgate",
+                  "ruby",
+                  "rust",
+                  "sailsjs",
+                  "shell",
+                  "sketch",
+                  "swift",
+                  "tensorflow",
+                  "terraform",
+                  "typescript",
+                  "unity",
+                  "unrealengine",
+                  "webrtc",
+                  "whatsapp"
+                ],
+                "widget": "icon",
+                "title": "Icon"
+              }
+            },
+            "required": [
+              "name",
+              "link",
+              "icon"
+            ],
+            "additionalProperties": false,
+            "title": "Link",
+            "summaryKey": "name"
+          },
+          "title": "Social links"
+        },
+        "footer": {
+          "type": "object",
+          "properties": {
+            "credit": {
+              "type": "string",
+              "title": "Credit line"
+            },
+            "linksLabel": {
+              "type": "string",
+              "title": "Links shortcut label"
+            },
+            "linksPath": {
+              "type": "string",
+              "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+              "title": "Links shortcut target"
+            }
+          },
+          "required": [
+            "credit",
+            "linksLabel",
+            "linksPath"
+          ],
+          "additionalProperties": false,
+          "title": "Footer"
+        },
+        "ui": {
+          "type": "object",
+          "properties": {
+            "readSummary": {
+              "type": "string",
+              "title": "\"Read summary\" label"
+            },
+            "hideSummary": {
+              "type": "string",
+              "title": "\"Hide summary\" label"
+            },
+            "allFilter": {
+              "type": "string",
+              "title": "\"All\" filter label"
+            },
+            "notFoundTitle": {
+              "type": "string",
+              "title": "Not found title"
+            },
+            "notFoundText": {
+              "type": "string",
+              "widget": "multiline",
+              "title": "Not found text"
+            },
+            "researchCards": {
+              "type": "object",
+              "properties": {
+                "scholar": {
+                  "type": "string",
+                  "title": "Scholar card title"
+                },
+                "researchGate": {
+                  "type": "string",
+                  "title": "ResearchGate card title"
+                },
+                "citations": {
+                  "type": "string",
+                  "title": "Citations label"
+                },
+                "hIndex": {
+                  "type": "string",
+                  "title": "h-index label"
+                },
+                "i10Index": {
+                  "type": "string",
+                  "title": "i10-index label"
+                },
+                "interestScore": {
+                  "type": "string",
+                  "title": "Interest score label"
+                }
+              },
+              "required": [
+                "scholar",
+                "researchGate",
+                "citations",
+                "hIndex",
+                "i10Index",
+                "interestScore"
+              ],
+              "additionalProperties": false,
+              "title": "Research card labels"
+            }
+          },
+          "required": [
+            "readSummary",
+            "hideSummary",
+            "allFilter",
+            "notFoundTitle",
+            "notFoundText",
+            "researchCards"
+          ],
+          "additionalProperties": false,
+          "title": "Interface copy"
+        },
+        "analytics": {
+          "type": "object",
+          "properties": {
+            "googleAnalyticsId": {
+              "type": "string",
+              "title": "Google Analytics 4 ID",
+              "description": "\"G-...\" ; empty disables it"
+            },
+            "clarityId": {
+              "type": "string",
+              "title": "Microsoft Clarity ID",
+              "description": "Empty disables it"
+            }
+          },
+          "required": [
+            "googleAnalyticsId",
+            "clarityId"
+          ],
+          "additionalProperties": false,
+          "title": "Analytics",
+          "description": "Loaded only in production builds"
+        },
+        "researchProfiles": {
+          "type": "object",
+          "properties": {
+            "scholar": {
+              "type": "object",
+              "properties": {
+                "citations": {
+                  "type": "number",
+                  "minimum": 0,
+                  "title": "Citations"
+                },
+                "hIndex": {
+                  "type": "number",
+                  "minimum": 0,
+                  "title": "h-index"
+                },
+                "i10Index": {
+                  "type": "number",
+                  "minimum": 0,
+                  "title": "i10-index"
+                },
+                "profileUrl": {
+                  "type": "string",
+                  "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+                  "title": "Profile"
+                }
+              },
+              "required": [
+                "citations",
+                "hIndex",
+                "i10Index",
+                "profileUrl"
+              ],
+              "additionalProperties": false,
+              "title": "Google Scholar"
+            },
+            "researchGate": {
+              "type": "object",
+              "properties": {
+                "interestScore": {
+                  "type": "number",
+                  "minimum": 0,
+                  "title": "Interest score"
+                },
+                "citations": {
+                  "type": "number",
+                  "minimum": 0,
+                  "title": "Citations"
+                },
+                "hIndex": {
+                  "type": "number",
+                  "minimum": 0,
+                  "title": "h-index"
+                },
+                "profileUrl": {
+                  "type": "string",
+                  "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+                  "title": "Profile"
+                }
+              },
+              "required": [
+                "interestScore",
+                "citations",
+                "hIndex",
+                "profileUrl"
+              ],
+              "additionalProperties": false,
+              "title": "ResearchGate"
+            }
+          },
+          "required": [
+            "scholar",
+            "researchGate"
+          ],
+          "additionalProperties": false,
+          "title": "Research profiles",
+          "description": "Numbers shown on the research cards"
+        },
+        "projects": {
+          "type": "object",
+          "properties": {
+            "languageIcons": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "enum": [
+                  "linkedin",
+                  "csharp",
+                  "windows",
+                  "aws",
+                  "azure",
+                  "web",
+                  "resume",
+                  "code",
+                  "openai",
+                  "android",
+                  "blender",
+                  "c",
+                  "cplusplus",
+                  "css",
+                  "dart",
+                  "django",
+                  "docker",
+                  "dotnet",
+                  "figma",
+                  "firebase",
+                  "flask",
+                  "flutter",
+                  "gemini",
+                  "github",
+                  "githubactions",
+                  "gmail",
+                  "go",
+                  "googlecloud",
+                  "googlescholar",
+                  "graphql",
+                  "hadoop",
+                  "helm",
+                  "html5",
+                  "huggingface",
+                  "instagram",
+                  "java",
+                  "javascript",
+                  "jenkins",
+                  "jupyter",
+                  "kubernetes",
+                  "langchain",
+                  "langgraph",
+                  "mcp",
+                  "mlflow",
+                  "mongodb",
+                  "neo4j",
+                  "nextjs",
+                  "nginx",
+                  "nodejs",
+                  "numpy",
+                  "ollama",
+                  "opencv",
+                  "opentelemetry",
+                  "orcid",
+                  "pandas",
+                  "postgresql",
+                  "python",
+                  "pytorch",
+                  "react",
+                  "redis",
+                  "researchgate",
+                  "ruby",
+                  "rust",
+                  "sailsjs",
+                  "shell",
+                  "sketch",
+                  "swift",
+                  "tensorflow",
+                  "terraform",
+                  "typescript",
+                  "unity",
+                  "unrealengine",
+                  "webrtc",
+                  "whatsapp"
+                ],
+                "widget": "icon",
+                "title": "Icon"
+              },
+              "title": "Language icons",
+              "description": "GitHub language name to icon"
+            }
+          },
+          "required": [
+            "languageIcons"
+          ],
+          "additionalProperties": false,
+          "title": "Projects"
+        },
+        "portrait": {
+          "type": "string",
+          "pattern": "^[\\w.-]+\\.(png|jpe?g|webp|gif|avif)$",
+          "widget": "image",
+          "title": "Portrait",
+          "description": "Used by headers that show a photo"
+        }
+      },
+      "required": [
+        "settings",
+        "seo",
+        "profile",
+        "socialLinks",
+        "footer",
+        "ui",
+        "analytics",
+        "researchProfiles",
+        "projects",
+        "portrait"
+      ],
+      "additionalProperties": false,
+      "title": "Site"
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "defaultMode": {
+          "type": "string",
+          "enum": [
+            "system",
+            "light",
+            "dark"
+          ],
+          "title": "Default mode",
+          "description": "\"system\" follows the visitor's setting"
+        },
+        "showThemeToggle": {
+          "type": "boolean",
+          "title": "Show light/dark toggle",
+          "description": "Off forces the default mode"
+        },
+        "activePalette": {
+          "type": "string",
+          "title": "Active palette",
+          "description": "One of the palette names below"
+        },
+        "palettes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "generated"
+                  },
+                  "hue": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 360,
+                    "title": "Hue",
+                    "description": "OKLCH angle, 0 to 360"
+                  },
+                  "chroma": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 0.37,
+                    "title": "Chroma",
+                    "description": "0.12 muted, 0.23 vivid"
+                  },
+                  "lightness": {
+                    "type": "number",
+                    "minimum": 0.2,
+                    "maximum": 0.5,
+                    "title": "Lightness",
+                    "description": "Accent lightness in light mode"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "hue",
+                  "chroma",
+                  "lightness"
+                ],
+                "additionalProperties": false,
+                "title": "Generated from a hue"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "custom"
+                  },
+                  "light": {
+                    "type": "object",
+                    "properties": {
+                      "bg": {
+                        "type": "string",
+                        "title": "Background",
+                        "widget": "color"
+                      },
+                      "surface": {
+                        "type": "string",
+                        "title": "Raised surface",
+                        "widget": "color"
+                      },
+                      "ink": {
+                        "type": "string",
+                        "title": "Text",
+                        "widget": "color"
+                      },
+                      "inkMuted": {
+                        "type": "string",
+                        "title": "Secondary text",
+                        "widget": "color"
+                      },
+                      "line": {
+                        "type": "string",
+                        "title": "Lines",
+                        "widget": "color"
+                      },
+                      "accent": {
+                        "type": "string",
+                        "title": "Accent",
+                        "widget": "color"
+                      },
+                      "onAccent": {
+                        "type": "string",
+                        "title": "Text on accent",
+                        "widget": "color"
+                      },
+                      "onAccentMuted": {
+                        "type": "string",
+                        "title": "Secondary text on accent",
+                        "widget": "color"
+                      },
+                      "onAccentLine": {
+                        "type": "string",
+                        "title": "Lines on accent",
+                        "widget": "color"
+                      },
+                      "link": {
+                        "type": "string",
+                        "title": "Links",
+                        "widget": "color"
+                      },
+                      "tint": {
+                        "type": "string",
+                        "title": "Hover wash",
+                        "widget": "color"
+                      }
+                    },
+                    "required": [
+                      "bg",
+                      "surface",
+                      "ink",
+                      "inkMuted",
+                      "line",
+                      "accent",
+                      "onAccent",
+                      "onAccentMuted",
+                      "onAccentLine",
+                      "link",
+                      "tint"
+                    ],
+                    "additionalProperties": false,
+                    "title": "Light mode"
+                  },
+                  "dark": {
+                    "type": "object",
+                    "properties": {
+                      "bg": {
+                        "type": "string",
+                        "title": "Background",
+                        "widget": "color"
+                      },
+                      "surface": {
+                        "type": "string",
+                        "title": "Raised surface",
+                        "widget": "color"
+                      },
+                      "ink": {
+                        "type": "string",
+                        "title": "Text",
+                        "widget": "color"
+                      },
+                      "inkMuted": {
+                        "type": "string",
+                        "title": "Secondary text",
+                        "widget": "color"
+                      },
+                      "line": {
+                        "type": "string",
+                        "title": "Lines",
+                        "widget": "color"
+                      },
+                      "accent": {
+                        "type": "string",
+                        "title": "Accent",
+                        "widget": "color"
+                      },
+                      "onAccent": {
+                        "type": "string",
+                        "title": "Text on accent",
+                        "widget": "color"
+                      },
+                      "onAccentMuted": {
+                        "type": "string",
+                        "title": "Secondary text on accent",
+                        "widget": "color"
+                      },
+                      "onAccentLine": {
+                        "type": "string",
+                        "title": "Lines on accent",
+                        "widget": "color"
+                      },
+                      "link": {
+                        "type": "string",
+                        "title": "Links",
+                        "widget": "color"
+                      },
+                      "tint": {
+                        "type": "string",
+                        "title": "Hover wash",
+                        "widget": "color"
+                      }
+                    },
+                    "required": [
+                      "bg",
+                      "surface",
+                      "ink",
+                      "inkMuted",
+                      "line",
+                      "accent",
+                      "onAccent",
+                      "onAccentMuted",
+                      "onAccentLine",
+                      "link",
+                      "tint"
+                    ],
+                    "additionalProperties": false,
+                    "title": "Dark mode"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "light",
+                  "dark"
+                ],
+                "additionalProperties": false,
+                "title": "Hand-written"
+              }
+            ],
+            "title": "Palette"
+          },
+          "title": "Palettes"
+        },
+        "fonts": {
+          "type": "object",
+          "properties": {
+            "display": {
+              "type": "string",
+              "title": "Display font stack"
+            },
+            "body": {
+              "type": "string",
+              "title": "Body font stack"
+            },
+            "mono": {
+              "type": "string",
+              "title": "Monospace font stack"
+            },
+            "stylesheet": {
+              "type": "string",
+              "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+              "title": "Font stylesheet URL"
+            }
+          },
+          "required": [
+            "display",
+            "body",
+            "mono",
+            "stylesheet"
+          ],
+          "additionalProperties": false,
+          "title": "Fonts"
+        }
+      },
+      "required": [
+        "defaultMode",
+        "showThemeToggle",
+        "activePalette",
+        "palettes",
+        "fonts"
+      ],
+      "additionalProperties": false,
+      "title": "Theme"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "widget": "multiline",
+              "title": "Point"
+            },
+            "title": "Points"
+          },
+          "softwareSkills": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "skillName": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "icon": {
+                  "type": "string",
+                  "enum": [
+                    "linkedin",
+                    "csharp",
+                    "windows",
+                    "aws",
+                    "azure",
+                    "web",
+                    "resume",
+                    "code",
+                    "openai",
+                    "android",
+                    "blender",
+                    "c",
+                    "cplusplus",
+                    "css",
+                    "dart",
+                    "django",
+                    "docker",
+                    "dotnet",
+                    "figma",
+                    "firebase",
+                    "flask",
+                    "flutter",
+                    "gemini",
+                    "github",
+                    "githubactions",
+                    "gmail",
+                    "go",
+                    "googlecloud",
+                    "googlescholar",
+                    "graphql",
+                    "hadoop",
+                    "helm",
+                    "html5",
+                    "huggingface",
+                    "instagram",
+                    "java",
+                    "javascript",
+                    "jenkins",
+                    "jupyter",
+                    "kubernetes",
+                    "langchain",
+                    "langgraph",
+                    "mcp",
+                    "mlflow",
+                    "mongodb",
+                    "neo4j",
+                    "nextjs",
+                    "nginx",
+                    "nodejs",
+                    "numpy",
+                    "ollama",
+                    "opencv",
+                    "opentelemetry",
+                    "orcid",
+                    "pandas",
+                    "postgresql",
+                    "python",
+                    "pytorch",
+                    "react",
+                    "redis",
+                    "researchgate",
+                    "ruby",
+                    "rust",
+                    "sailsjs",
+                    "shell",
+                    "sketch",
+                    "swift",
+                    "tensorflow",
+                    "terraform",
+                    "typescript",
+                    "unity",
+                    "unrealengine",
+                    "webrtc",
+                    "whatsapp"
+                  ],
+                  "widget": "icon",
+                  "title": "Icon"
+                }
+              },
+              "required": [
+                "skillName",
+                "icon"
+              ],
+              "additionalProperties": false,
+              "title": "Tool",
+              "summaryKey": "skillName"
+            },
+            "title": "Tools"
+          }
+        },
+        "required": [
+          "title",
+          "skills",
+          "softwareSkills"
+        ],
+        "additionalProperties": false,
+        "title": "Skill group",
+        "summaryKey": "title"
+      },
+      "title": "Skills",
+      "description": "Groups shown in What I do"
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "ID",
+            "description": "Unique key, e.g. talks"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^\\/[a-z0-9-]*(\\/[a-z0-9-]+)*$",
+            "title": "Path",
+            "description": "e.g. /talks"
+          },
+          "label": {
+            "type": "string",
+            "title": "Name",
+            "description": "Navigation label and tab title"
+          },
+          "showInNav": {
+            "type": "boolean",
+            "title": "Show in navigation"
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "hero"
+                    },
+                    "showResearchCards": {
+                      "type": "boolean",
+                      "title": "Research cards under the icon cloud"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "showResearchCards"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Hero",
+                  "description": "Name, summary, buttons, socials and the skill-icon cloud"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "skills"
+                    },
+                    "title": {
+                      "type": "string",
+                      "title": "Title"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title"
+                  ],
+                  "additionalProperties": false,
+                  "title": "What I do",
+                  "description": "Every skill group from Site > Skills"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "header"
+                    },
+                    "title": {
+                      "type": "string",
+                      "title": "Title"
+                    },
+                    "description": {
+                      "type": "string",
+                      "widget": "multiline",
+                      "title": "Intro"
+                    },
+                    "showPortrait": {
+                      "type": "boolean",
+                      "title": "Show portrait"
+                    },
+                    "showResearchCards": {
+                      "type": "boolean",
+                      "title": "Show research cards"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "description",
+                    "showPortrait",
+                    "showResearchCards"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Page header",
+                  "description": "Large title band at the top of a page"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "timeline"
+                    },
+                    "groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "title": "Tab name"
+                          },
+                          "entries": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string",
+                                  "title": "Title"
+                                },
+                                "company": {
+                                  "type": "string",
+                                  "title": "Organisation",
+                                  "description": "Company, issuer, or the author list for publications"
+                                },
+                                "company_url": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "const": ""
+                                    },
+                                    {
+                                      "type": "string",
+                                      "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)"
+                                    }
+                                  ],
+                                  "description": "Empty for no link",
+                                  "title": "Link"
+                                },
+                                "logo_path": {
+                                  "type": "string",
+                                  "pattern": "^[\\w.-]+\\.(png|jpe?g|webp|gif|avif)$",
+                                  "widget": "image",
+                                  "title": "Logo"
+                                },
+                                "duration": {
+                                  "type": "string",
+                                  "title": "Dates"
+                                },
+                                "location": {
+                                  "type": "string",
+                                  "title": "Location",
+                                  "description": "City, or the venue for publications (used as a filter)"
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "widget": "multiline",
+                                  "title": "Description"
+                                }
+                              },
+                              "required": [
+                                "title",
+                                "company",
+                                "company_url",
+                                "logo_path",
+                                "duration",
+                                "location",
+                                "description"
+                              ],
+                              "additionalProperties": false,
+                              "title": "Entry",
+                              "summaryKey": "title"
+                            },
+                            "title": "Entries"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "entries"
+                        ],
+                        "additionalProperties": false,
+                        "title": "Group",
+                        "summaryKey": "title"
+                      },
+                      "title": "Groups",
+                      "description": "More than one group shows tabs"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "groups"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Timeline",
+                  "description": "Jobs, roles or events with logos and dates"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "degrees"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "title": "School"
+                          },
+                          "subtitle": {
+                            "type": "string",
+                            "title": "Degree"
+                          },
+                          "logo_path": {
+                            "type": "string",
+                            "pattern": "^[\\w.-]+\\.(png|jpe?g|webp|gif|avif)$",
+                            "widget": "image",
+                            "title": "Logo"
+                          },
+                          "alt_name": {
+                            "type": "string",
+                            "title": "Short name"
+                          },
+                          "duration": {
+                            "type": "string",
+                            "title": "Dates"
+                          },
+                          "descriptions": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "widget": "multiline",
+                              "title": "Point"
+                            },
+                            "title": "Points"
+                          },
+                          "website_link": {
+                            "type": "string",
+                            "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+                            "title": "Website"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "subtitle",
+                          "logo_path",
+                          "alt_name",
+                          "duration",
+                          "descriptions",
+                          "website_link"
+                        ],
+                        "additionalProperties": false,
+                        "title": "Degree",
+                        "summaryKey": "title"
+                      },
+                      "title": "Degrees"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "items"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Degrees"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "featured"
+                    },
+                    "title": {
+                      "type": "string",
+                      "title": "Title"
+                    },
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "title": "Title"
+                          },
+                          "company": {
+                            "type": "string",
+                            "title": "Organisation",
+                            "description": "Company, issuer, or the author list for publications"
+                          },
+                          "company_url": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "const": ""
+                              },
+                              {
+                                "type": "string",
+                                "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)"
+                              }
+                            ],
+                            "description": "Empty for no link",
+                            "title": "Link"
+                          },
+                          "logo_path": {
+                            "type": "string",
+                            "pattern": "^[\\w.-]+\\.(png|jpe?g|webp|gif|avif)$",
+                            "widget": "image",
+                            "title": "Logo"
+                          },
+                          "duration": {
+                            "type": "string",
+                            "title": "Dates"
+                          },
+                          "location": {
+                            "type": "string",
+                            "title": "Location",
+                            "description": "City, or the venue for publications (used as a filter)"
+                          },
+                          "description": {
+                            "type": "string",
+                            "widget": "multiline",
+                            "title": "Description"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "company",
+                          "company_url",
+                          "logo_path",
+                          "duration",
+                          "location",
+                          "description"
+                        ],
+                        "additionalProperties": false,
+                        "title": "Entry",
+                        "summaryKey": "title"
+                      },
+                      "title": "Entries"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "entries"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Featured cards",
+                  "description": "Large cards, e.g. patents"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "publications"
+                    },
+                    "title": {
+                      "type": "string",
+                      "title": "Title"
+                    },
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "title": "Title"
+                          },
+                          "company": {
+                            "type": "string",
+                            "title": "Organisation",
+                            "description": "Company, issuer, or the author list for publications"
+                          },
+                          "company_url": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "const": ""
+                              },
+                              {
+                                "type": "string",
+                                "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)"
+                              }
+                            ],
+                            "description": "Empty for no link",
+                            "title": "Link"
+                          },
+                          "logo_path": {
+                            "type": "string",
+                            "pattern": "^[\\w.-]+\\.(png|jpe?g|webp|gif|avif)$",
+                            "widget": "image",
+                            "title": "Logo"
+                          },
+                          "duration": {
+                            "type": "string",
+                            "title": "Dates"
+                          },
+                          "location": {
+                            "type": "string",
+                            "title": "Location",
+                            "description": "City, or the venue for publications (used as a filter)"
+                          },
+                          "description": {
+                            "type": "string",
+                            "widget": "multiline",
+                            "title": "Description"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "company",
+                          "company_url",
+                          "logo_path",
+                          "duration",
+                          "location",
+                          "description"
+                        ],
+                        "additionalProperties": false,
+                        "title": "Entry",
+                        "summaryKey": "title"
+                      },
+                      "title": "Publications"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "entries"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Publications",
+                  "description": "Filterable list; the location is the venue"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "projects"
+                    },
+                    "moreLink": {
+                      "type": "string",
+                      "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+                      "title": "More link"
+                    },
+                    "moreLabel": {
+                      "type": "string",
+                      "title": "More label"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "moreLink",
+                    "moreLabel"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Projects",
+                  "description": "Repositories from projects.json (pnpm fetch-data)"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "contact"
+                    },
+                    "email": {
+                      "type": "string",
+                      "title": "Email"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "title": "Phone"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "email",
+                    "phone"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Contact",
+                  "description": "Email, phone and the social links grid"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "linkGrid"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Name"
+                          },
+                          "link": {
+                            "type": "string",
+                            "pattern": "^(https?:\\/\\/|mailto:|tel:|\\/)",
+                            "title": "Link",
+                            "description": "External URL, mailto:, tel: or a page path"
+                          },
+                          "icon": {
+                            "type": "string",
+                            "enum": [
+                              "linkedin",
+                              "csharp",
+                              "windows",
+                              "aws",
+                              "azure",
+                              "web",
+                              "resume",
+                              "code",
+                              "openai",
+                              "android",
+                              "blender",
+                              "c",
+                              "cplusplus",
+                              "css",
+                              "dart",
+                              "django",
+                              "docker",
+                              "dotnet",
+                              "figma",
+                              "firebase",
+                              "flask",
+                              "flutter",
+                              "gemini",
+                              "github",
+                              "githubactions",
+                              "gmail",
+                              "go",
+                              "googlecloud",
+                              "googlescholar",
+                              "graphql",
+                              "hadoop",
+                              "helm",
+                              "html5",
+                              "huggingface",
+                              "instagram",
+                              "java",
+                              "javascript",
+                              "jenkins",
+                              "jupyter",
+                              "kubernetes",
+                              "langchain",
+                              "langgraph",
+                              "mcp",
+                              "mlflow",
+                              "mongodb",
+                              "neo4j",
+                              "nextjs",
+                              "nginx",
+                              "nodejs",
+                              "numpy",
+                              "ollama",
+                              "opencv",
+                              "opentelemetry",
+                              "orcid",
+                              "pandas",
+                              "postgresql",
+                              "python",
+                              "pytorch",
+                              "react",
+                              "redis",
+                              "researchgate",
+                              "ruby",
+                              "rust",
+                              "sailsjs",
+                              "shell",
+                              "sketch",
+                              "swift",
+                              "tensorflow",
+                              "terraform",
+                              "typescript",
+                              "unity",
+                              "unrealengine",
+                              "webrtc",
+                              "whatsapp"
+                            ],
+                            "widget": "icon",
+                            "title": "Icon"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "link",
+                          "icon"
+                        ],
+                        "additionalProperties": false,
+                        "title": "Link",
+                        "summaryKey": "name"
+                      },
+                      "title": "Links"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "items"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Link grid"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "text"
+                    },
+                    "heading": {
+                      "type": "string",
+                      "title": "Heading",
+                      "description": "Empty for none"
+                    },
+                    "paragraphs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "widget": "multiline",
+                        "title": "Paragraph"
+                      },
+                      "title": "Paragraphs"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "heading",
+                    "paragraphs"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Text"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "image"
+                    },
+                    "src": {
+                      "type": "string",
+                      "pattern": "^[\\w.-]+\\.(png|jpe?g|webp|gif|avif)$",
+                      "widget": "image",
+                      "title": "Image"
+                    },
+                    "alt": {
+                      "type": "string",
+                      "title": "Description",
+                      "description": "Read aloud by screen readers"
+                    },
+                    "caption": {
+                      "type": "string",
+                      "title": "Caption",
+                      "description": "Empty for none"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "src",
+                    "alt",
+                    "caption"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Image"
+                }
+              ],
+              "title": "Block",
+              "summaryKey": "type"
+            },
+            "title": "Blocks"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "label",
+          "showInNav",
+          "blocks"
+        ],
+        "additionalProperties": false,
+        "title": "Page",
+        "summaryKey": "label"
+      },
+      "title": "Pages",
+      "description": "The first page is the home page; order is navigation order"
+    }
+  },
+  "required": [
+    "site",
+    "theme",
+    "skills",
+    "pages"
+  ],
+  "additionalProperties": false
+}

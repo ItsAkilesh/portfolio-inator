@@ -27,19 +27,19 @@
       "social": {
         "title": "Akilesh Srinivasa Kumar | Akilesh S",
         "description": "Software engineer working on generative AI, XR and cloud-native systems, with published research.",
-        "twitterHandle": "",
         "image": "icons/Akilesh_Circle_new.png",
         "imageAlt": "Portrait of Akilesh Srinivasa Kumar",
-        "twitterCard": "summary_large_image"
+        "twitterCard": "summary_large_image",
+        "twitterHandle": ""
       },
       "verification": {
         "google": "",
         "bing": ""
       },
       "structuredData": {
-        "worksFor": "Vigilnz Inc.",
         "isEnabled": true,
-        "jobTitle": "Software Engineer"
+        "jobTitle": "Software Engineer",
+        "worksFor": "Vigilnz Inc."
       }
     },
     "profile": {
@@ -48,10 +48,10 @@
       "nickname": "ItsAkilesh",
       "subTitle": "Innovative software engineer specializing in Generative AI, XR, and cloud-native solutions, with published research experience and a strong background in full-stack development and intelligent systems.",
       "resumeLink": "https://drive.google.com/file/d/1_3rSBD241Xi988WnRWA9ICLh6wz4DqdB/view?usp=sharing",
-      "githubProfile": "https://github.com/itsakilesh",
-      "connectLink": "https://www.linkedin.com/in/itsakilesh/",
       "resumeLabel": "See my resume",
-      "connectLabel": "Connect with me"
+      "connectLink": "https://www.linkedin.com/in/itsakilesh/",
+      "connectLabel": "Connect with me",
+      "githubProfile": "https://github.com/itsakilesh"
     },
     "socialLinks": [
       {
