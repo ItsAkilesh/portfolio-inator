@@ -44,6 +44,8 @@
     gap: clamp(32px, 4vw, 72px);
     /* Fill the first screen so the space above and below the content is even. */
     min-height: calc(100svh - var(--header-h, 64px));
+    /* Both columns take the copy's height: the right column never sets the row height. */
+    align-items: stretch;
   }
 
   .aside {
@@ -52,9 +54,14 @@
     justify-self: end;
   }
 
+  /* The cloud fills whatever height the cards leave, so its top meets the name and the cards'
+   * bottom meets the social links. Its width follows from the height (square). */
   .cloud {
     display: block;
-    width: 86%;
+    flex: 1 1 0;
+    min-height: 0;
+    width: auto;
+    max-width: 100%;
     align-self: center;
   }
 }

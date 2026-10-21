@@ -9,6 +9,8 @@
   width: 100%;
   aspect-ratio: 1;
   touch-action: pan-y;
+  /* Contains the per-frame depth z-indices of the items so they never rise above the header. */
+  isolation: isolate;
   /*
    * Entrance uses transform only. Opacity, filter or scale animations here would make this
    * element a backdrop root, and the faces' backdrop blur could no longer reach the dot field.
