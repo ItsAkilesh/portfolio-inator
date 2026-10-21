@@ -2,7 +2,6 @@
  * File: ContactPanel.module.css
  * Purpose: Styles for ContactPanel. The email and phone share one font size computed from the
  *          container width and the longest line (--fit-chars), so neither wraps nor overflows.
- *          Social links are rows on small screens and a tile grid, like What I do, on desktop.
  * Author: Akilesh
  * Date: 2026-10-20 (updated 2026-10-21)
  */
@@ -25,7 +24,7 @@
 /* 0.55em is a little wider than an average Geist glyph at this weight, so the line always fits. */
 .line {
   color: var(--ink);
-  font-size: min(calc(100cqi / (var(--fit-chars) * 0.55)), 64px);
+  font-size: min(calc(100cqi / (var(--fit-chars) * 0.55)), 36px);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
@@ -38,78 +37,4 @@
 
 .arrow {
   color: var(--ink-muted);
-}
-
-.grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.tile {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 60px;
-  padding: 0 20px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  color: var(--ink);
-  font-weight: 600;
-  transition: background-color 0.4s var(--ease);
-}
-
-.tile:hover {
-  text-decoration: none;
-  background: var(--surface);
-}
-
-.tile svg {
-  transition:
-    color 0.4s var(--ease),
-    transform 0.6s var(--ease);
-}
-
-.tile:hover svg {
-  color: var(--brand);
-  transform: scale(1.12) rotate(-6deg);
-}
-
-.label {
-  flex: 1;
-}
-
-@media (min-width: 900px) {
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0;
-    border-top: 1px solid var(--line);
-    border-left: 1px solid var(--line);
-  }
-
-  .tile {
-    position: relative;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 18px;
-    min-height: 128px;
-    padding: 20px 18px 18px;
-    border: 0;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    border-radius: 0;
-    font-size: 15px;
-  }
-
-  .label {
-    flex: 0;
-  }
-
-  .tile .arrow {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-  }
 }

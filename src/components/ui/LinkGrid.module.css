@@ -1,0 +1,82 @@
+/**
+ * File: LinkGrid.module.css
+ * Purpose: Styles for LinkGrid: hairline tile grid, 2 columns on phones, auto-fill columns above.
+ * Author: Akilesh
+ * Date: 2026-10-21
+ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+.cell {
+  display: flex;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.tile {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: clamp(104px, 12vw, 132px);
+  padding: 18px 16px 16px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  transition:
+    background-color 0.4s var(--ease),
+    color 0.4s var(--ease);
+}
+
+.tile:hover {
+  text-decoration: none;
+  background: var(--surface);
+}
+
+.tile svg {
+  transition:
+    color 0.4s var(--ease),
+    transform 0.6s var(--ease);
+}
+
+.tile:hover svg {
+  color: var(--brand);
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.arrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: var(--ink-muted);
+}
+
+.emphasized,
+.emphasized:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.emphasized .arrow,
+.emphasized:hover svg {
+  color: var(--bg);
+}
+
+.label {
+  overflow-wrap: anywhere;
+}

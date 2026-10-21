@@ -1,20 +1,14 @@
 /**
  * File: Links.tsx
- * Purpose: Link-in-bio page listing every profile from config; internal routes are emphasized.
+ * Purpose: Link-in-bio page: every profile from config as a tile grid; internal routes are emphasized.
  * Author: Akilesh
  * Date: 2026-10-20
  */
 import { PageBand } from "../components/layout/PageBand";
-import { isInternalPath } from "../components/ui/SmartLink";
-import { LinkRow } from "../components/ui/LinkRow";
-import { staggerDelay } from "../lib/text";
+import { LinkGrid } from "../components/ui/LinkGrid";
 import { greeting, links, research } from "../portfolio";
 
-const LIST_STYLE = {
-  maxWidth: 640,
-  display: "flex",
-  flexDirection: "column",
-  gap: 10,
+const GRID_STYLE = {
   paddingTop: "clamp(40px, 6vw, 80px)",
   paddingBottom: "clamp(72px, 9vw, 120px)",
 } as const;
@@ -32,15 +26,8 @@ export default function Links() {
           alt: `Portrait of ${greeting.title}`,
         }}
       />
-      <div className="wrap" style={LIST_STYLE}>
-        {links.links.map((item, index) => (
-          <LinkRow
-            key={item.name}
-            item={item}
-            isEmphasized={isInternalPath(item.link)}
-            delay={staggerDelay(index)}
-          />
-        ))}
+      <div className="wrap" style={GRID_STYLE}>
+        <LinkGrid items={links.links} label={links.title} />
       </div>
     </div>
   );
