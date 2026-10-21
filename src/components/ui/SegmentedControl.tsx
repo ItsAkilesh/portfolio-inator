@@ -1,9 +1,12 @@
 /**
  * File: SegmentedControl.tsx
- * Purpose: Pill-shaped single-choice control used for tabs and filters.
+ * Purpose: Pill-shaped single-choice control used for tabs and filters. One indicator pill
+ *          slides to the selected option instead of each option fading its own background.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-21)
  */
+import { useRef } from "react";
+import { useSlidingIndicator } from "../../hooks/useSlidingIndicator";
 import styles from "./SegmentedControl.module.css";
 
 export interface SegmentOption<T extends string> {
@@ -24,8 +27,16 @@ export function SegmentedControl<T extends string>({
   value,
   onChange,
 }: SegmentedControlProps<T>) {
+  const groupRef = useRef<HTMLDivElement>(null);
+  useSlidingIndicator(groupRef, value);
   return (
-    <div className={styles.group} role="group" aria-label={label}>
+    <div
+      ref={groupRef}
+      className={styles.group}
+      role="group"
+      aria-label={label}
+    >
+      <span className={styles.indicator} aria-hidden="true" />
       {options.map((option) => {
         const isOn = option.value === value;
         return (
