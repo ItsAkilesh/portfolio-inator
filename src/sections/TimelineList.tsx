@@ -24,8 +24,8 @@ export function TimelineList({ entries }: TimelineListProps) {
           style={{ animationDelay: staggerDelay(index) }}
         >
           <div className={styles.aside}>
-            <span className="mono">{entry.duration}</span>
-            <span className="mono muted">{entry.location}</span>
+            <span className={styles.meta}>{entry.duration}</span>
+            <span className={`muted ${styles.meta}`}>{entry.location}</span>
           </div>
           <div className={styles.main}>
             <div className={styles.heading}>
@@ -37,7 +37,9 @@ export function TimelineList({ entries }: TimelineListProps) {
               />
               <div>
                 <h2 className={`display ${styles.itemTitle}`}>{entry.title}</h2>
-                <SmartLink href={entry.company_url}>{entry.company}</SmartLink>
+                <SmartLink href={entry.company_url} className={styles.org}>
+                  {entry.company}
+                </SmartLink>
               </div>
             </div>
             <p className={`muted ${styles.description}`}>{entry.description}</p>

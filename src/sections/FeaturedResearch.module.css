@@ -44,7 +44,9 @@
 }
 
 .ref {
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
   text-align: right;
 }
 
@@ -55,12 +57,12 @@
 }
 
 .arrow {
-  color: var(--link);
+  color: var(--ink-muted);
   font-size: 0.7em;
 }
 
 .issuer {
   font-size: 14px;
   font-weight: 600;
-  color: var(--link);
+  color: var(--ink);
 }

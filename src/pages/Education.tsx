@@ -14,13 +14,9 @@ const CONTENT_STYLE = {
 } as const;
 
 export default function Education() {
-  const kicker =
-    degrees.degrees.map((degree) => degree.alt_name).join(" · ") ||
-    educationHeader.subtitle;
   return (
     <div className="page">
       <PageBand
-        kicker={kicker}
         title={educationHeader.title}
         description={educationHeader.description}
       />

@@ -23,6 +23,19 @@
   gap: 6px;
 }
 
+/* Dates, locations and years: one face, size and weight everywhere; secondary lines add .muted. */
+.meta {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Organisation names and outbound links read as text, not as blue links. */
+.org {
+  color: var(--ink);
+  font-weight: 500;
+}
+
 .main {
   flex: 999 1 540px;
   min-width: 0;

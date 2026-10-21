@@ -28,11 +28,7 @@ export default function Experience() {
 
   return (
     <div className="page">
-      <PageBand
-        kicker={experience.subtitle}
-        title={experience.title}
-        description={experience.description}
-      />
+      <PageBand title={experience.title} description={experience.description} />
       <div className="wrap" style={CONTENT_STYLE}>
         {options.length > 1 && (
           <div style={TABS_STYLE}>

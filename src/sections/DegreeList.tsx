@@ -28,7 +28,7 @@ export function DegreeList({ items }: { readonly items: readonly Degree[] }) {
               src={imageUrl(degree.logo_path)}
               alt={`${degree.alt_name} logo`}
             />
-            <span className="mono">{degree.duration}</span>
+            <span className={styles.meta}>{degree.duration}</span>
           </div>
           <div className={styles.main}>
             <h2 className={`display ${styles.bigTitle}`}>{degree.title}</h2>
@@ -40,7 +40,7 @@ export function DegreeList({ items }: { readonly items: readonly Degree[] }) {
                 <li key={line}>{stripLeadingSymbols(line)}</li>
               ))}
             </ul>
-            <SmartLink href={degree.website_link}>
+            <SmartLink href={degree.website_link} className={styles.org}>
               {displayUrl(degree.website_link)}{" "}
               <span className="arrow" aria-hidden="true">
                 ↗

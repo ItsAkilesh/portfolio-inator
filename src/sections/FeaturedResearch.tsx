@@ -30,7 +30,7 @@ function FeaturedCard({
           alt={`${item.company} logo`}
           loading="lazy"
         />
-        <span className={`mono muted ${styles.ref}`}>
+        <span className={`muted ${styles.ref}`}>
           {item.location}
           <br />
           {item.duration}

@@ -140,7 +140,7 @@ ol {
 
 .bullets li::before {
   content: "+";
-  color: var(--link);
+  color: var(--ink-muted);
   flex-shrink: 0;
 }
 

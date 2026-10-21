@@ -30,7 +30,6 @@ export default function Projects() {
   return (
     <div className="page">
       <PageBand
-        kicker={`${projects.length} · ${projectsHeader.subtitle}`}
         title={projectsHeader.title}
         description={projectsHeader.description}
       />

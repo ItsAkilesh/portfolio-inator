@@ -42,8 +42,8 @@ function ProjectRow({ project }: { readonly project: Project }) {
       className={`hover-row ${styles.item} ${styles.rowLink}`}
     >
       <div className={styles.aside}>
-        <span className="mono">{yearOf(project.createdAt)}</span>
-        <span className="mono muted">
+        <span className={styles.meta}>{yearOf(project.createdAt)}</span>
+        <span className={`muted ${styles.meta}`}>
           {project.isFork ? FORK_LABEL : ORIGINAL_LABEL}
         </span>
       </div>

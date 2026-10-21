@@ -16,7 +16,7 @@
   width: 32px;
   padding-top: 5px;
   font-size: 13px;
-  color: var(--link);
+  color: var(--ink-muted);
 }
 
 .body {
@@ -36,7 +36,7 @@
 }
 
 .arrow {
-  color: var(--link);
+  color: var(--ink-muted);
 }
 
 .authors {
@@ -78,7 +78,7 @@
   min-height: 36px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--link);
+  color: var(--ink);
   cursor: pointer;
 }
 

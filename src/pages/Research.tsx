@@ -42,7 +42,6 @@ export default function Research() {
   return (
     <div className="page">
       <PageBand
-        kicker={research.subtitle}
         title={research.title}
         description={
           <>
