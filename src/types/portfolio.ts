@@ -124,7 +124,6 @@ export interface NavItem {
 
 export interface UiCopy {
   readonly skillsTitle: string;
-  readonly toolsLabel: string;
   readonly resumeLabel: string;
   readonly connectLabel: string;
   readonly moreProjectsLabel: string;

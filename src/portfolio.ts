@@ -98,7 +98,6 @@ export const navigation: readonly NavItem[] = [
 
 export const ui: UiCopy = {
   skillsTitle: "What I do",
-  toolsLabel: "tools",
   resumeLabel: "See my resume",
   connectLabel: "Connect with me",
   moreProjectsLabel: "More on GitHub",

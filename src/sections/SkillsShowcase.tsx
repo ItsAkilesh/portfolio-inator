@@ -6,7 +6,7 @@
  */
 import { useId } from "react";
 import { BrandIcon, brandStyle } from "../icons/BrandIcon";
-import { indexLabel, stripLeadingSymbols } from "../lib/text";
+import { stripLeadingSymbols } from "../lib/text";
 import { skills, ui } from "../portfolio";
 import type { SkillGroup } from "../types/portfolio";
 import styles from "./SkillsShowcase.module.css";
@@ -47,7 +47,6 @@ function SkillBlock({ group, index }: SkillBlockProps) {
       aria-labelledby={titleId}
     >
       <div className={styles.text}>
-        <span className={`mono ${styles.num}`}>{indexLabel(index)}</span>
         <h3 id={titleId} className={`display ${styles.groupTitle}`}>
           {group.title}
         </h3>
@@ -64,20 +63,12 @@ function SkillBlock({ group, index }: SkillBlockProps) {
 
 export function SkillsShowcase() {
   const titleId = useId();
-  const toolCount = skills.data.reduce(
-    (total, g) => total + g.softwareSkills.length,
-    0,
-  );
-
   return (
     <section className={`wrap ${styles.section}`} aria-labelledby={titleId}>
       <div className={styles.head}>
         <h2 id={titleId} className={`display ${styles.title}`}>
           {ui.skillsTitle}
         </h2>
-        <span className="mono muted">
-          {toolCount} {ui.toolsLabel}
-        </span>
       </div>
       {skills.data.map((group, index) => (
         <SkillBlock key={group.title} group={group} index={index} />

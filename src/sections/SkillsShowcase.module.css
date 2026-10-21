@@ -46,10 +46,6 @@
   font-size: 18px;
 }
 
-.num {
-  color: var(--link);
-}
-
 .groupTitle {
   font-size: clamp(30px, 3.4vw, 48px);
   font-weight: 700;
