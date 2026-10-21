@@ -39,7 +39,10 @@ function HeroActions() {
             ↗
           </span>
         </SmartLink>
-        <SmartLink href={greeting.connectLink} className={styles.ghost}>
+        <SmartLink
+          href={greeting.connectLink}
+          className={`frost ${styles.ghost}`}
+        >
           {ui.connectLabel}{" "}
           <span className="arrow" aria-hidden="true">
             ↗
@@ -51,7 +54,7 @@ function HeroActions() {
           <SmartLink
             key={item.name}
             href={item.link}
-            className={styles.social}
+            className={`frost ${styles.social}`}
             aria-label={item.name}
             title={item.name}
           >

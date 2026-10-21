@@ -206,6 +206,21 @@ button:hover .arrow {
   animation: enter-up 1s var(--ease) both;
 }
 
+/*
+ * Frosted glass for controls and cards on the accent band: heavy blur with boosted saturation
+ * (the iOS material recipe), a faint white fill, a hairline border and a top highlight.
+ * Ancestors must not use filter, opacity < 1 or mask, or the blur cannot see the dot field.
+ */
+.frost {
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  background: oklch(1 0 0 / 0.08);
+  border: 1px solid oklch(1 0 0 / 0.18);
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.16),
+    0 8px 32px oklch(0 0 0 / 0.18);
+}
+
 .page {
   animation: fade-in 0.6s var(--ease) both;
 }

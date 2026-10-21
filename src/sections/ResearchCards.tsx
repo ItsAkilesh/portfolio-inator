@@ -55,7 +55,7 @@ export function profileCards(): readonly ProfileCard[] {
 
 function Card({ card }: { readonly card: ProfileCard }) {
   return (
-    <SmartLink href={card.href} className={styles.card}>
+    <SmartLink href={card.href} className={`frost ${styles.card}`}>
       <span className={styles.head}>
         <BrandIcon name={card.icon} size={LOGO_SIZE} />
         {card.name}

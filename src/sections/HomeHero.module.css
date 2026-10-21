@@ -10,9 +10,9 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
+  align-content: center;
   gap: 48px;
-  padding-top: clamp(56px, 8vw, 112px);
-  padding-bottom: clamp(56px, 7vw, 96px);
+  padding-block: clamp(48px, 6vw, 88px);
 }
 
 .copy {
@@ -42,19 +42,19 @@
   .inner {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     gap: clamp(32px, 4vw, 72px);
+    /* Fill the first screen so the space above and below the content is even. */
+    min-height: calc(100svh - var(--header-h, 64px));
   }
 
   .aside {
     width: 100%;
     max-width: 520px;
     justify-self: end;
-    /* Pulls the polyhedron up so the cards below it stay in the first screen. */
-    margin-top: clamp(-48px, -3vw, -16px);
   }
 
   .cloud {
     display: block;
-    width: 88%;
+    width: 70%;
     align-self: center;
   }
 }
@@ -131,7 +131,6 @@
   border-radius: 999px;
   font-weight: 600;
   color: var(--on-accent);
-  border: 1px solid var(--on-accent-line);
   transition:
     background-color 0.35s var(--ease),
     border-color 0.35s var(--ease),
@@ -160,7 +159,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--on-accent-line);
   color: var(--on-accent);
   transition:
     background-color 0.35s var(--ease),
