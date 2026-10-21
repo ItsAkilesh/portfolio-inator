@@ -934,6 +934,8 @@ export const links: Omit<PageHeader, "description"> & {
 export const contactPageData = {
   contactSection: {
     title: "Get in Touch",
+    /** false hides the portrait in the Get in Touch header. */
+    showProfileImage: true,
     profile_image_path: "portrait.webp",
     description:
       "Feel free to reach out via email or follow me on social media using the links below. I'm always happy to help or talk.",
