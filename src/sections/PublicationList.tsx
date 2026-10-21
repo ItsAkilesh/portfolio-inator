@@ -26,11 +26,10 @@ export function venueOptions(
 
 interface PublicationProps {
   readonly entry: TimelineEntry;
-  readonly number: string;
   readonly delay: string;
 }
 
-/** Entries numbered by original position, then filtered to one venue (or all). */
+/** Entries keyed by original position (stable React keys), then filtered to one venue (or all). */
 export function numberedForVenue(
   entries: readonly TimelineEntry[],
   venue: string,
@@ -60,7 +59,7 @@ function PublicationHeading({ entry }: { readonly entry: TimelineEntry }) {
   );
 }
 
-function Publication({ entry, number, delay }: PublicationProps) {
+function Publication({ entry, delay }: PublicationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const panelId = useId();
   return (
@@ -68,7 +67,6 @@ function Publication({ entry, number, delay }: PublicationProps) {
       className={`hover-row enter ${styles.item}`}
       style={{ animationDelay: delay }}
     >
-      <span className={`mono ${styles.num}`}>{number}</span>
       <div className={styles.body}>
         <PublicationHeading entry={entry} />
         <div className={styles.meta}>
@@ -124,7 +122,6 @@ export function PublicationList({
           <Publication
             key={`${venue}-${number}`}
             entry={entry}
-            number={number}
             delay={staggerDelay(index)}
           />
         ))}

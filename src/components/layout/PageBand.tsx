@@ -1,6 +1,7 @@
 /**
  * File: PageBand.tsx
- * Purpose: Full-bleed accent header shared by every inner page: kicker, giant title, intro and optional portrait.
+ * Purpose: Full-bleed accent header shared by every inner page: kicker, giant title, intro,
+ *          optional extra content below the intro (children) and optional portrait.
  * Author: Akilesh
  * Date: 2026-10-20
  */
@@ -15,9 +16,17 @@ interface PageBandProps {
   readonly kicker?: string;
   readonly description?: ReactNode;
   readonly image?: { readonly src: string; readonly alt: string };
+  /** Block content below the intro, such as cards (a paragraph cannot hold it). */
+  readonly children?: ReactNode;
 }
 
-export function PageBand({ title, kicker, description, image }: PageBandProps) {
+export function PageBand({
+  title,
+  kicker,
+  description,
+  image,
+  children,
+}: PageBandProps) {
   return (
     <section className={styles.band} aria-labelledby="page-title">
       {settings.showDotField && <DotField />}
@@ -32,6 +41,7 @@ export function PageBand({ title, kicker, description, image }: PageBandProps) {
           {description && (
             <p className={`enter ${styles.description}`}>{description}</p>
           )}
+          {children && <div className={styles.extra}>{children}</div>}
         </div>
         {image && (
           <img

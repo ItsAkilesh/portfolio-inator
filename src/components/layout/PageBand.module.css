@@ -56,6 +56,11 @@
   animation-delay: 0.16s;
 }
 
+.extra {
+  margin-top: clamp(12px, 1.6vw, 20px);
+  max-width: 560px;
+}
+
 .portrait {
   width: 132px;
   height: 132px;
