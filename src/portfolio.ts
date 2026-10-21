@@ -223,6 +223,34 @@ export const skills: { readonly data: readonly SkillGroup[] } = {
           skillName: "LangChain",
           icon: "langchain",
         },
+        {
+          skillName: "LangGraph",
+          icon: "langgraph",
+        },
+        {
+          skillName: "Hugging Face",
+          icon: "huggingface",
+        },
+        {
+          skillName: "MCP",
+          icon: "mcp",
+        },
+        {
+          skillName: "MLflow",
+          icon: "mlflow",
+        },
+        {
+          skillName: "OpenCV",
+          icon: "opencv",
+        },
+        {
+          skillName: "Pandas",
+          icon: "pandas",
+        },
+        {
+          skillName: "NumPy",
+          icon: "numpy",
+        },
       ],
     },
     {
@@ -278,6 +306,30 @@ export const skills: { readonly data: readonly SkillGroup[] } = {
           skillName: "Nginx",
           icon: "nginx",
         },
+        {
+          skillName: "Helm",
+          icon: "helm",
+        },
+        {
+          skillName: "GitHub Actions",
+          icon: "githubactions",
+        },
+        {
+          skillName: "OpenTelemetry",
+          icon: "opentelemetry",
+        },
+        {
+          skillName: "Redis",
+          icon: "redis",
+        },
+        {
+          skillName: "Neo4j",
+          icon: "neo4j",
+        },
+        {
+          skillName: "Hadoop",
+          icon: "hadoop",
+        },
       ],
     },
     {
@@ -332,6 +384,62 @@ export const skills: { readonly data: readonly SkillGroup[] } = {
         {
           skillName: "Flutter",
           icon: "flutter",
+        },
+        {
+          skillName: "TypeScript",
+          icon: "typescript",
+        },
+        {
+          skillName: "Next.js",
+          icon: "nextjs",
+        },
+        {
+          skillName: "GraphQL",
+          icon: "graphql",
+        },
+        {
+          skillName: "WebRTC",
+          icon: "webrtc",
+        },
+        {
+          skillName: "Sails.js",
+          icon: "sailsjs",
+        },
+        {
+          skillName: ".NET",
+          icon: "dotnet",
+        },
+        {
+          skillName: "Java",
+          icon: "java",
+        },
+        {
+          skillName: "C",
+          icon: "c",
+        },
+        {
+          skillName: "C++",
+          icon: "cplusplus",
+        },
+        {
+          skillName: "Go",
+          icon: "go",
+        },
+        {
+          skillName: "Rust",
+          icon: "rust",
+        },
+        {
+          skillName: "Dart",
+          icon: "dart",
+        },
+        {
+          skillName: "Ruby",
+          icon: "ruby",
+        },
+        {
+          skillName: "Shell",
+          icon: "shell",
         },
       ],
     },
