@@ -6,6 +6,14 @@
  * Date: 2026-10-20
  */
 :root {
+  /* Frosted glass material, shared by .frost and the icon cloud discs. */
+  --glass-blur: blur(48px);
+  --glass-fill:
+    radial-gradient(120% 90% at 0% 0%, oklch(1 0 0 / 0.07), transparent 60%),
+    linear-gradient(180deg, oklch(1 0 0 / 0.05), oklch(1 0 0 / 0.02)),
+    oklch(0.55 0 0 / 0.1);
+  --glass-border: oklch(1 0 0 / 0.1);
+  --glass-shadow: 0 24px 60px oklch(0 0 0 / 0.3);
   --bg: oklch(0.975 0.005 262);
   --surface: oklch(0.945 0.01 262);
   --ink: oklch(0.2 0.03 262);
@@ -219,14 +227,11 @@ button:hover .arrow {
  * cannot see the dot field.
  */
 .frost {
-  -webkit-backdrop-filter: blur(48px);
-  backdrop-filter: blur(48px);
-  background:
-    radial-gradient(120% 90% at 0% 0%, oklch(1 0 0 / 0.07), transparent 60%),
-    linear-gradient(180deg, oklch(1 0 0 / 0.05), oklch(1 0 0 / 0.02)),
-    oklch(0.55 0 0 / 0.1);
-  border: 1px solid oklch(1 0 0 / 0.1);
-  box-shadow: 0 24px 60px oklch(0 0 0 / 0.3);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .page {

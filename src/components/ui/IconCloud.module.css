@@ -74,17 +74,15 @@
   justify-content: center;
   border-radius: 50%;
   color: var(--on-accent);
-  background: var(--accent);
-  border: 1px solid var(--on-accent);
+  /* Same frosted material as the hero cards, with a tighter shadow for the small discs. */
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  background: var(--glass-fill);
+  border: 1px solid oklch(1 0 0 / 0.22);
+  box-shadow: 0 6px 18px oklch(0 0 0 / 0.28);
   opacity: 0;
   z-index: 2;
   will-change: transform, opacity;
-}
-
-/* Darker discs in dark mode so the icons sit deeper in the glass. */
-:global(html[data-theme="dark"]) .item {
-  background: color-mix(in oklch, var(--accent) 45%, var(--bg));
-  border-color: oklch(1 0 0 / 0.75);
 }
 
 @keyframes cloud-in {
