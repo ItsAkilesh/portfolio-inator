@@ -38,10 +38,45 @@ export const settings: Settings = {
   showResearchCards: true,
 };
 
+/** Written into index.html at build time (title, meta, social previews, schema.org data). */
 export const seo: Seo = {
   title: "Akilesh Srinivasa Kumar",
   description:
     "Innovative software engineer specializing in Generative AI, XR, and cloud-native solutions, with published research experience and a strong background in full-stack development and intelligent systems.",
+  author: "Akilesh Srinivasa Kumar",
+  keywords: [
+    "Akilesh Srinivasa Kumar",
+    "Akilesh S",
+    "software engineer",
+    "generative AI",
+    "LLMOps",
+    "AI security",
+    "XR",
+    "cloud",
+    "portfolio",
+  ],
+  siteUrl: "https://itsakilesh.github.io/",
+  language: "en-US",
+  favicon: "icons/Akilesh_Circle_new.png",
+  themeColor: "#1a2d51",
+  social: {
+    title: "Akilesh Srinivasa Kumar | Akilesh S",
+    description:
+      "Software engineer working on generative AI, XR and cloud-native systems, with published research.",
+    image: "icons/Akilesh_Circle_new.png",
+    imageAlt: "Portrait of Akilesh Srinivasa Kumar",
+    twitterCard: "summary_large_image",
+    twitterHandle: "",
+  },
+  verification: {
+    google: "",
+    bing: "",
+  },
+  structuredData: {
+    isEnabled: true,
+    jobTitle: "Software Engineer",
+    worksFor: "Vigilnz Inc.",
+  },
 };
 
 export const greeting: Greeting = {
@@ -117,7 +152,10 @@ export const ui: UiCopy = {
   },
 };
 
-/** Leave an ID empty to disable that provider. */
+/**
+ * Google Analytics 4 measurement ID ("G-...") and Microsoft Clarity project ID. Loaded only in
+ * production builds; leave an ID empty to disable that provider.
+ */
 export const analytics: AnalyticsIds = {
   googleAnalyticsId: "G-DDW4JPG9S7",
   clarityId: "uwpnm1dcod",

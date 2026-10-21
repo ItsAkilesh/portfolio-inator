@@ -15,9 +15,44 @@ export interface Settings {
   readonly showResearchCards: boolean;
 }
 
+/** Everything written into the page <head>, at build time, from portfolio.ts. */
 export interface Seo {
+  /** Browser tab and search-result title; inner pages prefix their name. */
   readonly title: string;
   readonly description: string;
+  readonly author: string;
+  readonly keywords: readonly string[];
+  /** Public site address with a trailing slash; used for canonical and social links. */
+  readonly siteUrl: string;
+  /** "en", "en-US", ... */
+  readonly language: string;
+  /** Favicon and app icon, a path under public/. */
+  readonly favicon: string;
+  /** Browser UI colour on mobile. */
+  readonly themeColor: string;
+  readonly social: {
+    /** Title and description shown in link previews; fall back to title/description. */
+    readonly title?: string;
+    readonly description?: string;
+    /** Preview image, a path under public/ or an absolute https URL. */
+    readonly image: string;
+    readonly imageAlt: string;
+    /** "summary" or "summary_large_image". */
+    readonly twitterCard: "summary" | "summary_large_image";
+    /** X/Twitter handle without "@"; leave empty to omit. */
+    readonly twitterHandle?: string;
+  };
+  /** Search-console ownership tokens; leave empty to omit the tag. */
+  readonly verification: {
+    readonly google?: string;
+    readonly bing?: string;
+  };
+  /** Adds schema.org Person data (name, job, links) so search engines can build a profile card. */
+  readonly structuredData: {
+    readonly isEnabled: boolean;
+    readonly jobTitle: string;
+    readonly worksFor?: string;
+  };
 }
 
 export interface Greeting {

@@ -12,7 +12,9 @@ const LEVEL_RANK: Record<LogLevel, number> = {
   WARN: 2,
   ERROR: 3,
 };
-const MIN_LEVEL: LogLevel = import.meta.env.PROD ? "WARN" : "DEBUG";
+/* Optional chaining lets vite.config.ts import the portfolio config (and this logger) in Node,
+ * where import.meta.env does not exist. */
+const MIN_LEVEL: LogLevel = import.meta.env?.PROD ? "WARN" : "DEBUG";
 
 export interface LogEntry {
   readonly timestamp: string;

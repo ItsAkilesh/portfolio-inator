@@ -14,13 +14,24 @@ a small set of reusable components driven entirely by one config folder.
 
 ```bash
 pnpm install
-pnpm dev          # local dev server
+pnpm dev          # refresh research stats, then start the dev server
 pnpm test         # unit + integration tests
-pnpm build        # type-check and build to ./build
+pnpm build        # refresh research stats, type-check and build to ./build
+pnpm stats        # refresh research stats only
 pnpm fetch-data   # refresh GitHub projects (needs GITHUB_TOKEN and GITHUB_USERNAME in .env)
 ```
 
 Node 22.12 or newer is required.
+
+### Research stats
+
+`pnpm dev` and `pnpm build` first run `scripts/fetch-research-stats.ts`, which reads the Google
+Scholar and ResearchGate numbers from the profile URLs in `src/portfolio.ts` and saves them to
+`src/shared/research/profileStats.json`. It tries a plain HTTPS request, then a headless Chrome or
+Edge through `playwright-core` (no browser download; set `RESEARCH_BROWSER_PATH` to use another
+Chromium). If a site blocks it, the previous numbers stay, and the numbers written in
+`portfolio.ts` are the final fallback. It never fails a build. Set `SKIP_RESEARCH_FETCH=1` to skip
+it. The cards under the icon cloud can be hidden with `settings.showResearchCards`.
 
 ## Customize everything from `src/portfolio.ts`
 
@@ -59,6 +70,14 @@ palettes: {
 Or write all eleven tokens by hand for light and dark, as the `graphite` example does.
 The tokens become CSS custom properties (`--bg`, `--accent`, `--ink`, ...) on `<html>`,
 and every stylesheet uses only those variables.
+
+### SEO and analytics
+
+`seo` in the Site section sets the page title, description, keywords, canonical URL, favicon,
+theme colour, link-preview (Open Graph and Twitter) tags, search-console verification tokens and
+schema.org Person data. `vite.config.ts` writes them into `index.html` at build time, so crawlers
+and link previews see them without running JavaScript. `analytics` holds the Google Analytics 4
+and Microsoft Clarity IDs; both load only in production builds, and an empty ID turns one off.
 
 ### Icons
 

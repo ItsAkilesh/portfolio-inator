@@ -1,32 +1,16 @@
 <!doctype html>
 <!--
   File: index.html
-  Purpose: HTML shell for the Vite build: meta tags, GitHub Pages SPA redirect handling, app mount point.
+  Purpose: HTML shell for the Vite build. SEO tags and the page language are injected from
+           src/portfolio.ts at build time; also GitHub Pages SPA redirect handling and the app mount point.
   Author: Akilesh
   Date: 2026-10-20
 -->
-<html lang="en">
+<html lang="%SEO_LANG%">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/icons/Akilesh_Circle_new.png" />
-    <title>Akilesh Srinivasa Kumar</title>
-    <meta
-      name="description"
-      content="Innovative software engineer specializing in Generative AI, XR, and cloud-native solutions, with published research experience and a strong background in full-stack development and intelligent systems."
-    />
-    <meta name="author" content="Akilesh Srinivasa Kumar" />
-    <meta name="theme-color" content="#1a2d51" />
-    <meta property="og:title" content="Akilesh Srinivasa Kumar | Akilesh S" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://itsakilesh.github.io/" />
-    <meta
-      property="og:description"
-      content="Software engineer working on generative AI, XR and cloud-native systems, with published research."
-    />
-    <meta property="og:image" content="https://itsakilesh.github.io/icons/Akilesh_Circle_new.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="manifest" href="/manifest.json" />
+    <!-- seo-tags: generated from seo in src/portfolio.ts by vite.config.ts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script>
