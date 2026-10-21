@@ -39,30 +39,49 @@
 }
 
 @media (min-width: 960px) {
+  /*
+   * The row fills the first screen. The copy is centered in it; the right column uses the full
+   * height, so the polyhedron grows into free space instead of being squeezed to the copy's height.
+   */
   .inner {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: clamp(32px, 4vw, 72px);
-    /* Fill the first screen so the space above and below the content is even. */
-    min-height: calc(100svh - var(--header-h, 64px));
-    /* Both columns take the copy's height: the right column never sets the row height. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: stretch;
+    align-content: stretch;
+    gap: clamp(32px, 4vw, 72px);
+    min-height: calc(100svh - var(--header-h, 64px));
+  }
+
+  .copy {
+    align-self: center;
   }
 
   .aside {
     width: 100%;
-    max-width: 520px;
+    max-width: 560px;
     justify-self: end;
+    justify-content: center;
+    container-type: inline-size;
   }
 
-  /* The cloud fills whatever height the cards leave, so its top meets the name and the cards'
-   * bottom meets the social links. Its width follows from the height (square). */
+  /*
+   * Square, as tall as the column allows but never wider than it (100cqi). --cloud-min comes from
+   * IconCloud and is the smallest box that holds the polyhedron for its icon count, so the shape
+   * never spills onto the cards; when the screen is short, the row grows instead.
+   */
   .cloud {
     display: block;
     flex: 1 1 0;
-    min-height: 0;
+    min-height: min(var(--cloud-min, 0px), 100cqi);
+    max-height: 100cqi;
     width: auto;
     max-width: 100%;
     align-self: center;
+  }
+}
+
+@media (min-width: 1280px) {
+  .inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   }
 }
 

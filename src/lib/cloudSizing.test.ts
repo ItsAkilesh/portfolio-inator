@@ -5,7 +5,14 @@
  * Date: 2026-10-20
  */
 import { describe, expect, it } from "vitest";
-import { cloudRadius, discSize, iconSize, RADIUS_RATIO } from "./cloudSizing";
+import {
+  cloudRadius,
+  discSize,
+  iconSize,
+  minCloudBox,
+  minCloudRadius,
+  RADIUS_RATIO,
+} from "./cloudSizing";
 
 describe("discSize", () => {
   it("keeps the full disc for small clouds", () => {
@@ -44,5 +51,19 @@ describe("cloudRadius", () => {
   });
   it("handles an empty cloud", () => {
     expect(cloudRadius(300, 0)).toBe(300 * RADIUS_RATIO);
+  });
+});
+
+describe("minCloudBox", () => {
+  it("fits the minimum diameter plus one disc", () => {
+    expect(minCloudBox(61)).toBe(
+      Math.ceil(2 * minCloudRadius(61) + discSize(61)),
+    );
+  });
+  it("grows with the icon count", () => {
+    expect(minCloudBox(30)).toBeLessThan(minCloudBox(90));
+  });
+  it("is one disc for an empty cloud", () => {
+    expect(minCloudBox(0)).toBe(Math.ceil(2 * minCloudRadius(1) + discSize(0)));
   });
 });

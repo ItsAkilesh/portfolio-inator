@@ -40,8 +40,15 @@ export const iconSize = (count: number): number =>
  * Past that point the polyhedron grows beyond its container.
  */
 export function cloudRadius(containerPx: number, count: number): number {
-  const safe = Math.max(count, 1);
-  const minimum =
-    (discSize(safe) * SPACING_IN_DISCS) / Math.sqrt(SPHERE_AREA / safe);
-  return Math.max(containerPx * RADIUS_RATIO, minimum);
+  return Math.max(containerPx * RADIUS_RATIO, minCloudRadius(count));
 }
+
+/** Smallest radius (px) that keeps neighbors SPACING_IN_DISCS apart. */
+export function minCloudRadius(count: number): number {
+  const safe = Math.max(count, 1);
+  return (discSize(safe) * SPACING_IN_DISCS) / Math.sqrt(SPHERE_AREA / safe);
+}
+
+/** Smallest square box (px) that holds the polyhedron and its outermost discs. */
+export const minCloudBox = (count: number): number =>
+  Math.ceil(2 * minCloudRadius(count) + discSize(count));

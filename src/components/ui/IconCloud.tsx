@@ -17,7 +17,7 @@ import {
 } from "../../hooks/useIconCloud";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { BrandIcon } from "../../icons/BrandIcon";
-import { discSize, iconSize } from "../../lib/cloudSizing";
+import { discSize, iconSize, minCloudBox } from "../../lib/cloudSizing";
 import type { IconKey } from "../../icons/registry";
 import {
   fibonacciSphere,
@@ -76,12 +76,15 @@ export function IconCloud({ icons, className }: IconCloudProps) {
   const keys = useMemo(() => uniqueIcons(icons), [icons]);
   const mesh = useMemo(() => buildMesh(keys.length), [keys.length]);
   useIconCloud(containerRef, mesh, !isReduced);
-  const discStyle = { "--disc": `${discSize(keys.length)}px` } as CSSProperties;
+  const sizeStyle = {
+    "--disc": `${discSize(keys.length)}px`,
+    "--cloud-min": `${minCloudBox(keys.length)}px`,
+  } as CSSProperties;
   return (
     <div
       ref={containerRef}
       className={`${styles.cloud} ${className ?? ""}`}
-      style={discStyle}
+      style={sizeStyle}
       aria-hidden="true"
     >
       <span className={styles.frost} />
