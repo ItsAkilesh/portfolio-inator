@@ -31,3 +31,6 @@ yarn-error.log*
 # end-to-end test output
 /test-results
 /playwright-report
+
+# Files the Claude desktop app saves into the project
+/Claude outputs/
