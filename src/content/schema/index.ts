@@ -14,10 +14,20 @@ import { flag, list, routePath, text } from "./fields";
 import { siteSchema } from "./site";
 import { themeSchema } from "./theme";
 
+/** Routes the app itself uses; a page cannot take them. */
+const RESERVED_PATHS: ReadonlySet<string> = new Set(["/", "/admin", "/splash"]);
+const PAGE_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
 export const pageSchema = z
   .object({
-    id: text({ title: "ID", description: "Unique key, e.g. talks" }),
-    path: routePath({ title: "Path", description: "e.g. /talks" }),
+    id: text({ title: "ID", description: "Unique key, e.g. talks" }).regex(
+      PAGE_ID,
+      "Use lowercase words joined with dashes",
+    ),
+    path: routePath({ title: "Path", description: "e.g. /talks" }).refine(
+      (path) => !RESERVED_PATHS.has(path),
+      "This path is reserved",
+    ),
     label: text({
       title: "Name",
       description: "Navigation label and tab title",

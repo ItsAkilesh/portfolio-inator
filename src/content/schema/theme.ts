@@ -39,14 +39,10 @@ export const generatedPaletteSchema = z
       .min(0)
       .max(0.37)
       .meta({ title: "Chroma", description: "0.12 muted, 0.23 vivid" }),
-    lightness: z
-      .number()
-      .min(0.2)
-      .max(0.5)
-      .meta({
-        title: "Lightness",
-        description: "Accent lightness in light mode",
-      }),
+    lightness: z.number().min(0.2).max(0.5).meta({
+      title: "Lightness",
+      description: "Accent lightness in light mode",
+    }),
   })
   .meta({ title: "Generated from a hue" });
 
@@ -64,12 +60,10 @@ export const paletteSourceSchema = z
 
 export const themeSchema = z
   .object({
-    defaultMode: z
-      .enum(["system", "light", "dark"])
-      .meta({
-        title: "Default mode",
-        description: '"system" follows the visitor\'s setting',
-      }),
+    defaultMode: z.enum(["system", "light", "dark"]).meta({
+      title: "Default mode",
+      description: '"system" follows the visitor\'s setting',
+    }),
     showThemeToggle: flag({
       title: "Show light/dark toggle",
       description: "Off forces the default mode",

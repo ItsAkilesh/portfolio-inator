@@ -30,52 +30,76 @@ interface Stores {
   readonly images: ImageStore;
 }
 
+interface RequestLine {
+  readonly requestId: string;
+  readonly method: string;
+  readonly path: string;
+}
+
+const requestLine = (req: IncomingMessage): RequestLine => ({
+  requestId: randomUUID().slice(0, 8),
+  method: req.method ?? "GET",
+  path: (req.url ?? "/").split("?")[0] ?? "/",
+});
+
+function isAllowed(
+  req: IncomingMessage,
+  line: RequestLine,
+  token: string,
+): boolean {
+  const facts = {
+    host: header(req, "host"),
+    origin: header(req, "origin"),
+    token: header(req, TOKEN_HEADER),
+    method: line.method,
+  };
+  const access = checkAccess(facts, token);
+  if (!access.ok)
+    logger.warn(
+      "admin.access",
+      `req=${line.requestId} ${line.method} ${line.path} denied: ${access.reason}`,
+    );
+  return access.ok;
+}
+
+function sendFailure(
+  res: ServerResponse,
+  line: RequestLine,
+  error: unknown,
+): void {
+  const status = error instanceof HttpError ? error.status : 500;
+  logger.error(
+    "admin.request",
+    `req=${line.requestId} ${line.method} ${line.path} failed: ${describeError(error)}`,
+  );
+  /* Internal errors stay in the dev server log; the page gets a generic message. */
+  const message =
+    status === 500
+      ? "Internal error, see the dev server log"
+      : describeError(error);
+  sendJson(res, status, { issues: [message] });
+}
+
 async function handle(
   req: IncomingMessage,
   res: ServerResponse,
   token: string,
   stores: Stores,
 ) {
-  const requestId = randomUUID().slice(0, 8);
-  const method = req.method ?? "GET";
-  const path = (req.url ?? "/").split("?")[0] ?? "/";
-  const access = checkAccess(
-    {
-      host: header(req, "host"),
-      origin: header(req, "origin"),
-      token: header(req, TOKEN_HEADER),
-      method,
-    },
-    token,
-  );
-  if (!access.ok) {
-    logger.warn(
-      "admin.access",
-      `req=${requestId} ${method} ${path} denied: ${access.reason}`,
-    );
+  const line = requestLine(req);
+  if (!isAllowed(req, line, token)) {
     sendJson(res, 403, { issues: ["Forbidden"] });
     return;
   }
-  const route = ROUTES[`${method} ${path}`];
+  const route = ROUTES[`${line.method} ${line.path}`];
   if (!route) {
     sendJson(res, 404, { issues: ["Not found"] });
     return;
   }
   try {
-    await route({ req, res, requestId, ...stores });
+    await route({ req, res, requestId: line.requestId, ...stores });
   } catch (error) {
-    const status = error instanceof HttpError ? error.status : 500;
-    logger.error(
-      "admin.request",
-      `req=${requestId} ${method} ${path} failed: ${describeError(error)}`,
-    );
-    sendJson(res, status, {
-      issues: [
-        status === 500
-          ? "Internal error, see the dev server log"
-          : describeError(error),
-      ],
-    });
+    sendFailure(res, line, error);
   }
 }
 

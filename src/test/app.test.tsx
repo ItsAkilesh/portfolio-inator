@@ -7,7 +7,7 @@
  */
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { titleForPath } from "../hooks/useRouteEffects";
 import { homePage, pages, skills, theme } from "../portfolio";
@@ -49,6 +49,18 @@ describe("routes", () => {
     renderAt("/");
     expect(await screen.findByRole("heading", { level: 1 })).toBeTruthy();
     expect(screen.getAllByRole("article").length).toBe(skills.length);
+  });
+
+  it("serves the admin console in the dev environment", async () => {
+    /* Only fetch is replaced, so the setup file's browser stubs stay in place. */
+    const fetchSpy = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(async () => new Response("{}", { status: 503 }));
+    renderAt("/admin");
+    expect(
+      await screen.findByRole("navigation", { name: "Admin sections" }),
+    ).toBeTruthy();
+    fetchSpy.mockRestore();
   });
 
   it("unknown paths render the not found page", async () => {

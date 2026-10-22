@@ -168,12 +168,10 @@ export const researchProfilesSchema = z
 
 export const projectOptionsSchema = z
   .object({
-    languageIcons: z
-      .record(z.string(), icon({ title: "Icon" }))
-      .meta({
-        title: "Language icons",
-        description: "GitHub language name to icon",
-      }),
+    languageIcons: z.record(z.string(), icon({ title: "Icon" })).meta({
+      title: "Language icons",
+      description: "GitHub language name to icon",
+    }),
   })
   .meta({ title: "Projects" });
 
