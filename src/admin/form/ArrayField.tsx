@@ -5,10 +5,10 @@
  * Author: Akilesh
  * Date: 2026-10-21
  */
-import type { ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
 import type { z } from "zod";
 import { getIn, moveItem, removeAt, type Path } from "../paths";
-import { useForm, type FieldProps } from "./FormContext";
+import { DepthContext, useForm, type FieldProps } from "./FormContext";
 import { Group, ProblemBadge } from "./Group";
 import { arrayElement, kindOf, metaOf, titleOf } from "./introspect";
 import { AddItem, ItemControls, summaryOf } from "./listParts";
@@ -43,17 +43,33 @@ function ScalarItem({ element, itemPath, index, controls }: ItemProps) {
   );
 }
 
+/** Nesting levels get distinct shades; deeper levels cycle. */
+const DEPTH_SHADES = 4;
+
 function NestedItem({ element, item, itemPath, index, controls }: ItemProps) {
   const { Field } = useForm();
+  const depth = useContext(DepthContext);
   const summary = summaryOf(element, item, index);
+  const kind = metaOf(element).title;
   return (
-    <details className={styles.item}>
+    <details className={styles.item} data-depth={depth % DEPTH_SHADES}>
       <summary className={styles.summary}>
-        <span>{summary}</span>
+        {kind ? <span className={styles.chip}>{kind}</span> : null}
+        <span className={styles.summaryText}>{summary}</span>
         <ProblemBadge path={itemPath} />
         {controls}
       </summary>
-      <Field schema={element} path={itemPath} label={summary} isBare />
+      <div className={styles.itemBody}>
+        <DepthContext.Provider value={depth + 1}>
+          <Field
+            schema={element}
+            path={itemPath}
+            label={summary}
+            isBare
+            isTypeLocked
+          />
+        </DepthContext.Provider>
+      </div>
     </details>
   );
 }
@@ -64,7 +80,12 @@ export function ArrayField({ schema, path, label }: FieldProps) {
   const element = arrayElement(schema);
   const Item = NESTED_KINDS.has(kindOf(element)) ? NestedItem : ScalarItem;
   return (
-    <Group label={label} description={metaOf(schema).description} path={path}>
+    <Group
+      label={label}
+      description={metaOf(schema).description}
+      path={path}
+      count={items.length}
+    >
       {items.map((item, index) => (
         <Item
           key={index}

@@ -13,6 +13,16 @@ export interface ProjectPaths {
   readonly imagesDir: string;
 }
 
+/**
+ * True when two paths name the same file. Vite reports changed files with forward slashes while
+ * path.resolve() returns backslashes on Windows, and Windows drive letters differ in case.
+ */
+export function isSameFile(a: string, b: string): boolean {
+  const normalize = (p: string) =>
+    p.replace(/\\/g, "/").replace(/^[a-z]:/i, (d) => d.toLowerCase());
+  return normalize(a) === normalize(b);
+}
+
 export const projectPaths = (root: string): ProjectPaths => ({
   contentFile: resolve(root, "src/content/portfolio.json"),
   schemaFile: resolve(root, "src/content/portfolio.schema.json"),

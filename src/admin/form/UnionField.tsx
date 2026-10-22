@@ -1,7 +1,8 @@
 /**
  * File: UnionField.tsx
  * Purpose: Generated editor for a discriminated union (a block, a palette): a type picker and the
- *          chosen type's fields. Changing type asks first, since it starts the item over.
+ *          chosen type's fields. Changing type asks first, since it starts the item over. List items
+ *          lock their type (it is chosen when adding), so the picker only shows for single values.
  * Author: Akilesh
  * Date: 2026-10-21
  */
@@ -44,7 +45,13 @@ function TypePicker({ options, current, onPick }: TypePickerProps) {
   );
 }
 
-export function UnionField({ schema, path, label, isBare }: FieldProps) {
+export function UnionField({
+  schema,
+  path,
+  label,
+  isBare,
+  isTypeLocked,
+}: FieldProps) {
   const { root, onChange, Field } = useForm();
   const options = unionOptions(schema);
   const option = optionFor(schema, getIn(root, path));
@@ -65,7 +72,9 @@ export function UnionField({ schema, path, label, isBare }: FieldProps) {
       path={path}
       isBare={isBare}
     >
-      <TypePicker options={options} current={current} onPick={switchTo} />
+      {isTypeLocked ? null : (
+        <TypePicker options={options} current={current} onPick={switchTo} />
+      )}
       {fields.map(([key, child]) => (
         <Field
           key={key}

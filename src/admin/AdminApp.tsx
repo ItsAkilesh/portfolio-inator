@@ -57,6 +57,7 @@ function Editor({ section, content, issues }: EditorProps) {
             schema={schema}
             path={section.path}
             label={section.label}
+            isBare
           />
         </FormContext.Provider>
       )}

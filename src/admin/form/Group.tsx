@@ -1,13 +1,12 @@
 /**
  * File: Group.tsx
- * Purpose: Frame around a container field (legend, help, problem badge), or a frameless stack when the
- *          container already sits inside an expanded list item.
+ * Purpose: Heading row around a container field (title, count, problem badge, help), or a plain stack
+ *          when the container already sits inside an expanded list item.
  * Author: Akilesh
  * Date: 2026-10-21
  */
 import type { ReactNode } from "react";
-import type { Path } from "../paths";
-import { pathId } from "../paths";
+import { pathId, type Path } from "../paths";
 import { issueCount, useForm } from "./FormContext";
 import styles from "./form.module.css";
 
@@ -16,6 +15,8 @@ interface GroupProps {
   readonly description?: string;
   readonly path: Path;
   readonly isBare?: boolean;
+  /** Number of entries, shown next to list titles. */
+  readonly count?: number;
   readonly children: ReactNode;
 }
 
@@ -30,6 +31,7 @@ export function Group({
   description,
   path,
   isBare = false,
+  count,
   children,
 }: GroupProps) {
   const help = description && <p className={styles.help}>{description}</p>;
@@ -41,13 +43,14 @@ export function Group({
       </div>
     );
   return (
-    <fieldset className={styles.group}>
-      <legend className={styles.legend}>
+    <section className={styles.group} aria-label={label}>
+      <h3 className={styles.legend}>
         {label}
+        {count !== undefined && <span className={styles.count}>{count}</span>}
         <ProblemBadge path={path} />
-      </legend>
+      </h3>
       {help}
-      {children}
-    </fieldset>
+      <div className={styles.groupBody}>{children}</div>
+    </section>
   );
 }

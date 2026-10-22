@@ -1,34 +1,58 @@
 /**
  * File: form.module.css
- * Purpose: Styles for generated form fields: groups, collapsible list items, inputs and messages.
+ * Purpose: Styles for generated form fields: titled groups, collapsible list items shaded by nesting
+ *          depth, inputs, the searchable combobox and validation messages. Colours come from the
+ *          admin console's black theme tokens (admin.module.css).
  * Author: Akilesh
  * Date: 2026-10-21
  */
+
+/* ---------- Groups ---------- */
+
 .group {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin: 0;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  gap: 10px;
   min-width: 0;
 }
 
 .legend {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 6px;
+  font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.count {
+  padding: 0 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 18px;
+  letter-spacing: 0;
+  color: var(--ink);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+}
+
+.groupBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
 }
 
 .bare {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding-top: 6px;
+  gap: 18px;
 }
+
+/* ---------- Leaf fields ---------- */
 
 .field {
   display: flex;
@@ -39,31 +63,47 @@
 .label {
   font-size: 13px;
   font-weight: 600;
+  color: var(--ink);
 }
 
 .help {
   font-size: 12px;
+  line-height: 1.5;
   color: var(--ink-muted);
 }
 
 .error {
   font-size: 12px;
   font-weight: 600;
-  color: oklch(0.6 0.2 25);
+  color: var(--danger);
 }
 
 .field[data-invalid] .input {
-  border-color: oklch(0.6 0.2 25);
+  border-color: var(--danger);
 }
 
 .input {
   font: inherit;
   width: 100%;
   min-width: 0;
-  padding: 8px 10px;
+  min-height: 36px;
+  padding: 7px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--bg);
+  color: var(--ink);
+}
+
+.input:hover {
+  border-color: var(--line-strong);
+}
+
+select.input {
+  cursor: pointer;
+}
+
+select.input option {
+  background: var(--surface);
   color: var(--ink);
 }
 
@@ -72,7 +112,9 @@ textarea.input {
   line-height: 1.5;
 }
 
-.input:focus-visible {
+.input:focus-visible,
+.button:focus-visible,
+.icon:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 1px;
 }
@@ -92,14 +134,15 @@ textarea.input {
 .swatch,
 .preview {
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
+  background: var(--surface);
 }
 
 .preview img {
@@ -108,6 +151,8 @@ textarea.input {
   object-fit: contain;
 }
 
+/* ---------- Buttons ---------- */
+
 .button,
 .icon {
   font: inherit;
@@ -115,14 +160,20 @@ textarea.input {
   flex-shrink: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--surface);
+  background: var(--surface-raised);
   color: var(--ink);
   cursor: pointer;
 }
 
+.button:hover,
+.icon:hover:not(:disabled) {
+  border-color: var(--line-strong);
+}
+
 .button {
   align-self: flex-start;
-  padding: 7px 14px;
+  min-height: 36px;
+  padding: 0 14px;
 }
 
 .icon {
@@ -132,35 +183,93 @@ textarea.input {
 }
 
 .icon:disabled {
-  opacity: 0.35;
+  opacity: 0.3;
   cursor: default;
 }
 
+/* ---------- Collapsible list items, shaded by depth ---------- */
+
 .item {
+  --edge: #71717a;
   border: 1px solid var(--line);
+  border-left: 3px solid var(--edge);
   border-radius: 10px;
-  padding: 4px 10px;
+  background: #0a0a0a;
+}
+
+.item[data-depth="1"] {
+  --edge: #60a5fa;
+  background: #111113;
+}
+
+.item[data-depth="2"] {
+  --edge: #34d399;
+  background: #18181b;
+}
+
+.item[data-depth="3"] {
+  --edge: #fbbf24;
+  background: #1f1f23;
 }
 
 .item[open] {
-  padding-bottom: 12px;
+  border-color: var(--line-strong);
+  border-left-color: var(--edge);
 }
 
 .summary {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 40px;
+  min-height: 46px;
+  padding: 6px 10px 6px 12px;
   cursor: pointer;
   font-weight: 600;
+  list-style: none;
 }
 
-.summary > span:first-of-type {
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary::before {
+  content: "›";
+  flex-shrink: 0;
+  width: 12px;
+  color: var(--ink-muted);
+  transition: transform 0.15s ease;
+}
+
+.item[open] > .summary::before {
+  transform: rotate(90deg);
+}
+
+.item[open] > .summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.chip {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--edge);
+  border: 1px solid color-mix(in srgb, var(--edge) 45%, transparent);
+}
+
+.summaryText {
   flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.itemBody {
+  padding: 16px 14px 16px;
 }
 
 .controls {
@@ -187,6 +296,93 @@ textarea.input {
   font-weight: 700;
   line-height: 20px;
   text-align: center;
-  color: #fff;
-  background: oklch(0.6 0.2 25);
+  letter-spacing: 0;
+  color: #000;
+  background: var(--danger);
+}
+
+/* ---------- Searchable combobox (icons, images) ---------- */
+
+.combo {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.combo .input {
+  padding-right: 38px;
+}
+
+.comboToggle {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 34px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  border-radius: 0 7px 7px 0;
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+
+.comboList {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.6);
+}
+
+.comboOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.comboOption[data-active] {
+  background: var(--surface-raised);
+  outline: 1px solid var(--line-strong);
+}
+
+.comboOption[aria-selected="true"] {
+  font-weight: 700;
+}
+
+.comboPreview {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: #fff;
+  color: #000;
+  overflow: hidden;
+}
+
+.comboPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.comboEmpty {
+  padding: 8px;
+  font-size: 13px;
+  color: var(--ink-muted);
 }

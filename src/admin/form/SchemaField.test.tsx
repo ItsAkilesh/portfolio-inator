@@ -81,7 +81,7 @@ describe("SchemaField", () => {
 
   it("adds, removes and reorders list items", () => {
     const onChange = renderForm();
-    const tags = screen.getByRole("group", { name: "Tags" });
+    const tags = screen.getByRole("region", { name: "Tags" });
     fireEvent.click(within(tags).getByRole("button", { name: "Add" }));
     expect(onChange).toHaveBeenLastCalledWith(["tags"], ["a", "b", ""]);
     fireEvent.click(
@@ -130,5 +130,78 @@ describe("record and union editors", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Remove python" }));
     expect(onChange).toHaveBeenLastCalledWith(["icons"], {});
+  });
+});
+
+describe("nested list items", () => {
+  const link = z
+    .object({ label: z.string().meta({ title: "Label" }) })
+    .meta({ title: "Link", summaryKey: "label" });
+  const text = z
+    .object({
+      type: z.literal("text"),
+      heading: z.string().meta({ title: "Heading" }),
+      links: z.array(link).meta({ title: "Links" }),
+    })
+    .meta({ title: "Text" });
+  const image = z
+    .object({ type: z.literal("image"), src: z.string() })
+    .meta({ title: "Image" });
+  const pageSchema = z.object({
+    blocks: z
+      .array(
+        z.discriminatedUnion("type", [text, image]).meta({ title: "Block" }),
+      )
+      .meta({ title: "Blocks" }),
+  });
+  const root = {
+    blocks: [{ type: "text", heading: "Hello", links: [{ label: "Docs" }] }],
+  };
+
+  function renderPage() {
+    const onChange = vi.fn<(path: Path, value: unknown) => void>();
+    const { container } = render(
+      <FormContext.Provider
+        value={{
+          root,
+          onChange,
+          issues: new Map(),
+          images: [],
+          uploadImage: async () => null,
+          Field: SchemaField,
+        }}
+      >
+        <SchemaField schema={pageSchema} path={[]} label="Page" isBare />
+      </FormContext.Provider>,
+    );
+    return { container, onChange };
+  }
+
+  it("labels each item with its kind and shades it by depth", () => {
+    const { container } = renderPage();
+    const items = container.querySelectorAll("details");
+    expect(items[0]?.dataset.depth).toBe("0");
+    expect(items[1]?.dataset.depth).toBe("1");
+    expect(within(items[0] as HTMLElement).getAllByText("Block")).toBeTruthy();
+    expect(within(items[1] as HTMLElement).getByText("Link")).toBeTruthy();
+    expect(
+      screen.getByRole("region", { name: "Blocks" }).textContent,
+    ).toContain("1");
+  });
+
+  it("does not offer to change a listed block's type", () => {
+    renderPage();
+    expect(screen.queryByLabelText("Type")).toBeNull();
+    expect(screen.getByLabelText("Type to add")).toBeTruthy();
+  });
+
+  it("item buttons act without toggling the item", () => {
+    const { container, onChange } = renderPage();
+    const first = container.querySelector("details") as HTMLDetailsElement;
+    const remove = within(first).getAllByRole("button", { name: "Remove" })[0];
+    const click = new MouseEvent("click", { bubbles: true, cancelable: true });
+    remove?.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(true);
+    expect(onChange).toHaveBeenCalledWith(["blocks"], []);
   });
 });

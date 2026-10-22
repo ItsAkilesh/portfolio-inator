@@ -35,7 +35,8 @@ export function summaryOf(
     const detail = [record.title, record.heading].find(
       (v) => typeof v === "string" && v.trim(),
     );
-    return [type, detail].filter(Boolean).join(" · ") || fallback;
+    const parts = detail === type ? [type] : [type, detail];
+    return parts.filter(Boolean).join(" · ") || fallback;
   }
   const key = metaOf(element).summaryKey;
   const text = key ? asRecord(value)[key] : value;
@@ -56,7 +57,8 @@ export function ItemControls({
   onRemove,
 }: ItemControlsProps) {
   return (
-    <span className={styles.controls}>
+    /* These sit inside a <summary>: stop clicks from also opening or closing the item. */
+    <span className={styles.controls} onClick={(e) => e.preventDefault()}>
       <button
         type="button"
         className={styles.icon}

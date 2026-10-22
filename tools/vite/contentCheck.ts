@@ -11,7 +11,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import type { Plugin, ViteDevServer } from "vite";
 import { CONTENT_CHANGED_EVENT } from "../../src/content/events";
 import { describeError, logger } from "../../src/lib/logger";
-import { projectPaths, type ProjectPaths } from "./paths";
+import { isSameFile, projectPaths, type ProjectPaths } from "./paths";
 import { contentJsonSchema, validateContent } from "./validate";
 
 async function checkFile(paths: ProjectPaths): Promise<readonly string[]> {
@@ -50,7 +50,7 @@ function watchContent(server: ViteDevServer, paths: ProjectPaths): void {
     logger.warn("content.schema", describeError(error)),
   );
   server.watcher.on("change", (file) => {
-    if (file !== paths.contentFile) return;
+    if (!isSameFile(file, paths.contentFile)) return;
     checkFile(paths)
       .then((issues) => reportInDev(server, issues))
       .catch((error: unknown) =>
@@ -81,7 +81,7 @@ export function contentCheck(): Plugin {
      * its place and refreshes its draft while site pages still reload.
      */
     handleHotUpdate(ctx) {
-      if (ctx.file !== paths.contentFile) return undefined;
+      if (!isSameFile(ctx.file, paths.contentFile)) return undefined;
       ctx.server.ws.send({ type: "custom", event: CONTENT_CHANGED_EVENT });
       return [];
     },

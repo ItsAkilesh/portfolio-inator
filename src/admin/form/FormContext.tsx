@@ -17,6 +17,8 @@ export interface FieldProps {
   readonly label: string;
   /** Render a container's fields without its own frame, e.g. inside an expanded list item. */
   readonly isBare?: boolean;
+  /** Hide the type picker of a union whose type was chosen when it was added (blocks). */
+  readonly isTypeLocked?: boolean;
 }
 
 export interface FormContextValue {
@@ -30,6 +32,9 @@ export interface FormContextValue {
 }
 
 export const FormContext = createContext<FormContextValue | null>(null);
+
+/** How many list items deep a field sits; drives each level's shade and edge colour. */
+export const DepthContext = createContext(0);
 
 export function useForm(): FormContextValue {
   const value = useContext(FormContext);

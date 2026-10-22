@@ -1,11 +1,21 @@
 /**
  * File: admin.module.css
- * Purpose: Layout of the admin console: section nav, generated editor, preview and save bar. Uses the
- *          site's theme tokens so it follows light and dark mode.
+ * Purpose: Layout of the admin console: section nav, generated editor, preview and save bar. The
+ *          console is always black: it redefines the theme tokens locally, so the site's palette and
+ *          light/dark mode never change how the editor looks.
  * Author: Akilesh
  * Date: 2026-10-21
  */
 .admin {
+  --bg: #000;
+  --surface: #111113;
+  --surface-raised: #18181b;
+  --ink: #f4f4f5;
+  --ink-muted: #a1a1aa;
+  --line: rgb(255 255 255 / 0.1);
+  --line-strong: rgb(255 255 255 / 0.2);
+  --danger: #f87171;
+  color-scheme: dark;
   min-height: 100svh;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
@@ -134,14 +144,15 @@
   flex: 1;
   width: 100%;
   border: 0;
-  background: var(--bg);
+  /* The preview shows the real site, so it keeps the site's own background. */
+  background: #fff;
 }
 
 .saveBar {
   grid-area: bar;
   position: sticky;
   bottom: 0;
-  z-index: 5;
+  z-index: 20;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -156,7 +167,7 @@
 }
 
 .status[data-status="error"] {
-  color: oklch(0.6 0.2 25);
+  color: var(--danger);
 }
 
 .problems {
@@ -215,6 +226,6 @@
   font-weight: 700;
   line-height: 20px;
   text-align: center;
-  color: #fff;
-  background: oklch(0.6 0.2 25);
+  color: #000;
+  background: var(--danger);
 }
