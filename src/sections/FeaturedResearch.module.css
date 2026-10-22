@@ -1,0 +1,67 @@
+/**
+ * File: FeaturedResearch.module.css
+ * Purpose: Styles for FeaturedResearch.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.card {
+  background: var(--bg);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  padding: clamp(28px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 16px;
+  transition: background-color 0.4s var(--ease);
+}
+
+.card:hover {
+  text-decoration: none;
+  background: var(--surface);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.ref {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.title {
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.arrow {
+  color: var(--ink-muted);
+  font-size: 0.7em;
+}
+
+.issuer {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}

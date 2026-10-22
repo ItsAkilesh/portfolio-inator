@@ -1,0 +1,257 @@
+/**
+ * File: global.css
+ * Purpose: Reset, base typography and shared utility classes. Colors and fonts come from CSS custom
+ *          properties written by the theme (src/theme/cssVars.ts); the values here are first-paint fallbacks.
+ * Author: Akilesh
+ * Date: 2026-10-20 (updated 2026-10-22)
+ */
+:root {
+  /* Frosted glass material, shared by .frost and the icon cloud discs. */
+  --glass-blur: blur(48px);
+  --glass-fill:
+    radial-gradient(120% 90% at 0% 0%, oklch(1 0 0 / 0.07), transparent 60%),
+    linear-gradient(180deg, oklch(1 0 0 / 0.05), oklch(1 0 0 / 0.02)),
+    oklch(0.55 0 0 / 0.1);
+  --glass-border: oklch(1 0 0 / 0.1);
+  --glass-shadow: 0 24px 60px oklch(0 0 0 / 0.3);
+  --bg: oklch(0.975 0.005 262);
+  --surface: oklch(0.945 0.01 262);
+  --ink: oklch(0.2 0.03 262);
+  --ink-muted: oklch(0.44 0.03 262);
+  --line: oklch(0.2 0.03 262 / 0.13);
+  --accent: oklch(0.3 0.07 262);
+  --on-accent: oklch(0.975 0.01 262);
+  --on-accent-muted: oklch(0.975 0.01 262 / 0.74);
+  --on-accent-line: oklch(0.975 0.01 262 / 0.3);
+  --link: oklch(0.45 0.07 262);
+  --tint: oklch(0.3 0.07 262 / 0.07);
+  --font-display: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(16px, 4vw, 48px);
+  --max-width: 1280px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h, 64px);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  transition:
+    background-color 0.6s var(--ease),
+    color 0.6s var(--ease);
+}
+
+img,
+svg {
+  display: block;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.muted {
+  color: var(--ink-muted);
+}
+
+.plain-list {
+  list-style: none;
+  padding: 0;
+}
+
+.bullets {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bullets li {
+  display: flex;
+  gap: 16px;
+  max-width: 66ch;
+}
+
+.bullets li::before {
+  content: "+";
+  color: var(--ink-muted);
+  flex-shrink: 0;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.5s var(--ease);
+}
+
+a:hover .arrow,
+button:hover .arrow {
+  transform: translate(4px, -4px);
+}
+
+.hover-row {
+  transition: background-color 0.4s var(--ease);
+}
+
+.hover-row:hover {
+  background: var(--tint);
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: oklch(0.99 0.004 266);
+  padding: 6px;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.visually-hidden:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * Entrance animations use fill-mode "backwards": once finished they leave no effect behind.
+ * A held ("both") opacity or transform animation keeps the element a backdrop root, which
+ * stops every .frost and glass surface inside it from blurring what lies behind.
+ */
+.enter {
+  animation: enter-up 1s var(--ease) backwards;
+}
+
+/*
+ * Frosted glass for controls and cards on the accent band. Neutral, not tinted: the blur keeps
+ * the backdrop's own saturation, a gray wash pulls it toward slate, and a soft light falls from
+ * the top-left corner. Wide enough that shapes behind dissolve and only movement shows through.
+ * Ancestors must not hold filter, opacity, mask or transform effects (see .enter), or the blur
+ * cannot see the dot field.
+ */
+.frost {
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.page {
+  animation: fade-in 0.6s var(--ease) backwards;
+}
+
+/* Wrapper around each page block (PageRenderer); it adds no box of its own. */
+.block-slot {
+  display: contents;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

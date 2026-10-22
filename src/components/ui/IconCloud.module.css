@@ -1,0 +1,103 @@
+/**
+ * File: IconCloud.module.css
+ * Purpose: Styles for IconCloud. Items start centered and hidden; the animation hook positions them.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.cloud {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  touch-action: pan-y;
+  /* Contains the per-frame depth z-indices of the items so they never rise above the header. */
+  isolation: isolate;
+  /*
+   * Entrance uses transform only. Opacity, filter or scale animations here would make this
+   * element a backdrop root, and the faces' backdrop blur could no longer reach the dot field.
+   */
+  animation: cloud-in 1.4s var(--ease) 0.3s backwards;
+}
+
+/*
+ * One static frosted disc behind the whole polyhedron. It never moves, so the browser blurs one
+ * region instead of re-blurring every moving face each frame. --cloud-d is set by the hook.
+ */
+.frost {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--cloud-d, 0px) * 0.94);
+  height: calc(var(--cloud-d, 0px) * 0.94);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+  backdrop-filter: blur(32px) saturate(140%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glass facets: back faces are a flat tint, front faces brighten with --glint (0..1). */
+.face {
+  --glint: 0;
+  fill: var(--accent);
+  fill-opacity: 0.8;
+  stroke: none;
+}
+
+.face[data-side="front"] {
+  fill: color-mix(
+    in oklch,
+    oklch(1 0 0) calc(6% + var(--glint) * 60%),
+    var(--accent)
+  );
+  fill-opacity: 0.75;
+}
+
+.mesh {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 1;
+}
+
+.edges {
+  stroke: var(--on-accent);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* --disc is set from the icon count by IconCloud.tsx. */
+  width: var(--disc, 48px);
+  height: var(--disc, 48px);
+  margin: calc(var(--disc, 48px) / -2) 0 0 calc(var(--disc, 48px) / -2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--on-accent);
+  /*
+   * Same look as the frosted cards, without a per-disc backdrop blur: the discs move every
+   * frame, and the glass faces behind them are already frosted.
+   */
+  background: var(--glass-fill);
+  border: 1px solid oklch(1 0 0 / 0.22);
+  box-shadow: 0 6px 18px oklch(0 0 0 / 0.28);
+  opacity: 0;
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+@keyframes cloud-in {
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: none;
+  }
+}

@@ -1,20 +1,16 @@
-FROM node:13.12.0-alpine
+# File: Dockerfile
+# Purpose: Local development container running the Vite dev server.
+# Author: Akilesh S
+# Date: 2026-10-20
+FROM node:22.12.0-alpine
 
-# set working directory
 WORKDIR /app
+RUN corepack enable && corepack prepare pnpm@10.34.7 --activate
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-# install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install 
-#react-scripts@3.4.1 -g --silent
-
-# add app
 COPY . ./
 
-# start app
-CMD ["npm", "start"]
+EXPOSE 5173
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]

@@ -1,0 +1,135 @@
+/**
+ * File: Header.module.css
+ * Purpose: Styles for Header.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.6s var(--ease);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.4s var(--ease),
+    visibility 0.4s;
+}
+
+.logo:hover {
+  text-decoration: none;
+}
+
+/* The home hero already shows the name; hide the header copy while it is on screen. */
+:global(html[data-hero-in-view="true"]) .logo {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  text-decoration: underline 1.5px transparent;
+  text-underline-offset: 9px;
+  transition:
+    color 0.3s var(--ease),
+    text-decoration-color 0.3s var(--ease);
+}
+
+.link:hover {
+  color: var(--ink);
+  text-decoration-color: transparent;
+}
+
+.active,
+.active:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
+}
+
+.toggle {
+  appearance: none;
+  margin-left: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform 0.6s var(--ease),
+    background-color 0.3s;
+}
+
+.toggle:hover {
+  transform: rotate(-30deg);
+  background: var(--surface);
+}
+
+@media (max-width: 640px) {
+  .links {
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+  }
+
+  .links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .link {
+    flex-shrink: 0;
+  }
+
+  .toggle {
+    position: absolute;
+    top: 10px;
+    right: var(--gutter);
+    margin-left: 0;
+  }
+
+  .nav {
+    position: relative;
+  }
+}

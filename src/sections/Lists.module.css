@@ -1,0 +1,107 @@
+/**
+ * File: Lists.module.css
+ * Purpose: Shared row layout for timeline, degree, project and publication lists.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.list {
+  border-bottom: 1px solid var(--line);
+}
+
+.item {
+  border-top: 1px solid var(--line);
+  padding: 36px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 48px;
+}
+
+.aside {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Dates, locations and years: one face, size and weight everywhere; secondary lines add .muted. */
+.meta {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Organisation names and outbound links read as text, not as blue links. */
+.org {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.main {
+  flex: 999 1 540px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.heading > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemTitle {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.bigTitle {
+  font-size: clamp(30px, 3.6vw, 52px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.description {
+  max-width: 70ch;
+}
+
+.rowLink {
+  color: var(--ink);
+}
+
+.rowLink:hover {
+  text-decoration: none;
+}
+
+.languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.languages li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sectionGap {
+  margin-bottom: clamp(64px, 8vw, 112px);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}

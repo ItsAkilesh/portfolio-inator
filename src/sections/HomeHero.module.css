@@ -1,0 +1,199 @@
+/**
+ * File: HomeHero.module.css
+ * Purpose: Styles for HomeHero.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.inner {
+  position: relative;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  align-content: center;
+  gap: 48px;
+  padding-block: clamp(48px, 6vw, 88px);
+}
+
+.copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.aside {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(16px, 2vw, 28px);
+}
+
+.cloud {
+  display: none;
+}
+
+.cards {
+  animation-delay: 0.4s;
+}
+
+@media (min-width: 960px) {
+  /*
+   * The row fills the first screen. The copy is centered in it; the right column uses the full
+   * height, so the polyhedron grows into free space instead of being squeezed to the copy's height.
+   */
+  .inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    align-content: stretch;
+    gap: clamp(32px, 4vw, 72px);
+    min-height: calc(100svh - var(--header-h, 64px));
+  }
+
+  .copy {
+    align-self: center;
+  }
+
+  .aside {
+    width: 100%;
+    max-width: 560px;
+    justify-self: end;
+    justify-content: center;
+    container-type: inline-size;
+  }
+
+  /*
+   * Square, as tall as the column allows but never wider than it (100cqi). --cloud-min comes from
+   * IconCloud and is the smallest box that holds the polyhedron for its icon count, so the shape
+   * never spills onto the cards; when the screen is short, the row grows instead.
+   */
+  .cloud {
+    display: block;
+    flex: 1 1 0;
+    min-height: min(var(--cloud-min, 0px), 100cqi);
+    max-height: 100cqi;
+    width: auto;
+    max-width: 100%;
+    align-self: center;
+  }
+}
+
+@media (min-width: 1280px) {
+  .inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.inner > * {
+  pointer-events: auto;
+}
+
+.name {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12em;
+  margin-bottom: clamp(24px, 3vw, 36px);
+}
+
+.first {
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+
+.rest {
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+
+.summary {
+  max-width: 56ch;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.55;
+  color: var(--on-accent-muted);
+  margin-bottom: clamp(28px, 3.5vw, 40px);
+  animation-delay: 0.24s;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  animation-delay: 0.32s;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  background: var(--on-accent);
+  color: var(--accent);
+  transition: transform 0.5s var(--ease);
+}
+
+.pill:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--on-accent);
+  transition:
+    background-color 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    color 0.35s var(--ease),
+    transform 0.5s var(--ease);
+}
+
+.ghost:hover {
+  text-decoration: none;
+  background: var(--on-accent);
+  border-color: var(--on-accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.social {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-accent);
+  transition:
+    background-color 0.35s var(--ease),
+    color 0.35s var(--ease),
+    transform 0.5s var(--ease);
+}
+
+.social:hover {
+  background: var(--on-accent);
+  color: var(--accent);
+  transform: translateY(-3px);
+}

@@ -1,0 +1,159 @@
+/**
+ * File: listItems.module.css
+ * Purpose: Styles for collapsible list items shaded by nesting depth, inline rows, the error
+ *          badge, drag handles and drop markers. Split from form.module.css.
+ * Author: Akilesh
+ * Date: 2026-10-22
+ */
+
+/* ---------- Collapsible list items, shaded by depth ---------- */
+
+.item {
+  --edge: #a1a1aa;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--edge);
+  border-radius: 10px;
+  background: #0a0a0a;
+}
+
+.item[data-depth="1"] {
+  --edge: #60a5fa;
+  background: #111113;
+}
+
+.item[data-depth="2"] {
+  --edge: #34d399;
+  background: #18181b;
+}
+
+.item[data-depth="3"] {
+  --edge: #fbbf24;
+  background: #1f1f23;
+}
+
+.item[data-open] {
+  border-color: var(--line-strong);
+  border-left-color: var(--edge);
+}
+
+.itemHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 10px;
+}
+
+.item[data-open] > .itemHead {
+  border-bottom: 1px solid var(--line);
+}
+
+.summary {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 6px 10px 6px 12px;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.summary::before {
+  content: "›";
+  flex-shrink: 0;
+  width: 12px;
+  color: var(--ink-muted);
+  transition: transform 0.15s ease;
+}
+
+.summary[aria-expanded="true"]::before {
+  transform: rotate(90deg);
+}
+
+.chip {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--edge);
+  border: 1px solid color-mix(in srgb, var(--edge) 45%, transparent);
+}
+
+.summaryText {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemBody {
+  padding: 16px 14px 16px;
+}
+
+.controls {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.row > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.badge {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  color: #000;
+  background: var(--danger);
+}
+
+/* ---------- Drag handle ---------- */
+
+.handle {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 30px;
+  color: var(--ink-muted);
+  cursor: grab;
+  user-select: none;
+}
+
+.item[data-drop="before"],
+.row[data-drop="before"] {
+  box-shadow: 0 -3px 0 var(--focus, #60a5fa);
+}
+
+.item[data-drop="after"],
+.row[data-drop="after"] {
+  box-shadow: 0 3px 0 var(--focus, #60a5fa);
+}
+
+[data-focused] {
+  outline: 2px solid var(--focus, #60a5fa);
+  outline-offset: 4px;
+  border-radius: 8px;
+  transition: outline-color 0.3s ease;
+}

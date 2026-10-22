@@ -1,0 +1,47 @@
+/**
+ * File: Splash.module.css
+ * Purpose: Styles for Splash.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--on-accent);
+  pointer-events: none;
+  animation: splash-out 2s var(--ease) forwards;
+}
+
+.name {
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  font-size: clamp(40px, 8vw, 104px);
+  animation: splash-name 2s var(--ease) both;
+}
+
+@keyframes splash-out {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes splash-name {
+  0% {
+    opacity: 0;
+    transform: translateY(0.3em);
+  }
+  35%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}

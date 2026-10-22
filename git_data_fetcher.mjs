@@ -1,4 +1,12 @@
-import fetch from "node-fetch";
+/**
+ * File: git_data_fetcher.mjs
+ * Purpose: Fetches GitHub data (pull requests, issues, organisations, pinned and public repositories)
+ *          into src/shared/opensource/*.json. Reads GITHUB_TOKEN and GITHUB_USERNAME from .env.
+ *          Run with `pnpm fetch-data` or from the admin console's Projects page.
+ * Author: Akilesh
+ * Date: 2026-10-21 (updated 2026-10-22)
+ */
+// Uses the built-in fetch available in Node 18+ (node-fetch is no longer a dependency).
 import fs from "fs";
 import dotenv from "dotenv";
 
@@ -275,52 +283,69 @@ async function fetchOrganizations() {
   console.log("Fetched contributed organization data.");
 }
 
-const languages_icons = {
-  Python: "logos-python",
-  "Jupyter Notebook": "logos-jupyter",
-  HTML: "logos-html-5",
-  CSS: "logos-css-3",
-  JavaScript: "logos-javascript",
-  "C#": "logos-c-sharp",
-  Java: "logos-java",
-  Shell: "simple-icons:shell",
-  Ruby: "logos:ruby",
-  PHP: "logos-php",
-  Dockerfile: "simple-icons:docker",
-  Rust: "logos-rust",
+const query_repositories = {
+  query: `
+	query {
+	  user(login: "${openSource.githubUserName}") {
+	    repositories(first: 100, ownerAffiliations: OWNER, privacy: PUBLIC, orderBy: {field: UPDATED_AT, direction: DESC}) {
+	      nodes {
+	        id
+	        name
+	        createdAt
+	        url
+	        description
+	        isFork
+	        stargazerCount
+	        languages(first: 10) { nodes { name } }
+	      }
+	    }
+	  }
+	}
+	`,
 };
 
-async function fetchPinnedProjects() {
+/** Keeps the fields the site reads; language names are mapped to icons by the site's content. */
+function toProject(node, isPinned) {
+  return {
+    id: node.id,
+    name: node.name,
+    createdAt: node.createdAt,
+    url: node.url,
+    description: node.description ?? "",
+    isFork: node.isFork === true,
+    stars: node.stargazerCount ?? 0,
+    isPinned,
+    languages: (node.languages?.nodes ?? []).map((lang) => ({ name: lang.name })),
+  };
+}
+
+async function graphQL(query, label) {
   const response = await fetch(baseUrl, {
     method: "POST",
     headers,
-    body: JSON.stringify(query_pinned_projects),
+    body: JSON.stringify(query),
   });
-  const txt = await response.text();
-  const data = parseGraphQL(txt, "Pinned projects");
-  const projects = data.data.user.pinnedItems.nodes;
-  const newProjects = { data: [] };
+  return parseGraphQL(await response.text(), label);
+}
 
-  for (let i = 0; i < projects.length; i++) {
-    const obj = projects[i];
-    if (!obj?.languages?.nodes) continue;
-
-    const langobjs = obj.languages.nodes;
-    const newLangobjs = [];
-    for (let j = 0; j < langobjs.length; j++) {
-      if (langobjs[j].name in languages_icons) {
-        newLangobjs.push({
-          name: langobjs[j].name,
-          iconifyClass: languages_icons[langobjs[j].name],
-        });
-      }
-    }
-    obj.languages = newLangobjs;
-    newProjects.data.push(obj);
-  }
-
-  await writeJson("./src/shared/opensource/projects.json", newProjects);
-  console.log("Fetched pinned projects data.");
+/**
+ * Pinned repositories first (the site shows these by default), then the rest of the public
+ * repositories so the admin console can choose others.
+ */
+async function fetchProjects() {
+  const [pinned, owned] = await Promise.all([
+    graphQL(query_pinned_projects, "Pinned projects"),
+    graphQL(query_repositories, "Repositories"),
+  ]);
+  const pinnedNodes = pinned.data.user.pinnedItems.nodes.filter((n) => n?.id);
+  const pinnedIds = new Set(pinnedNodes.map((n) => n.id));
+  const others = owned.data.user.repositories.nodes.filter((n) => n?.id && !pinnedIds.has(n.id));
+  const data = [
+    ...pinnedNodes.map((n) => toProject(n, true)),
+    ...others.map((n) => toProject(n, false)),
+  ];
+  await writeJson("./src/shared/opensource/projects.json", { data });
+  console.log(`Fetched ${pinnedNodes.length} pinned and ${others.length} other repositories.`);
 }
 
 try {
@@ -328,7 +353,7 @@ try {
     fetchPullRequests(),
     fetchIssues(),
     fetchOrganizations(),
-    fetchPinnedProjects(),
+    fetchProjects(),
   ]);
   console.log("Done.");
 } catch (error) {

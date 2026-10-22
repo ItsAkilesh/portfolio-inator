@@ -1,0 +1,127 @@
+/**
+ * File: SkillsShowcase.module.css
+ * Purpose: Styles for SkillsShowcase. Two columns on wide screens with alternating sides;
+ *          one column on small screens. Blocks fade up as they scroll into view where supported.
+ * Author: Akilesh
+ * Date: 2026-10-20
+ */
+.section {
+  padding-top: clamp(56px, 7vw, 104px);
+  padding-bottom: clamp(40px, 5vw, 72px);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: clamp(20px, 2.4vw, 32px);
+  border-bottom: 1px solid var(--line);
+}
+
+.title {
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  padding: clamp(36px, 4.5vw, 64px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.block:last-child {
+  border-bottom: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 18px;
+}
+
+.groupTitle {
+  font-size: clamp(30px, 3.4vw, 48px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  max-width: 16ch;
+}
+
+@media (min-width: 900px) {
+  .block {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(40px, 5vw, 80px);
+    align-items: center;
+  }
+
+  .reversed {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  }
+
+  .reversed .text {
+    order: 2;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .block {
+    animation: block-in linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 30%;
+  }
+}
+
+@keyframes block-in {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.specimen {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.tile {
+  background: var(--bg);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 96px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  transition: background-color 0.4s var(--ease);
+}
+
+.tile svg {
+  transition:
+    color 0.4s var(--ease),
+    transform 0.6s var(--ease);
+}
+
+.tile:hover {
+  background: var(--surface);
+}
+
+.tile:hover svg {
+  color: var(--brand);
+  transform: scale(1.12) rotate(-6deg);
+}

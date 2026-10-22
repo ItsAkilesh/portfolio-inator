@@ -1,0 +1,35 @@
+<!-- File: mark.svg | Purpose: Portfolio-inator logo (mark) | Author: Akilesh S | Date: 2026-10-22 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="t">
+  <title id="t">Portfolio-inator</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1636B5"/>
+      <stop offset="1" stop-color="#0A1A4F"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7CF3FF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#7CF3FF" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <g transform="translate(64 64) scale(1.12) translate(-63 -63)">
+  <path d="M54 64 L72 42 L72 86 Z" fill="url(#beam)"/>
+  <rect x="70" y="36" width="40" height="56" rx="7" fill="#F4F7FF"/>
+  <path d="M77 36 H103 A7 7 0 0 1 110 43 V48 H70 V43 A7 7 0 0 1 77 36 Z" fill="#C9D5FF"/>
+  <circle cx="77" cy="42" r="2" fill="#1636B5"/>
+  <circle cx="83" cy="42" r="2" fill="#1636B5" opacity=".55"/>
+  <rect x="76" y="55" width="22" height="5" rx="2.5" fill="#0A1A4F"/>
+  <rect x="76" y="64" width="28" height="3.5" rx="1.75" fill="#7D8BB8"/>
+  <rect x="76" y="71" width="22" height="3.5" rx="1.75" fill="#7D8BB8"/>
+  <rect x="76" y="80" width="12" height="6" rx="3" fill="#1636B5"/>
+  <path d="M27 76 L21 88 M27 76 L33 88 M17 88 H37" stroke="#AFC0FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="16" y="52" width="22" height="24" rx="6" fill="#E6ECFF"/>
+  <rect x="21" y="59" width="12" height="4" rx="2" fill="#1636B5"/>
+  <rect x="21" y="65" width="7" height="4" rx="2" fill="#1636B5" opacity=".55"/>
+  <path d="M38 56 L52 60 V68 L38 72 Z" fill="#AFC0FF"/>
+  <path d="M42.5 57.6 V70.4 M47 58.9 V69.1" stroke="#1636B5" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+  <circle cx="54" cy="64" r="5" fill="#7CF3FF"/>
+  <circle cx="54" cy="64" r="2.2" fill="#FFFFFF"/>
+  <path d="M59 34 l1.8 4.2 l4.2 1.8 l-4.2 1.8 l-1.8 4.2 l-1.8 -4.2 l-4.2 -1.8 l4.2 -1.8 Z" fill="#7CF3FF"/>
+  </g>
+</svg>

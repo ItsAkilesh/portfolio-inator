@@ -1,0 +1,38 @@
+<!doctype html>
+<!--
+  File: index.html
+  Purpose: HTML shell for the Vite build. SEO tags and the page language are injected from
+           src/portfolio.ts at build time; also GitHub Pages SPA redirect handling and the app mount point.
+  Author: Akilesh
+  Date: 2026-10-20
+-->
+<html lang="%SEO_LANG%">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- seo-tags: generated from seo in src/content/portfolio.json -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script>
+      // Single Page Apps for GitHub Pages (MIT, https://github.com/rafgraph/spa-github-pages).
+      // Restores the route that public/404.html encoded into the query string.
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+    </script>
+  </head>
+  <body>
+    <noscript>This site needs JavaScript enabled.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
