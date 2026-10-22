@@ -5,7 +5,7 @@
   Date: 2026-10-20 (updated 2026-10-22)
 -->
 
-# masterPortfolio
+# Klein Portfolio
 
 Personal portfolio of Akilesh Srinivasa Kumar, built so anyone can fork it and make it theirs without
 touching component code. Vite, React 19 and TypeScript, no UI framework. Everything the site shows

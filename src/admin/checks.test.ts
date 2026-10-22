@@ -168,13 +168,13 @@ describe("setup helpers", () => {
   it("spots a fresh fork from the git remote", () => {
     expect(
       looksLikeFreshFork(
-        "https://github.com/someone/master-portfolio",
+        "https://github.com/someone/klein-portfolio",
         "https://github.com/itsakilesh",
       ),
     ).toBe(true);
     expect(
       looksLikeFreshFork(
-        "https://github.com/ItsAkilesh/master-portfolio",
+        "https://github.com/ItsAkilesh/klein-portfolio",
         "https://github.com/itsakilesh",
       ),
     ).toBe(false);
