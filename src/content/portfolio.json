@@ -118,14 +118,14 @@
     },
     "researchProfiles": {
       "scholar": {
-        "citations": 60,
+        "citations": 61,
         "hIndex": 3,
         "i10Index": 1,
         "profileUrl": "https://scholar.google.com/citations?user=c3I3YmMAAAAJ&hl=en"
       },
       "researchGate": {
-        "interestScore": 27.6,
-        "citations": 60,
+        "interestScore": 29.1,
+        "citations": 63,
         "hIndex": 3,
         "profileUrl": "https://www.researchgate.net/profile/Akilesh-Srinivasa-Kumar"
       }
