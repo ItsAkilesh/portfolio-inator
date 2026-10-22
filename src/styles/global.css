@@ -3,7 +3,7 @@
  * Purpose: Reset, base typography and shared utility classes. Colors and fonts come from CSS custom
  *          properties written by the theme (src/theme/cssVars.ts); the values here are first-paint fallbacks.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
 :root {
   /* Frosted glass material, shared by .frost and the icon cloud discs. */
@@ -236,6 +236,11 @@ button:hover .arrow {
 
 .page {
   animation: fade-in 0.6s var(--ease) backwards;
+}
+
+/* Wrapper around each page block (PageRenderer); it adds no box of its own. */
+.block-slot {
+  display: contents;
 }
 
 @media (prefers-reduced-motion: reduce) {

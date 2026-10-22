@@ -3,7 +3,7 @@
  * Purpose: Fails the build if any admin console code or API reference reached the output. Runs after
  *          `vite build` so "the admin exists only in dev" is checked on every build, not assumed.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -14,6 +14,8 @@ const MARKERS = [
   "portfolio-admin-token",
   "Portfolio admin",
   "Admin sections",
+  /* The preview bridge protocol prefix. */
+  "portfolio-admin:",
 ];
 const TEXT_FILE = /\.(html|js|css|json|txt|xml)$/;
 

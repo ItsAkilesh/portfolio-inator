@@ -1,15 +1,16 @@
 /**
  * File: BlockView.tsx
- * Purpose: Renders one page block with its section component. The switch is exhaustive over the block
- *          types in src/content/schema/blocks.ts, so adding a block type without a renderer fails
- *          type-checking. Sections below the fold are code-split.
+ * Purpose: Renders one page block with its section component. The switch covers the built-in block
+ *          types; whatever remains is a custom type from src/blocks/custom, rendered by its generated
+ *          component. Sections below the fold are code-split.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
-import { lazy, type ReactNode } from "react";
+import { lazy, type ComponentType, type ReactNode } from "react";
 import { HomeHero } from "../sections/HomeHero";
 import { SkillsShowcase } from "../sections/SkillsShowcase";
-import type { BlockConfig } from "../types/portfolio";
+import type { BlockConfig, BlockOf, CustomBlockType } from "../types/portfolio";
+import { CUSTOM_BLOCK_COMPONENTS } from "./custom/components.generated";
 import HeaderBlock from "./HeaderBlock";
 import styles from "./blocks.module.css";
 
@@ -42,9 +43,15 @@ const Contained = ({ children }: { readonly children: ReactNode }) => (
   <div className={`wrap ${styles.contained}`}>{children}</div>
 );
 
-function unknownBlock(block: never): null {
-  void block;
-  return null;
+type CustomBlockConfig = BlockOf<CustomBlockType>;
+
+/** Custom block types (src/blocks/custom) render through their generated component. */
+function CustomBlock({ block }: { readonly block: CustomBlockConfig }) {
+  /* The map is keyed by type, so the entry for block.type takes exactly this block's shape. */
+  const Component = CUSTOM_BLOCK_COMPONENTS[block.type] as ComponentType<{
+    readonly block: CustomBlockConfig;
+  }>;
+  return <Component block={block} />;
 }
 
 export function BlockView({
@@ -110,6 +117,6 @@ export function BlockView({
         </Contained>
       );
     default:
-      return unknownBlock(block);
+      return <CustomBlock block={block} />;
   }
 }

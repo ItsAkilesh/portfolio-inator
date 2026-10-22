@@ -2,10 +2,11 @@
  * File: entries.ts
  * Purpose: Schemas for repeated content items: links, skill groups, timeline entries and degrees.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { z } from "zod";
 import {
+  dateRange,
   icon,
   image,
   link,
@@ -51,7 +52,7 @@ export const timelineEntrySchema = z
     }),
     company_url: optionalLink({ title: "Link" }),
     logo_path: image({ title: "Logo" }),
-    duration: text({ title: "Dates" }),
+    dates: dateRange({ title: "Dates" }),
     location: text({
       title: "Location",
       description: "City, or the venue for publications (used as a filter)",
@@ -66,7 +67,7 @@ export const degreeSchema = z
     subtitle: text({ title: "Degree" }),
     logo_path: image({ title: "Logo" }),
     alt_name: text({ title: "Short name" }),
-    duration: text({ title: "Dates" }),
+    dates: dateRange({ title: "Dates" }),
     descriptions: list(longText({ title: "Point" }), { title: "Points" }),
     website_link: link({ title: "Website" }),
   })

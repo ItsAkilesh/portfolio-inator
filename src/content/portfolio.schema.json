@@ -260,15 +260,15 @@
               "icon": {
                 "type": "string",
                 "enum": [
-                  "linkedin",
-                  "csharp",
-                  "windows",
                   "aws",
                   "azure",
-                  "web",
-                  "resume",
                   "code",
+                  "csharp",
+                  "linkedin",
                   "openai",
+                  "resume",
+                  "web",
+                  "windows",
                   "android",
                   "blender",
                   "c",
@@ -390,6 +390,16 @@
               "type": "string",
               "title": "\"All\" filter label"
             },
+            "present": {
+              "type": "string",
+              "title": "\"Present\" label",
+              "description": "End of ongoing dates"
+            },
+            "expected": {
+              "type": "string",
+              "title": "\"Expected\" label",
+              "description": "After expected end dates"
+            },
             "notFoundTitle": {
               "type": "string",
               "title": "Not found title"
@@ -443,6 +453,8 @@
             "readSummary",
             "hideSummary",
             "allFilter",
+            "present",
+            "expected",
             "notFoundTitle",
             "notFoundText",
             "researchCards"
@@ -553,6 +565,15 @@
         "projects": {
           "type": "object",
           "properties": {
+            "featured": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "title": "Repository"
+              },
+              "title": "Repositories to show",
+              "description": "In this order; empty shows your pinned repositories"
+            },
             "languageIcons": {
               "type": "object",
               "propertyNames": {
@@ -561,15 +582,15 @@
               "additionalProperties": {
                 "type": "string",
                 "enum": [
-                  "linkedin",
-                  "csharp",
-                  "windows",
                   "aws",
                   "azure",
-                  "web",
-                  "resume",
                   "code",
+                  "csharp",
+                  "linkedin",
                   "openai",
+                  "resume",
+                  "web",
+                  "windows",
                   "android",
                   "blender",
                   "c",
@@ -644,6 +665,7 @@
             }
           },
           "required": [
+            "featured",
             "languageIcons"
           ],
           "additionalProperties": false,
@@ -982,15 +1004,15 @@
                 "icon": {
                   "type": "string",
                   "enum": [
-                    "linkedin",
-                    "csharp",
-                    "windows",
                     "aws",
                     "azure",
-                    "web",
-                    "resume",
                     "code",
+                    "csharp",
+                    "linkedin",
                     "openai",
+                    "resume",
+                    "web",
+                    "windows",
                     "android",
                     "blender",
                     "c",
@@ -1240,8 +1262,39 @@
                                   "widget": "image",
                                   "title": "Logo"
                                 },
-                                "duration": {
-                                  "type": "string",
+                                "dates": {
+                                  "type": "object",
+                                  "properties": {
+                                    "label": {
+                                      "type": "string",
+                                      "title": "Prefix",
+                                      "description": "Shown before the dates, e.g. \"Filed\"; empty for none"
+                                    },
+                                    "start": {
+                                      "type": "string",
+                                      "widget": "date",
+                                      "title": "Start",
+                                      "description": "Empty for no date"
+                                    },
+                                    "end": {
+                                      "type": "string",
+                                      "widget": "date",
+                                      "title": "End",
+                                      "description": "Empty for a single date",
+                                      "allowPresent": true
+                                    },
+                                    "isEndExpected": {
+                                      "type": "boolean",
+                                      "title": "End date is expected"
+                                    }
+                                  },
+                                  "required": [
+                                    "label",
+                                    "start",
+                                    "end",
+                                    "isEndExpected"
+                                  ],
+                                  "additionalProperties": false,
                                   "title": "Dates"
                                 },
                                 "location": {
@@ -1260,7 +1313,7 @@
                                 "company",
                                 "company_url",
                                 "logo_path",
-                                "duration",
+                                "dates",
                                 "location",
                                 "description"
                               ],
@@ -1321,8 +1374,39 @@
                             "type": "string",
                             "title": "Short name"
                           },
-                          "duration": {
-                            "type": "string",
+                          "dates": {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "title": "Prefix",
+                                "description": "Shown before the dates, e.g. \"Filed\"; empty for none"
+                              },
+                              "start": {
+                                "type": "string",
+                                "widget": "date",
+                                "title": "Start",
+                                "description": "Empty for no date"
+                              },
+                              "end": {
+                                "type": "string",
+                                "widget": "date",
+                                "title": "End",
+                                "description": "Empty for a single date",
+                                "allowPresent": true
+                              },
+                              "isEndExpected": {
+                                "type": "boolean",
+                                "title": "End date is expected"
+                              }
+                            },
+                            "required": [
+                              "label",
+                              "start",
+                              "end",
+                              "isEndExpected"
+                            ],
+                            "additionalProperties": false,
                             "title": "Dates"
                           },
                           "descriptions": {
@@ -1345,7 +1429,7 @@
                           "subtitle",
                           "logo_path",
                           "alt_name",
-                          "duration",
+                          "dates",
                           "descriptions",
                           "website_link"
                         ],
@@ -1408,8 +1492,39 @@
                             "widget": "image",
                             "title": "Logo"
                           },
-                          "duration": {
-                            "type": "string",
+                          "dates": {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "title": "Prefix",
+                                "description": "Shown before the dates, e.g. \"Filed\"; empty for none"
+                              },
+                              "start": {
+                                "type": "string",
+                                "widget": "date",
+                                "title": "Start",
+                                "description": "Empty for no date"
+                              },
+                              "end": {
+                                "type": "string",
+                                "widget": "date",
+                                "title": "End",
+                                "description": "Empty for a single date",
+                                "allowPresent": true
+                              },
+                              "isEndExpected": {
+                                "type": "boolean",
+                                "title": "End date is expected"
+                              }
+                            },
+                            "required": [
+                              "label",
+                              "start",
+                              "end",
+                              "isEndExpected"
+                            ],
+                            "additionalProperties": false,
                             "title": "Dates"
                           },
                           "location": {
@@ -1428,7 +1543,7 @@
                           "company",
                           "company_url",
                           "logo_path",
-                          "duration",
+                          "dates",
                           "location",
                           "description"
                         ],
@@ -1493,8 +1608,39 @@
                             "widget": "image",
                             "title": "Logo"
                           },
-                          "duration": {
-                            "type": "string",
+                          "dates": {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "title": "Prefix",
+                                "description": "Shown before the dates, e.g. \"Filed\"; empty for none"
+                              },
+                              "start": {
+                                "type": "string",
+                                "widget": "date",
+                                "title": "Start",
+                                "description": "Empty for no date"
+                              },
+                              "end": {
+                                "type": "string",
+                                "widget": "date",
+                                "title": "End",
+                                "description": "Empty for a single date",
+                                "allowPresent": true
+                              },
+                              "isEndExpected": {
+                                "type": "boolean",
+                                "title": "End date is expected"
+                              }
+                            },
+                            "required": [
+                              "label",
+                              "start",
+                              "end",
+                              "isEndExpected"
+                            ],
+                            "additionalProperties": false,
                             "title": "Dates"
                           },
                           "location": {
@@ -1513,7 +1659,7 @@
                           "company",
                           "company_url",
                           "logo_path",
-                          "duration",
+                          "dates",
                           "location",
                           "description"
                         ],
@@ -1609,15 +1755,15 @@
                           "icon": {
                             "type": "string",
                             "enum": [
-                              "linkedin",
-                              "csharp",
-                              "windows",
                               "aws",
                               "azure",
-                              "web",
-                              "resume",
                               "code",
+                              "csharp",
+                              "linkedin",
                               "openai",
+                              "resume",
+                              "web",
+                              "windows",
                               "android",
                               "blender",
                               "c",
@@ -1719,23 +1865,21 @@
                       "title": "Heading",
                       "description": "Empty for none"
                     },
-                    "paragraphs": {
-                      "type": "array",
-                      "items": {
-                        "type": "string",
-                        "widget": "multiline",
-                        "title": "Paragraph"
-                      },
-                      "title": "Paragraphs"
+                    "body": {
+                      "type": "string",
+                      "widget": "markdown",
+                      "title": "Text",
+                      "description": "Markdown: **bold**, *italic*, [links](https://...), lists, headings"
                     }
                   },
                   "required": [
                     "type",
                     "heading",
-                    "paragraphs"
+                    "body"
                   ],
                   "additionalProperties": false,
-                  "title": "Text"
+                  "title": "Text",
+                  "description": "A heading and Markdown text"
                 },
                 {
                   "type": "object",
@@ -1769,6 +1913,42 @@
                   ],
                   "additionalProperties": false,
                   "title": "Image"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "callout"
+                    },
+                    "title": {
+                      "type": "string",
+                      "title": "Title"
+                    },
+                    "body": {
+                      "type": "string",
+                      "widget": "markdown",
+                      "title": "Text"
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "note",
+                        "highlight"
+                      ],
+                      "title": "Style",
+                      "description": "\"highlight\" uses the accent colour"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "body",
+                    "tone"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Callout",
+                  "description": "A highlighted note (example custom block)"
                 }
               ],
               "title": "Block",
@@ -1786,7 +1966,12 @@
         ],
         "additionalProperties": false,
         "title": "Page",
-        "summaryKey": "label"
+        "summaryKey": "label",
+        "uniqueKeys": [
+          "id",
+          "path"
+        ],
+        "templates": "pages"
       },
       "title": "Pages",
       "description": "The first page is the home page; order is navigation order"

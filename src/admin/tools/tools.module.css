@@ -1,0 +1,244 @@
+/**
+ * File: tools.module.css
+ * Purpose: Layouts specific to admin tools and panels: cards, the media and icon grids, search and
+ *          share previews, change and finding lists, history, guides and the setup steps.
+ * Author: Akilesh
+ * Date: 2026-10-21
+ */
+
+/* ---------- Cards ---------- */
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 14px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cardTitle {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ---------- Theme samples ---------- */
+
+.sampleRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sample {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.sampleAccent {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.swatchRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.swatchDot {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgb(127 127 127 / 0.4);
+}
+
+/* ---------- SEO previews ---------- */
+
+.counters {
+  display: flex;
+  gap: 12px;
+}
+
+.counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--warn);
+}
+
+.counter[data-ok] {
+  color: var(--ok);
+}
+
+.serp {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff;
+  color: #202124;
+  font-family: Arial, sans-serif;
+}
+
+.serpUrl {
+  font-size: 13px;
+  color: #4d5156;
+}
+
+.serpTitle {
+  font-size: 19px;
+  color: #1a0dab;
+}
+
+.serpText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4d5156;
+}
+
+.shareCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.shareCard img,
+.shareEmpty {
+  width: 100%;
+  aspect-ratio: 1.91;
+  object-fit: cover;
+  background: var(--surface-raised);
+}
+
+.shareCard:not([data-large]) {
+  flex-direction: row;
+}
+
+.shareCard:not([data-large]) img,
+.shareCard:not([data-large]) .shareEmpty {
+  width: 120px;
+  aspect-ratio: 1;
+}
+
+.shareEmpty {
+  display: grid;
+  place-items: center;
+  color: var(--ink-muted);
+}
+
+.shareCard figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  font-size: 13px;
+}
+
+/* ---------- Lists of changes and findings ---------- */
+
+.findings,
+.changeList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.findings li,
+.finding {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 8px 12px;
+  border-left: 3px solid var(--warn);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.findings li[data-severity="error"],
+.finding[data-severity="error"] {
+  border-left-color: var(--danger);
+}
+
+.finding > :last-child {
+  margin-left: auto;
+}
+
+.changeRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+.changeKind {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--warn);
+}
+
+.changeRow[data-kind="added"] .changeKind {
+  color: var(--ok);
+}
+
+.changeRow[data-kind="removed"] .changeKind {
+  color: var(--danger);
+}
+
+.changeWhere {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.changeBefore,
+.changeAfter {
+  grid-column: 2;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.changeBefore {
+  color: var(--danger);
+}
+
+.changeAfter {
+  color: var(--ok);
+  text-decoration: none;
+}
+
+.changeActions {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  gap: 6px;
+}

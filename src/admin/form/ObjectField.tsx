@@ -2,11 +2,11 @@
  * File: ObjectField.tsx
  * Purpose: Generated editor for an object: one field per key, in schema order.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { useForm, type FieldProps } from "./FormContext";
 import { Group } from "./Group";
-import { metaOf, objectShape, titleOf } from "./introspect";
+import { metaOf, objectShape, titleOf } from "../../content/introspect";
 
 /** "$schema" points editors at the JSON Schema; it is not content. */
 const HIDDEN_KEYS: ReadonlySet<string> = new Set(["$schema"]);

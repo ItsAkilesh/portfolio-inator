@@ -2,7 +2,7 @@
  * File: BrandIcon.tsx
  * Purpose: Renders a registry icon in the current text color; exposes the brand color as --brand for hover states.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
 import type { CSSProperties } from "react";
 import { brandColorFor } from "../lib/color";
@@ -27,7 +27,7 @@ export function BrandIcon({
       className={className}
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox={icon.viewBox}
       aria-hidden="true"
       focusable="false"
     >

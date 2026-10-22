@@ -2,8 +2,9 @@
  * File: FeaturedResearch.tsx
  * Purpose: Large cards for featured entries such as patents.
  * Author: Akilesh
- * Date: 2026-10-20 (updated 2026-10-21)
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
+import { DateText } from "../components/ui/DateText";
 import { SmartLink } from "../components/ui/SmartLink";
 import { imageUrl } from "../lib/assets";
 import { staggerDelay } from "../lib/text";
@@ -33,7 +34,7 @@ function FeaturedCard({
         <span className={`muted ${styles.ref}`}>
           {item.location}
           <br />
-          {item.duration}
+          <DateText dates={item.dates} />
         </span>
       </div>
       <h3 className={`display ${styles.title}`}>

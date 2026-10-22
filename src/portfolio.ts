@@ -5,10 +5,10 @@
  *          exposes it to components and derives what they need: resolved palettes, navigation,
  *          the home page and the GitHub project list.
  * Author: Akilesh
- * Date: 2026-10-20 (updated 2026-10-21)
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
 import rawContent from "./content/portfolio.json";
-import { parseProjects } from "./lib/projects";
+import { parseProjects, selectProjects } from "./lib/projects";
 import { makePalette } from "./theme/makePalette";
 import projectData from "./shared/opensource/projects.json";
 import type { NavItem, PageConfig, Portfolio } from "./types/portfolio";
@@ -70,5 +70,8 @@ export const pageForPath = (pathname: string): PageConfig | undefined =>
     ? homePage
     : content.pages.find((page) => page.path === pathname);
 
-/** GitHub projects, validated at the boundary; malformed entries are dropped. */
-export const projects = parseProjects(projectData);
+/** GitHub projects to show, validated at the boundary; malformed entries are dropped. */
+export const projects = selectProjects(
+  parseProjects(projectData),
+  content.site.projects.featured,
+);

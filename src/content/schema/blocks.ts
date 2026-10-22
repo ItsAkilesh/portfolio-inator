@@ -1,14 +1,16 @@
 /**
  * File: blocks.ts
- * Purpose: Schemas for page blocks. A page is an ordered list of blocks; each block type maps to an
- *          existing section component in src/blocks/registry.tsx. Blocks that show site-wide data
- *          (hero, skills, projects, contact) carry only their own options.
+ * Purpose: Schemas for page blocks. A page is an ordered list of blocks; each built-in type maps to
+ *          a section component in src/blocks/BlockView.tsx, and custom types come from
+ *          src/blocks/custom. Blocks that show site-wide data (hero, skills, projects, contact)
+ *          carry only their own options.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { z } from "zod";
+import { CUSTOM_BLOCK_SCHEMAS } from "../../blocks/custom/schemas.generated";
 import { degreeSchema, linkItemSchema, timelineEntrySchema } from "./entries";
-import { flag, image, link, list, longText, text } from "./fields";
+import { flag, image, link, list, longText, markdown, text } from "./fields";
 
 export const heroBlockSchema = z
   .object({
@@ -120,9 +122,13 @@ export const textBlockSchema = z
   .object({
     type: z.literal("text"),
     heading: text({ title: "Heading", description: "Empty for none" }),
-    paragraphs: list(longText({ title: "Paragraph" }), { title: "Paragraphs" }),
+    body: markdown({
+      title: "Text",
+      description:
+        "Markdown: **bold**, *italic*, [links](https://...), lists, headings",
+    }),
   })
-  .meta({ title: "Text" });
+  .meta({ title: "Text", description: "A heading and Markdown text" });
 
 export const imageBlockSchema = z
   .object({
@@ -136,19 +142,25 @@ export const imageBlockSchema = z
   })
   .meta({ title: "Image" });
 
+/** The block types this project ships; src/blocks/custom adds more (see docs/admin/custom-blocks.md). */
+export const BUILT_IN_BLOCK_SCHEMAS = [
+  heroBlockSchema,
+  skillsBlockSchema,
+  headerBlockSchema,
+  timelineBlockSchema,
+  degreesBlockSchema,
+  featuredBlockSchema,
+  publicationsBlockSchema,
+  projectsBlockSchema,
+  contactBlockSchema,
+  linkGridBlockSchema,
+  textBlockSchema,
+  imageBlockSchema,
+] as const;
+
 export const blockSchema = z
   .discriminatedUnion("type", [
-    heroBlockSchema,
-    skillsBlockSchema,
-    headerBlockSchema,
-    timelineBlockSchema,
-    degreesBlockSchema,
-    featuredBlockSchema,
-    publicationsBlockSchema,
-    projectsBlockSchema,
-    contactBlockSchema,
-    linkGridBlockSchema,
-    textBlockSchema,
-    imageBlockSchema,
+    ...BUILT_IN_BLOCK_SCHEMAS,
+    ...CUSTOM_BLOCK_SCHEMAS,
   ])
   .meta({ title: "Block", summaryKey: "type" });

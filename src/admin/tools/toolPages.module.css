@@ -1,0 +1,211 @@
+/**
+ * File: toolPages.module.css
+ * Purpose: Layouts of individual admin tools: media and icon grids, history, repositories, search results, guides and setup steps.
+ * Author: Akilesh
+ * Date: 2026-10-22
+ */
+
+/* ---------- Media and icons ---------- */
+
+.mediaGrid,
+.iconGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.mediaGrid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.iconGrid {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.mediaCard,
+.iconCell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.mediaCard[data-large] {
+  border-color: var(--warn);
+}
+
+.mediaCard img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.iconCell {
+  align-items: center;
+  text-align: center;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- History, repositories, files ---------- */
+
+.historyList,
+.repoList,
+.fileList,
+.pickList,
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.historyItem,
+.repoRow,
+.pickList li,
+.orderList li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.historyItem > ul {
+  flex-basis: 100%;
+}
+
+.fileList {
+  font-size: 13px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 14px;
+}
+
+/* ---------- Search ---------- */
+
+.searchResults {
+  display: flex;
+  flex-direction: column;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.searchResult {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.searchResult[aria-selected="true"] {
+  background: var(--surface-raised);
+  outline: 1px solid var(--line-strong);
+}
+
+.searchTitle {
+  font-weight: 600;
+}
+
+/* ---------- Guides ---------- */
+
+.docs {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 24px;
+}
+
+.docsNav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.docBody {
+  max-width: 72ch;
+  line-height: 1.65;
+}
+
+.docBody h2,
+.docBody h3,
+.docBody h4 {
+  margin: 1.4em 0 0.5em;
+}
+
+.docBody p,
+.docBody ul,
+.docBody ol,
+.docBody pre {
+  margin-bottom: 0.9em;
+}
+
+/* Two classes deep, to win over the console's list reset. */
+.docs .docBody ul,
+.docs .docBody ol {
+  padding-left: 1.4em;
+  list-style: revert;
+}
+
+.docBody code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.92em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--surface-raised);
+}
+
+.docBody pre {
+  padding: 12px;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: #0a0a0a;
+}
+
+/* ---------- Setup steps ---------- */
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stepButton {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.steps li[aria-current="step"] .stepButton {
+  color: var(--bg);
+  background: var(--ink);
+}
+
+.docBody table {
+  width: 100%;
+  margin-bottom: 0.9em;
+  border-collapse: collapse;
+}
+
+.docBody th,
+.docBody td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}

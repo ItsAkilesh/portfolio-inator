@@ -3,9 +3,10 @@
  * Purpose: Filterable bibliography for "list" research sections: venue filter, highlighted author,
  *          and an expandable summary per entry.
  * Author: Akilesh
- * Date: 2026-10-20 (updated 2026-10-21)
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
 import { useId, useMemo, useState } from "react";
+import { DateText } from "../components/ui/DateText";
 import { Expander } from "../components/ui/Expander";
 import { SegmentedControl } from "../components/ui/SegmentedControl";
 import { SmartLink } from "../components/ui/SmartLink";
@@ -74,6 +75,7 @@ function Publication({ entry, delay }: PublicationProps) {
             <img src={imageUrl(entry.logo_path)} alt="" loading="lazy" />
             {entry.location}
           </span>
+          <DateText className={styles.date} dates={entry.dates} />
           <button
             type="button"
             className={styles.toggle}

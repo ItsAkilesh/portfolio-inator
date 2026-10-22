@@ -1,0 +1,79 @@
+/**
+ * File: palette.module.css
+ * Purpose: Styles for adding and inserting list items: the block palette and insert points.
+ *          Split from form.module.css.
+ * Author: Akilesh
+ * Date: 2026-10-22
+ */
+
+/* ---------- Adding and inserting ---------- */
+
+.addArea {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.paletteItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.paletteItem:hover {
+  border-color: var(--line-strong);
+}
+
+.paletteTitle {
+  font-weight: 700;
+}
+
+.paletteText {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.insert {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: -6px 0;
+}
+
+.insertButton {
+  align-self: center;
+  width: 26px;
+  height: 18px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ink-muted);
+  background: var(--bg);
+  border: 1px dashed var(--line-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.insertButton:hover,
+.insertButton:focus-visible,
+.insertButton[aria-expanded="true"] {
+  opacity: 1;
+}

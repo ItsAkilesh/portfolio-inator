@@ -2,7 +2,7 @@
  * File: storage.ts
  * Purpose: localStorage/sessionStorage access that never throws (private mode, blocked storage).
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
 import { describeError, logger } from "./logger";
 
@@ -39,5 +39,13 @@ export function writeStored(
   } catch (error) {
     logger.debug("storage.write", describeError(error));
     return false;
+  }
+}
+
+export function removeStored(kind: StorageKind, key: string): void {
+  try {
+    storageFor(kind)?.removeItem(key);
+  } catch (error) {
+    logger.debug("storage.remove", describeError(error));
   }
 }

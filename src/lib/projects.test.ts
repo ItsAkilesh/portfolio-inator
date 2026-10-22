@@ -1,11 +1,11 @@
 /**
  * File: projects.test.ts
- * Purpose: Tests for validation of fetched GitHub project data.
+ * Purpose: Tests for validation of fetched GitHub project data and choosing which to show.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
 import { describe, expect, it } from "vitest";
-import { parseProjects } from "./projects";
+import { parseProjects, selectProjects } from "./projects";
 
 const valid = {
   id: "1",
@@ -20,7 +20,7 @@ const valid = {
 describe("parseProjects", () => {
   it("keeps well-formed projects and drops unknown fields", () => {
     expect(parseProjects({ data: [valid] })).toEqual([
-      { ...valid, languages: [{ name: "Rust" }] },
+      { ...valid, stars: 0, isPinned: true, languages: [{ name: "Rust" }] },
     ]);
   });
 
@@ -43,8 +43,25 @@ describe("parseProjects", () => {
       createdAt: "",
       description: "",
       isFork: false,
+      stars: 0,
+      isPinned: true,
       languages: [],
     });
+  });
+
+  it("reads stars and the pinned flag, rejecting bad values", () => {
+    const [a, b] = parseProjects({
+      data: [
+        { ...valid, id: "a", stars: 12, isPinned: false },
+        { ...valid, id: "b", createdAt: "2020", stars: -4, isPinned: "yes" },
+      ],
+    });
+    expect([a?.stars, a?.isPinned, b?.stars, b?.isPinned]).toEqual([
+      12,
+      false,
+      0,
+      true,
+    ]);
   });
 
   it("drops entries with missing ids or unsafe URLs", () => {
@@ -62,5 +79,23 @@ describe("parseProjects", () => {
     expect(parseProjects(null)).toEqual([]);
     expect(parseProjects({ data: "nope" })).toEqual([]);
     expect(parseProjects([valid])).toEqual([]);
+  });
+});
+
+describe("selectProjects", () => {
+  const all = parseProjects({
+    data: [
+      { ...valid, id: "1", name: "one" },
+      { ...valid, id: "2", name: "two", isPinned: false },
+      { ...valid, id: "3", name: "three", isPinned: false },
+    ],
+  });
+  it("shows the pinned repositories when none are chosen", () => {
+    expect(selectProjects(all, []).map((p) => p.name)).toEqual(["one"]);
+  });
+  it("shows the chosen ones in the chosen order and skips unknown names", () => {
+    expect(
+      selectProjects(all, ["three", "gone", "one"]).map((p) => p.name),
+    ).toEqual(["three", "one"]);
   });
 });

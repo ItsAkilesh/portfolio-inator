@@ -1,13 +1,16 @@
 /**
  * File: imageStore.ts
- * Purpose: Lists and stores images in public/images for the admin API. Uploads are limited to raster
- *          formats (no SVG, which can carry scripts), checked by both extension and file signature,
- *          size-capped, given a safe unique name and written only inside the images folder.
+ * Purpose: Lists, stores, renames and removes images in public/images for the admin API. Uploads are
+ *          limited to raster formats (no SVG, which can carry scripts), checked by both extension and
+ *          file signature, size-capped, given a safe unique name and written only inside the images
+ *          folder. Removed images go to the history trash rather than being deleted.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
-import { readdir, writeFile } from "node:fs/promises";
+import { open, readdir, rename, stat, writeFile } from "node:fs/promises";
 import { basename, extname, join } from "node:path";
+import type { HistoryStore } from "./historyStore";
+import { imageSize, type ImageSize } from "./imageSize";
 
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 const MAX_NAME_LENGTH = 80;
@@ -61,8 +64,70 @@ export function checkImage(name: string, bytes: Buffer): string | null {
     : "The file contents do not match its image type";
 }
 
+export interface ImageDetails extends Partial<ImageSize> {
+  readonly name: string;
+  readonly bytes: number;
+}
+
+export type ImageChange =
+  | { readonly ok: true; readonly fileName: string }
+  | { readonly ok: false; readonly reason: string };
+
+/** Enough of the file to read any supported header's dimensions. */
+const HEADER_BYTES = 64 * 1024;
+
+async function readHeader(file: string): Promise<Buffer> {
+  const handle = await open(file, "r");
+  try {
+    const buffer = Buffer.alloc(HEADER_BYTES);
+    const { bytesRead } = await handle.read(buffer, 0, HEADER_BYTES, 0);
+    return buffer.subarray(0, bytesRead);
+  } finally {
+    await handle.close();
+  }
+}
+
 export class ImageStore {
-  constructor(private readonly dir: string) {}
+  constructor(
+    private readonly dir: string,
+    private readonly history?: HistoryStore,
+  ) {}
+
+  async details(): Promise<ImageDetails[]> {
+    return Promise.all(
+      (await this.list()).map(async (name) => {
+        const file = join(this.dir, name);
+        const [{ size }, header] = await Promise.all([
+          stat(file),
+          readHeader(file),
+        ]);
+        return { name, bytes: size, ...(imageSize(header) ?? {}) };
+      }),
+    );
+  }
+
+  /** Renames within the folder; the extension cannot change and existing names are not overwritten. */
+  async rename(from: string, requested: string): Promise<ImageChange> {
+    const names = new Set(await this.list());
+    if (!names.has(from)) return { ok: false, reason: "No such image" };
+    const to = safeFileName(requested);
+    if (!to || extname(to) !== extname(from))
+      return { ok: false, reason: `Keep the ${extname(from)} extension` };
+    if (to === from) return { ok: true, fileName: to };
+    if (names.has(to)) return { ok: false, reason: `${to} already exists` };
+    await rename(join(this.dir, from), join(this.dir, to));
+    return { ok: true, fileName: to };
+  }
+
+  /** Moves an image to the history trash. The caller checks that no content uses it. */
+  async remove(name: string): Promise<ImageChange> {
+    if (!(await this.list()).includes(name))
+      return { ok: false, reason: "No such image" };
+    if (!this.history)
+      return { ok: false, reason: "Removing images needs the history folder" };
+    await this.history.trash(join(this.dir, name), name);
+    return { ok: true, fileName: name };
+  }
 
   async list(): Promise<string[]> {
     const names = await readdir(this.dir);

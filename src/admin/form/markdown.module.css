@@ -1,0 +1,51 @@
+/**
+ * File: markdown.module.css
+ * Purpose: Styles for the Markdown editor: formatting toolbar and live preview. Split from
+ *          form.module.css.
+ * Author: Akilesh
+ * Date: 2026-10-22
+ */
+
+/* ---------- Markdown ---------- */
+
+.markdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.markdownBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.toolButton {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  color: var(--ink);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.toolButton[aria-pressed="true"] {
+  color: var(--bg);
+  background: var(--ink);
+}
+
+.markdownPreview {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.markdown .markdownPreview ul,
+.markdown .markdownPreview ol {
+  padding-left: 1.4em;
+  list-style: revert;
+}

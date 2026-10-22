@@ -1,7 +1,8 @@
 # File: nodejs.yml
-# Purpose: Type-check, test and build on pull requests and non-main branches.
+# Purpose: Type-check, unit-test and build on pull requests and non-main branches, then run the
+#          end-to-end and accessibility tests of the site and the admin console in Chromium.
 # Author: Akilesh S
-# Date: 2026-10-20
+# Date: 2026-10-20 (updated 2026-10-22)
 
 name: CI
 
@@ -30,3 +31,29 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm build
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: check
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: pnpm/action-setup@v4.1.0
+        with:
+          version: 10.34.7
+      - uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 22.12.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install Chromium for Playwright
+        run: pnpm exec playwright install --with-deps chromium
+      - name: End-to-end and accessibility tests
+        run: pnpm test:e2e
+      - name: Keep traces of failures
+        if: failure()
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

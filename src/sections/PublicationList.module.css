@@ -2,7 +2,7 @@
  * File: PublicationList.module.css
  * Purpose: Styles for PublicationList.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
 .item {
   border-top: 1px solid var(--line);
@@ -84,4 +84,9 @@
   margin-top: 6px;
   max-width: 72ch;
   font-size: 16px;
+}
+
+.date {
+  font-size: 14px;
+  color: var(--ink-muted);
 }

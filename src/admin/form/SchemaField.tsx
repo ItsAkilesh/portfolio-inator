@@ -3,18 +3,20 @@
  * Purpose: The form generator's dispatcher: picks the editor for a schema node from its kind and its
  *          admin widget hint, and wires value, change and validation messages from the form context.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { useId } from "react";
 import { getIn, pathId } from "../paths";
 import { IconInput, ImageInput } from "./AssetFields";
 import { ArrayField } from "./ArrayField";
+import { DateInput } from "./DateInput";
+import { MarkdownInput } from "./MarkdownInput";
 import { ObjectField } from "./ObjectField";
 import { RecordField } from "./RecordField";
 import { UnionField } from "./UnionField";
 import { FieldShell } from "./FieldShell";
 import { useForm, type FieldProps } from "./FormContext";
-import { enumOptions, kindOf, metaOf } from "./introspect";
+import { enumOptions, kindOf, metaOf } from "../../content/introspect";
 import {
   ColorInput,
   NumberInput,
@@ -44,6 +46,7 @@ function LeafEditor({
           value={String(value ?? "")}
           onChange={set}
           options={enumOptions(schema)}
+          path={path}
         />
       ) : (
         <SelectInput
@@ -57,6 +60,19 @@ function LeafEditor({
       if (widget === "image")
         return (
           <ImageInput id={id} value={String(value ?? "")} onChange={set} />
+        );
+      if (widget === "markdown")
+        return (
+          <MarkdownInput id={id} value={String(value ?? "")} onChange={set} />
+        );
+      if (widget === "date")
+        return (
+          <DateInput
+            id={id}
+            value={String(value ?? "")}
+            onChange={set}
+            allowPresent={metaOf(schema).allowPresent === true}
+          />
         );
       if (widget === "color")
         return (
@@ -91,6 +107,7 @@ export function SchemaField(props: FieldProps) {
       return (
         <FieldShell
           id={id}
+          dataPath={pathId(props.path)}
           label={props.label}
           description={metaOf(props.schema).description}
           errors={issues.get(pathId(props.path)) ?? []}

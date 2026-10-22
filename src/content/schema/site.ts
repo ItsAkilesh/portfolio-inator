@@ -3,7 +3,7 @@
  * Purpose: Schemas for site-wide content: settings, SEO, the person, social links, interface copy,
  *          analytics, research profiles and project display options.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { z } from "zod";
 import { linkItemSchema } from "./entries";
@@ -111,6 +111,14 @@ export const uiSchema = z
     readSummary: text({ title: '"Read summary" label' }),
     hideSummary: text({ title: '"Hide summary" label' }),
     allFilter: text({ title: '"All" filter label' }),
+    present: text({
+      title: '"Present" label',
+      description: "End of ongoing dates",
+    }),
+    expected: text({
+      title: '"Expected" label',
+      description: "After expected end dates",
+    }),
     notFoundTitle: text({ title: "Not found title" }),
     notFoundText: longText({ title: "Not found text" }),
     researchCards: z
@@ -168,6 +176,10 @@ export const researchProfilesSchema = z
 
 export const projectOptionsSchema = z
   .object({
+    featured: list(text({ title: "Repository" }), {
+      title: "Repositories to show",
+      description: "In this order; empty shows your pinned repositories",
+    }),
     languageIcons: z.record(z.string(), icon({ title: "Icon" })).meta({
       title: "Language icons",
       description: "GitHub language name to icon",

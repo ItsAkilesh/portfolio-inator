@@ -2,8 +2,9 @@
  * File: TimelineList.tsx
  * Purpose: Dated list of roles with logo, company link and description. Used by the Experience page.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
+import { DateText } from "../components/ui/DateText";
 import { SmartLink } from "../components/ui/SmartLink";
 import { imageUrl } from "../lib/assets";
 import { staggerDelay } from "../lib/text";
@@ -19,12 +20,12 @@ export function TimelineList({ entries }: TimelineListProps) {
     <ol className={`plain-list ${styles.list}`}>
       {entries.map((entry, index) => (
         <li
-          key={`${entry.company}-${entry.title}-${entry.duration}`}
+          key={`${entry.company}-${entry.title}-${entry.dates.start}`}
           className={`hover-row enter ${styles.item}`}
           style={{ animationDelay: staggerDelay(index) }}
         >
           <div className={styles.aside}>
-            <span className={styles.meta}>{entry.duration}</span>
+            <DateText className={styles.meta} dates={entry.dates} />
             <span className={`muted ${styles.meta}`}>{entry.location}</span>
           </div>
           <div className={styles.main}>

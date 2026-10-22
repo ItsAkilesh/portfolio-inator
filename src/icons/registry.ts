@@ -1,78 +1,15 @@
 /**
  * File: registry.ts
- * Purpose: Single registry of brand icons referenced by key from the portfolio config.
- *          To add an icon: import it from simple-icons (https://simpleicons.org) and add a key below.
+ * Purpose: Every icon the content can refer to, by key. The list lives in src/icons/library.json:
+ *          simple-icons by slug (https://simpleicons.org) and custom path icons. The admin console's
+ *          icon picker searches all of simple-icons and adds picks to the library, or imports an SVG
+ *          as a custom icon; simpleIcons.generated.ts is regenerated from the library.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
-import {
-  siAndroid,
-  siApachehadoop,
-  siBlender,
-  siC,
-  siCplusplus,
-  siCss,
-  siDart,
-  siDjango,
-  siDocker,
-  siDotnet,
-  siFigma,
-  siFirebase,
-  siFlask,
-  siFlutter,
-  siGithub,
-  siGithubactions,
-  siGmail,
-  siGnubash,
-  siGo,
-  siGooglecloud,
-  siGooglegemini,
-  siGooglescholar,
-  siGraphql,
-  siHelm,
-  siHtml5,
-  siHuggingface,
-  siInstagram,
-  siJavascript,
-  siJenkins,
-  siJupyter,
-  siKubernetes,
-  siLangchain,
-  siLanggraph,
-  siMlflow,
-  siModelcontextprotocol,
-  siMongodb,
-  siNeo4j,
-  siNextdotjs,
-  siNginx,
-  siNodedotjs,
-  siNumpy,
-  siOllama,
-  siOpencv,
-  siOpenjdk,
-  siOpentelemetry,
-  siOrcid,
-  siPandas,
-  siPostgresql,
-  siPython,
-  siPytorch,
-  siReact,
-  siRedis,
-  siResearchgate,
-  siRuby,
-  siRust,
-  siSailsdotjs,
-  siSketch,
-  siSwift,
-  siTensorflow,
-  siTerraform,
-  siTypescript,
-  siUnity,
-  siUnrealengine,
-  siWebrtc,
-  siWhatsapp,
-} from "simple-icons";
-import { CUSTOM_ICONS } from "./customPaths";
+import library from "./library.json";
+import { SIMPLE_ICONS } from "./simpleIcons.generated";
+import { SITE_ICONS } from "./siteIcons";
 import type { IconDefinition } from "./types";
 
 interface SimpleIconLike {
@@ -81,84 +18,28 @@ interface SimpleIconLike {
   readonly path: string;
 }
 
+const SIMPLE_VIEW_BOX = "0 0 24 24";
+
 const fromSimple = (icon: SimpleIconLike): IconDefinition => ({
   title: icon.title,
   hex: `#${icon.hex}`,
   path: icon.path,
+  viewBox: SIMPLE_VIEW_BOX,
 });
 
+export type IconKey = keyof typeof SIMPLE_ICONS | keyof typeof library.custom;
+
+/*
+ * Object.fromEntries drops key types; both sources are spread in full, so every IconKey is present.
+ */
 export const ICONS = {
-  ...CUSTOM_ICONS,
-  android: fromSimple(siAndroid),
-  blender: fromSimple(siBlender),
-  c: fromSimple(siC),
-  cplusplus: fromSimple(siCplusplus),
-  css: fromSimple(siCss),
-  dart: fromSimple(siDart),
-  django: fromSimple(siDjango),
-  docker: fromSimple(siDocker),
-  dotnet: fromSimple(siDotnet),
-  figma: fromSimple(siFigma),
-  firebase: fromSimple(siFirebase),
-  flask: fromSimple(siFlask),
-  flutter: fromSimple(siFlutter),
-  gemini: fromSimple(siGooglegemini),
-  github: fromSimple(siGithub),
-  githubactions: fromSimple(siGithubactions),
-  gmail: fromSimple(siGmail),
-  go: fromSimple(siGo),
-  googlecloud: fromSimple(siGooglecloud),
-  googlescholar: fromSimple(siGooglescholar),
-  graphql: fromSimple(siGraphql),
-  hadoop: fromSimple(siApachehadoop),
-  helm: fromSimple(siHelm),
-  html5: fromSimple(siHtml5),
-  huggingface: fromSimple(siHuggingface),
-  instagram: fromSimple(siInstagram),
-  java: fromSimple(siOpenjdk),
-  javascript: fromSimple(siJavascript),
-  jenkins: fromSimple(siJenkins),
-  jupyter: fromSimple(siJupyter),
-  kubernetes: fromSimple(siKubernetes),
-  langchain: fromSimple(siLangchain),
-  langgraph: fromSimple(siLanggraph),
-  mcp: fromSimple(siModelcontextprotocol),
-  mlflow: fromSimple(siMlflow),
-  mongodb: fromSimple(siMongodb),
-  neo4j: fromSimple(siNeo4j),
-  nextjs: fromSimple(siNextdotjs),
-  nginx: fromSimple(siNginx),
-  nodejs: fromSimple(siNodedotjs),
-  numpy: fromSimple(siNumpy),
-  ollama: fromSimple(siOllama),
-  opencv: fromSimple(siOpencv),
-  opentelemetry: fromSimple(siOpentelemetry),
-  orcid: fromSimple(siOrcid),
-  pandas: fromSimple(siPandas),
-  postgresql: fromSimple(siPostgresql),
-  python: fromSimple(siPython),
-  pytorch: fromSimple(siPytorch),
-  react: fromSimple(siReact),
-  redis: fromSimple(siRedis),
-  researchgate: fromSimple(siResearchgate),
-  ruby: fromSimple(siRuby),
-  rust: fromSimple(siRust),
-  sailsjs: fromSimple(siSailsdotjs),
-  shell: fromSimple(siGnubash),
-  sketch: fromSimple(siSketch),
-  swift: fromSimple(siSwift),
-  tensorflow: fromSimple(siTensorflow),
-  terraform: fromSimple(siTerraform),
-  typescript: fromSimple(siTypescript),
-  unity: fromSimple(siUnity),
-  unrealengine: fromSimple(siUnrealengine),
-  webrtc: fromSimple(siWebrtc),
-  whatsapp: fromSimple(siWhatsapp),
-} as const satisfies Record<string, IconDefinition>;
+  ...library.custom,
+  ...Object.fromEntries(
+    Object.entries(SIMPLE_ICONS).map(([key, icon]) => [key, fromSimple(icon)]),
+  ),
+} as Readonly<Record<IconKey, IconDefinition>>;
 
-export type IconKey = keyof typeof ICONS;
-
-export const FALLBACK_ICON: IconKey = "code";
+export const FALLBACK_ICON: IconKey = SITE_ICONS.fallback;
 
 export const isIconKey = (value: unknown): value is IconKey =>
   typeof value === "string" &&

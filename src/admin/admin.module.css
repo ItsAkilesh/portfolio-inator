@@ -1,10 +1,10 @@
 /**
  * File: admin.module.css
- * Purpose: Layout of the admin console: section nav, generated editor, preview and save bar. The
- *          console is always black: it redefines the theme tokens locally, so the site's palette and
- *          light/dark mode never change how the editor looks.
+ * Purpose: The admin console's shell: navigation, editor area, preview and save bar. The console is
+ *          always black: it redefines the theme tokens locally, so the site's palette never changes
+ *          how it looks. Shared controls are in ui.module.css, tool layouts in tools/tools.module.css.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 .admin {
   --bg: #000;
@@ -15,6 +15,9 @@
   --line: rgb(255 255 255 / 0.1);
   --line-strong: rgb(255 255 255 / 0.2);
   --danger: #f87171;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --focus: #60a5fa;
   color-scheme: dark;
   min-height: 100svh;
   display: grid;
@@ -37,12 +40,36 @@
   }
 }
 
+.admin a {
+  color: var(--focus);
+}
+
+/* Lists in the console are layout, not bullets (guides and Markdown previews restore them). */
+.admin ul,
+.admin ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin figure {
+  margin: 0;
+}
+
+.admin :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Navigation ---------- */
+
 .nav {
   grid-area: nav;
   position: sticky;
   top: 0;
   align-self: start;
-  max-height: 100svh;
+  /* Leaves room for the save bar along the bottom. */
+  max-height: calc(100svh - 64px);
   overflow-y: auto;
   padding: 20px 14px;
   border-right: 1px solid var(--line);
@@ -50,7 +77,27 @@
 
 .brand {
   font-weight: 700;
-  padding: 0 10px 16px;
+  padding: 0 10px 12px;
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 8px 10px;
+  font: inherit;
+  color: var(--ink-muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.searchButton kbd {
+  font-size: 11px;
+  color: var(--ink-muted);
 }
 
 .navGroup {
@@ -75,34 +122,65 @@
   justify-content: space-between;
   gap: 8px;
   padding: 7px 10px;
+  border: 0;
   border-radius: 8px;
+  font: inherit;
+  text-align: left;
+  color: var(--ink-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.admin .navLink {
   color: var(--ink-muted);
 }
 
-.navLink:hover {
+.navLink:hover,
+.active,
+.navLink[aria-current="page"] {
   text-decoration: none;
   background: var(--surface);
   color: var(--ink);
 }
 
-.active {
-  background: var(--surface);
+.admin .active,
+.admin .navLink[aria-current="page"] {
   color: var(--ink);
   font-weight: 600;
 }
 
-.editor {
+/* ---------- Main area ---------- */
+
+.main {
   grid-area: editor;
   min-width: 0;
+}
+
+.editor {
+  min-width: 0;
   padding: 28px clamp(16px, 3vw, 40px) 96px;
+}
+
+.headingRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .heading {
   font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 20px;
 }
+
+.helpLink {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---------- Preview ---------- */
 
 .preview {
   grid-area: preview;
@@ -122,31 +200,38 @@
 
 .previewBar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 8px 12px;
   padding: 10px 14px;
   font-size: 13px;
   color: var(--ink-muted);
   border-bottom: 1px solid var(--line);
 }
 
-.select {
-  font: inherit;
-  color: var(--ink);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 4px 8px;
+.previewNote {
+  padding: 4px 14px;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.frameWrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+  background: #0a0a0a;
 }
 
 .frame {
   flex: 1;
   width: 100%;
+  min-height: 100%;
   border: 0;
-  /* The preview shows the real site, so it keeps the site's own background. */
   background: #fff;
 }
+
+/* ---------- Save bar ---------- */
 
 .saveBar {
   grid-area: bar;
@@ -156,7 +241,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 20px;
+  gap: 10px 16px;
   padding: 12px clamp(16px, 3vw, 40px);
   background: var(--bg);
   border-top: 1px solid var(--line);
@@ -184,48 +269,6 @@
   list-style: disc;
 }
 
-.actions {
+.push {
   margin-left: auto;
-  display: flex;
-  gap: 10px;
-}
-
-.primary,
-.secondary {
-  font: inherit;
-  font-weight: 600;
-  min-height: 38px;
-  padding: 0 18px;
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.primary {
-  border: 0;
-  background: var(--ink);
-  color: var(--bg);
-}
-
-.secondary {
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--ink);
-}
-
-.primary:disabled,
-.secondary:disabled {
-  opacity: 0.45;
-  cursor: default;
-}
-
-.badge {
-  min-width: 20px;
-  padding: 0 6px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 20px;
-  text-align: center;
-  color: #000;
-  background: var(--danger);
 }

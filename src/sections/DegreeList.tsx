@@ -2,8 +2,9 @@
  * File: DegreeList.tsx
  * Purpose: Degrees with logo, dates, program and highlights. Used by the Education page.
  * Author: Akilesh
- * Date: 2026-10-20
+ * Date: 2026-10-20 (updated 2026-10-22)
  */
+import { DateText } from "../components/ui/DateText";
 import { SmartLink } from "../components/ui/SmartLink";
 import { imageUrl } from "../lib/assets";
 import { displayUrl, staggerDelay, stripLeadingSymbols } from "../lib/text";
@@ -28,7 +29,7 @@ export function DegreeList({ items }: { readonly items: readonly Degree[] }) {
               src={imageUrl(degree.logo_path)}
               alt={`${degree.alt_name} logo`}
             />
-            <span className={styles.meta}>{degree.duration}</span>
+            <DateText className={styles.meta} dates={degree.dates} />
           </div>
           <div className={styles.main}>
             <h2 className={`display ${styles.bigTitle}`}>{degree.title}</h2>

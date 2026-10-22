@@ -4,7 +4,7 @@
  *          chosen type's fields. Changing type asks first, since it starts the item over. List items
  *          lock their type (it is chosen when adding), so the picker only shows for single values.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { getIn } from "../paths";
 import { useForm, type FieldProps } from "./FormContext";
@@ -16,7 +16,7 @@ import {
   optionFor,
   titleOf,
   unionOptions,
-} from "./introspect";
+} from "../../content/introspect";
 import styles from "./form.module.css";
 
 const CONFIRM_SWITCH = "Change the type? This clears this item's fields.";

@@ -1,20 +1,14 @@
 /**
  * File: listParts.tsx
- * Purpose: Pieces shared by list editors: collapsed-row summaries, move/remove buttons and the
- *          add control (with a type picker for lists of blocks or other unions).
+ * Purpose: Pieces shared by list editors: collapsed-row summaries and the per-item controls (drag
+ *          handle, move up/down, duplicate, remove).
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
-import { useState } from "react";
 import type { z } from "zod";
-import {
-  emptyValue,
-  kindOf,
-  metaOf,
-  optionFor,
-  unionOptions,
-} from "./introspect";
+import { kindOf, metaOf, optionFor } from "../../content/introspect";
 import styles from "./form.module.css";
+import listStyles from "./listItems.module.css";
 
 const asRecord = (value: unknown): Record<string, unknown> =>
   typeof value === "object" && value !== null
@@ -46,23 +40,36 @@ export function summaryOf(
 interface ItemControlsProps {
   readonly index: number;
   readonly total: number;
+  readonly label: string;
   readonly onMove: (to: number) => void;
+  readonly onDuplicate: () => void;
   readonly onRemove: () => void;
+  readonly handleProps: Readonly<Record<string, unknown>>;
 }
 
 export function ItemControls({
   index,
   total,
+  label,
   onMove,
+  onDuplicate,
   onRemove,
+  handleProps,
 }: ItemControlsProps) {
   return (
-    /* These sit inside a <summary>: stop clicks from also opening or closing the item. */
-    <span className={styles.controls} onClick={(e) => e.preventDefault()}>
+    <span className={listStyles.controls}>
+      <span
+        className={listStyles.handle}
+        title="Drag to reorder"
+        aria-hidden="true"
+        {...handleProps}
+      >
+        ⠿
+      </span>
       <button
         type="button"
         className={styles.icon}
-        aria-label="Move up"
+        aria-label={`Move ${label} up`}
         disabled={index === 0}
         onClick={() => onMove(index - 1)}
       >
@@ -71,7 +78,7 @@ export function ItemControls({
       <button
         type="button"
         className={styles.icon}
-        aria-label="Move down"
+        aria-label={`Move ${label} down`}
         disabled={index === total - 1}
         onClick={() => onMove(index + 1)}
       >
@@ -80,47 +87,19 @@ export function ItemControls({
       <button
         type="button"
         className={styles.icon}
-        aria-label="Remove"
+        aria-label={`Duplicate ${label}`}
+        onClick={onDuplicate}
+      >
+        ⧉
+      </button>
+      <button
+        type="button"
+        className={styles.icon}
+        aria-label={`Remove ${label}`}
         onClick={onRemove}
       >
         ✕
       </button>
     </span>
-  );
-}
-
-export function AddItem({
-  element,
-  onAdd,
-}: {
-  readonly element: z.ZodType;
-  readonly onAdd: (value: unknown) => void;
-}) {
-  const options = kindOf(element) === "union" ? unionOptions(element) : [];
-  const [choice, setChoice] = useState(options[0]?.value ?? "");
-  const add = () => {
-    const option = options.find((o) => o.value === choice);
-    onAdd(emptyValue(option ? option.schema : element));
-  };
-  return (
-    <div className={styles.inline}>
-      {options.length > 0 && (
-        <select
-          className={styles.input}
-          value={choice}
-          aria-label="Type to add"
-          onChange={(e) => setChoice(e.target.value)}
-        >
-          {options.map((o) => (
-            <option key={o.value} value={o.value}>
-              {metaOf(o.schema).title ?? o.value}
-            </option>
-          ))}
-        </select>
-      )}
-      <button type="button" className={styles.button} onClick={add}>
-        Add
-      </button>
-    </div>
   );
 }

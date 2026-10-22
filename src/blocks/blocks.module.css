@@ -3,13 +3,14 @@
  * Purpose: Page rhythm for blocks (contained blocks get the page gutter and vertical spacing) and
  *          styles for the small blocks that have no section component of their own.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 .contained {
   padding-top: clamp(40px, 5vw, 64px);
 }
 
-.contained:last-child {
+/* Each block sits in a display: contents slot (PageRenderer); the last slot's block ends the page. */
+:global(.block-slot):last-child > .contained {
   padding-bottom: clamp(72px, 9vw, 128px);
 }
 

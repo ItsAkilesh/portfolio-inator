@@ -4,11 +4,12 @@
  *          a toggle button to see every option, and an optional preview beside each option.
  *          Follows the ARIA combobox pattern.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { useId, type ReactNode } from "react";
 import { useCombobox, type ComboOption } from "./useCombobox";
 import styles from "./form.module.css";
+import comboStyles from "./combobox.module.css";
 
 interface ComboboxProps {
   readonly id: string;
@@ -17,6 +18,8 @@ interface ComboboxProps {
   readonly onChange: (value: string) => void;
   readonly renderPreview?: (value: string) => ReactNode;
   readonly emptyText?: string;
+  /** Called with the typed text ("" while the field shows the chosen value), e.g. to search more. */
+  readonly onQueryChange?: (query: string) => void;
 }
 
 export function Combobox({
@@ -26,12 +29,13 @@ export function Combobox({
   onChange,
   renderPreview,
   emptyText = "No matches",
+  onQueryChange,
 }: ComboboxProps) {
   const listId = useId();
-  const combo = useCombobox(options, value, onChange);
+  const combo = useCombobox(options, value, onChange, onQueryChange);
   const optionId = (index: number) => `${listId}-${index}`;
   return (
-    <div ref={combo.rootRef} className={styles.combo}>
+    <div ref={combo.rootRef} className={comboStyles.combo}>
       <input
         id={id}
         className={styles.input}
@@ -52,7 +56,7 @@ export function Combobox({
       />
       <button
         type="button"
-        className={styles.comboToggle}
+        className={comboStyles.comboToggle}
         aria-label="Show all options"
         tabIndex={-1}
         onClick={() => combo.setIsOpen(!combo.isOpen)}
@@ -60,9 +64,9 @@ export function Combobox({
         ▾
       </button>
       {combo.isOpen && (
-        <ul id={listId} role="listbox" className={styles.comboList}>
+        <ul id={listId} role="listbox" className={comboStyles.comboList}>
           {combo.visible.length === 0 && (
-            <li className={styles.comboEmpty}>{emptyText}</li>
+            <li className={comboStyles.comboEmpty}>{emptyText}</li>
           )}
           {combo.visible.map((option, index) => (
             <li
@@ -71,7 +75,7 @@ export function Combobox({
               role="option"
               aria-selected={option.value === value}
               data-active={index === combo.active || undefined}
-              className={styles.comboOption}
+              className={comboStyles.comboOption}
               onPointerEnter={() => combo.setActive(index)}
               onPointerDown={(e) => {
                 e.preventDefault();
@@ -79,11 +83,14 @@ export function Combobox({
               }}
             >
               {renderPreview && (
-                <span className={styles.comboPreview}>
+                <span className={comboStyles.comboPreview}>
                   {renderPreview(option.value)}
                 </span>
               )}
               {option.label}
+              {option.hint && (
+                <span className={comboStyles.comboHint}>{option.hint}</span>
+              )}
             </li>
           ))}
         </ul>

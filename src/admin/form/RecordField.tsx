@@ -2,14 +2,15 @@
  * File: RecordField.tsx
  * Purpose: Generated editor for named entries (palettes, language icons): rename, edit, add, remove.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
-import { useId } from "react";
+import { useId, useState } from "react";
 import type { z } from "zod";
 import { getIn, renameKey, type Path } from "../paths";
 import { useForm, type FieldProps } from "./FormContext";
+import { Disclosure } from "./Disclosure";
 import { Group } from "./Group";
-import { emptyValue, metaOf, recordValue } from "./introspect";
+import { emptyValue, metaOf, recordValue } from "../../content/introspect";
 import styles from "./form.module.css";
 
 /** First unused "new-n" key. */
@@ -26,18 +27,44 @@ interface EntryProps {
   readonly valueSchema: z.ZodType;
 }
 
+interface NameInputProps {
+  readonly name: string;
+  readonly onRename: (next: string) => void;
+}
+
+function NameInput({ name, onRename }: NameInputProps) {
+  const inputId = useId();
+  return (
+    <div className={styles.field}>
+      <label className={styles.label} htmlFor={inputId}>
+        Name
+      </label>
+      {/* Renamed on blur, so typing does not move the entry under a half-written key. */}
+      <input
+        id={inputId}
+        className={styles.input}
+        defaultValue={name}
+        onBlur={(e) => onRename(e.target.value)}
+      />
+    </div>
+  );
+}
+
 function Entry({ name, record, path, valueSchema }: EntryProps) {
   const { onChange, Field } = useForm();
-  const inputId = useId();
+  const [isOpen, setIsOpen] = useState(false);
   const without = Object.fromEntries(
     Object.entries(record).filter(([key]) => key !== name),
   );
   const rename = (next: string) =>
     onChange(path, renameKey(record, name, next.trim()));
   return (
-    <details className={styles.item}>
-      <summary className={styles.summary}>
-        <span>{name}</span>
+    <Disclosure
+      path={[...path, name]}
+      title={name}
+      isOpen={isOpen}
+      onToggle={() => setIsOpen((open) => !open)}
+      controls={
         <button
           type="button"
           className={styles.icon}
@@ -46,21 +73,11 @@ function Entry({ name, record, path, valueSchema }: EntryProps) {
         >
           ✕
         </button>
-      </summary>
-      <div className={styles.field}>
-        <label className={styles.label} htmlFor={inputId}>
-          Name
-        </label>
-        {/* Renamed on blur, so typing does not move the entry under a half-written key. */}
-        <input
-          id={inputId}
-          className={styles.input}
-          defaultValue={name}
-          onBlur={(e) => rename(e.target.value)}
-        />
-      </div>
+      }
+    >
+      <NameInput name={name} onRename={rename} />
       <Field schema={valueSchema} path={[...path, name]} label={name} isBare />
-    </details>
+    </Disclosure>
   );
 }
 

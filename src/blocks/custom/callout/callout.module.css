@@ -1,0 +1,26 @@
+/**
+ * File: callout.module.css
+ * Purpose: Styles of the example "callout" custom block, from the theme tokens only.
+ * Author: Akilesh
+ * Date: 2026-10-21
+ */
+.callout {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.callout[data-tone="highlight"] {
+  background: var(--accent);
+  border-color: var(--on-accent-line);
+  color: var(--on-accent);
+}
+
+.title {
+  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.4vw, 28px);
+}

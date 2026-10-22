@@ -5,18 +5,23 @@
  *          problems appear in the error overlay. In dev it also keeps portfolio.schema.json current and
  *          announces content changes with an event instead of a full page reload.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { readFile, writeFile } from "node:fs/promises";
 import type { Plugin, ViteDevServer } from "vite";
 import { CONTENT_CHANGED_EVENT } from "../../src/content/events";
 import { describeError, logger } from "../../src/lib/logger";
 import { isSameFile, projectPaths, type ProjectPaths } from "./paths";
+import { buildSchema, devSchema, type LoadSchema } from "./schemaSource";
 import { contentJsonSchema, validateContent } from "./validate";
 
-async function checkFile(paths: ProjectPaths): Promise<readonly string[]> {
+async function checkFile(
+  paths: ProjectPaths,
+  loadSchema: LoadSchema,
+): Promise<readonly string[]> {
   try {
     const result = validateContent(
+      await loadSchema(),
       JSON.parse(await readFile(paths.contentFile, "utf8")),
     );
     return result.ok ? [] : result.issues;
@@ -25,8 +30,11 @@ async function checkFile(paths: ProjectPaths): Promise<readonly string[]> {
   }
 }
 
-async function refreshJsonSchema(paths: ProjectPaths): Promise<void> {
-  const next = contentJsonSchema();
+async function refreshJsonSchema(
+  paths: ProjectPaths,
+  loadSchema: LoadSchema,
+): Promise<void> {
+  const next = contentJsonSchema(await loadSchema());
   const current = await readFile(paths.schemaFile, "utf8").catch(() => "");
   if (current === next) return;
   await writeFile(paths.schemaFile, next, "utf8");
@@ -46,12 +54,13 @@ function reportInDev(server: ViteDevServer, issues: readonly string[]): void {
 }
 
 function watchContent(server: ViteDevServer, paths: ProjectPaths): void {
-  refreshJsonSchema(paths).catch((error: unknown) =>
+  const loadSchema = devSchema(server);
+  refreshJsonSchema(paths, loadSchema).catch((error: unknown) =>
     logger.warn("content.schema", describeError(error)),
   );
   server.watcher.on("change", (file) => {
     if (!isSameFile(file, paths.contentFile)) return;
-    checkFile(paths)
+    checkFile(paths, loadSchema)
       .then((issues) => reportInDev(server, issues))
       .catch((error: unknown) =>
         logger.error("content.check", describeError(error)),
@@ -69,7 +78,8 @@ export function contentCheck(): Plugin {
       isBuild = config.command === "build";
     },
     async buildStart() {
-      const issues = await checkFile(paths);
+      /* The dev server validates through its own module graph once it is listening (watchContent). */
+      const issues = await checkFile(paths, buildSchema(paths.root));
       if (issues.length === 0) return;
       const message = `portfolio.json is invalid:\n${issues.join("\n")}`;
       /* A build must fail; the dev server keeps running so the admin can fix the file. */

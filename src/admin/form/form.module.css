@@ -1,10 +1,11 @@
 /**
  * File: form.module.css
- * Purpose: Styles for generated form fields: titled groups, collapsible list items shaded by nesting
- *          depth, inputs, the searchable combobox and validation messages. Colours come from the
- *          admin console's black theme tokens (admin.module.css).
+ * Purpose: Styles for generated form fields: titled groups, inputs, buttons, the date picker and
+ *          validation messages. List items, the combobox, the add palette and the Markdown editor
+ *          have their own modules. Colours come from the admin console's black theme tokens
+ *          (admin.module.css).
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 
 /* ---------- Groups ---------- */
@@ -187,202 +188,29 @@ textarea.input {
   cursor: default;
 }
 
-/* ---------- Collapsible list items, shaded by depth ---------- */
+/* ---------- Date picker ---------- */
 
-.item {
-  --edge: #71717a;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--edge);
-  border-radius: 10px;
-  background: #0a0a0a;
-}
-
-.item[data-depth="1"] {
-  --edge: #60a5fa;
-  background: #111113;
-}
-
-.item[data-depth="2"] {
-  --edge: #34d399;
-  background: #18181b;
-}
-
-.item[data-depth="3"] {
-  --edge: #fbbf24;
-  background: #1f1f23;
-}
-
-.item[open] {
-  border-color: var(--line-strong);
-  border-left-color: var(--edge);
-}
-
-.summary {
+.dateRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  min-height: 46px;
-  padding: 6px 10px 6px 12px;
-  cursor: pointer;
-  font-weight: 600;
-  list-style: none;
-}
-
-.summary::-webkit-details-marker {
-  display: none;
-}
-
-.summary::before {
-  content: "›";
-  flex-shrink: 0;
-  width: 12px;
-  color: var(--ink-muted);
-  transition: transform 0.15s ease;
-}
-
-.item[open] > .summary::before {
-  transform: rotate(90deg);
-}
-
-.item[open] > .summary {
-  border-bottom: 1px solid var(--line);
-}
-
-.chip {
-  flex-shrink: 0;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--edge);
-  border: 1px solid color-mix(in srgb, var(--edge) 45%, transparent);
-}
-
-.summaryText {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.itemBody {
-  padding: 16px 14px 16px;
-}
-
-.controls {
-  display: inline-flex;
-  gap: 4px;
-}
-
-.row {
-  display: flex;
-  align-items: flex-end;
   gap: 8px;
 }
 
-.row > :first-child {
-  flex: 1;
-  min-width: 0;
+.dateRow .input {
+  width: auto;
+  flex: 1 1 96px;
 }
 
-.badge {
-  min-width: 20px;
-  padding: 0 6px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 20px;
-  text-align: center;
-  letter-spacing: 0;
-  color: #000;
-  background: var(--danger);
+.dateRow .year {
+  flex: 0 0 88px;
 }
 
-/* ---------- Searchable combobox (icons, images) ---------- */
-
-.combo {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  display: flex;
-}
-
-.combo .input {
-  padding-right: 38px;
-}
-
-.comboToggle {
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  bottom: 1px;
-  width: 34px;
-  border: 0;
-  border-left: 1px solid var(--line);
-  border-radius: 0 7px 7px 0;
-  background: transparent;
-  color: var(--ink-muted);
-  cursor: pointer;
-}
-
-.comboList {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  z-index: 10;
-  max-height: 280px;
-  overflow-y: auto;
-  padding: 4px;
-  border: 1px solid var(--line-strong);
-  border-radius: 10px;
-  background: var(--surface);
-  box-shadow: 0 12px 32px rgb(0 0 0 / 0.6);
-}
-
-.comboOption {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: var(--ink);
-}
-
-.comboOption[data-active] {
-  background: var(--surface-raised);
-  outline: 1px solid var(--line-strong);
-}
-
-.comboOption[aria-selected="true"] {
-  font-weight: 700;
-}
-
-.comboPreview {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+.checkLabel {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  background: #fff;
-  color: #000;
-  overflow: hidden;
-}
-
-.comboPreview img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.comboEmpty {
-  padding: 8px;
+  gap: 6px;
   font-size: 13px;
-  color: var(--ink-muted);
+  font-weight: 600;
+  cursor: pointer;
 }

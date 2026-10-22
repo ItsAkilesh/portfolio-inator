@@ -5,7 +5,7 @@
  *          editor autocompletion. Cross-field rules (unique pages, valid palette, internal links)
  *          live here too.
  * Author: Akilesh
- * Date: 2026-10-21
+ * Date: 2026-10-21 (updated 2026-10-22)
  */
 import { z } from "zod";
 import { blockSchema } from "./blocks";
@@ -35,7 +35,12 @@ export const pageSchema = z
     showInNav: flag({ title: "Show in navigation" }),
     blocks: list(blockSchema, { title: "Blocks" }),
   })
-  .meta({ title: "Page", summaryKey: "label" });
+  .meta({
+    title: "Page",
+    summaryKey: "label",
+    uniqueKeys: ["id", "path"],
+    templates: "pages",
+  });
 
 const baseSchema = z.object({
   $schema: z.string().optional(),
