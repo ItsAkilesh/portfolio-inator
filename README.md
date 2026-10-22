@@ -5,9 +5,24 @@
   Date: 2026-10-20 (updated 2026-10-22)
 -->
 
-# Portfolio-inator
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/logo/wordmark-dark.svg">
+    <img alt="Portfolio-inator" src="docs/logo/wordmark-light.svg" height="96">
+  </picture>
+</h1>
 
-### A portfolio you edit like a document, not like a codebase.
+<p align="center"><b>A portfolio you edit like a document, not like a codebase.</b></p>
+
+> **Behold! The Portfolio-inator!**
+>
+> You see, every time I got a new job, a new paper or a new patent, I had to wade through React
+> components just to add one line to my portfolio. One line! So I built a machine that turns a single
+> JSON file into an entire website. Now, with one press of Save, my portfolio will be updated across
+> the entire Tri-State Area! Mwahaha!
+>
+> <sub>No platypuses were harmed in the making of this project. Any self-destruct button is purely
+> metaphorical.</sub>
 
 ![Portfolio-inator home page](docs/images/home-light.webp)
 
@@ -69,6 +84,7 @@ to masterPortfolio along the way.
 - [Technologies used](#technologies-used)
 - [Thanks](#thanks)
 - [License](#license)
+- [Why Portfolio-inator?](#why-portfolio-inator)
 
 ## Screenshots
 
@@ -371,3 +387,38 @@ The first time you run the browser tests, install Chromium with `pnpm exec playw
 
 [MIT](LICENSE). Use it, fork it, make it yours. The license keeps Ashutosh Hathidara's original
 copyright notice for masterPortfolio alongside this project's.
+
+## Why Portfolio-inator?
+
+### Why this exists
+
+A portfolio should take five minutes to update, not an evening. With most templates, adding a new
+job means finding the right component, copying a block of JSX and hoping nothing breaks. I wanted
+the opposite: all of my content in one file, checked for mistakes before it ever reaches the site,
+and an editor that shows me the result as I type. When the content changes, nothing else should
+have to.
+
+### Who this is for
+
+- **Students and new graduates** who want a polished site today and want it to grow with them.
+- **Researchers** with publications, patents and citation numbers to show, not just projects.
+- **Engineers** who would rather ship their portfolio than maintain it.
+- **masterPortfolio users** who want the same spirit with a modern stack and a friendlier way to edit.
+- **Anyone who forks templates**: the setup wizard clears my content and makes it yours in minutes.
+
+It is probably not for you if you need a blog engine with comments, a CMS with logins for several
+editors, or a design that looks nothing like this one. Those deserve a different tool.
+
+### Why the name
+
+Dr. Heinz Doofenshmirtz, the evil scientist from *Phineas and Ferb*, names every invention after
+what it does, followed by "-inator". I have done the same with my side projects for years
+(Podkast-inator, DiagnosisAI-inator and HealthWave-inator among them), so a machine that makes
+portfolios could only ever be called one thing. Unlike most of his inventions, this one is meant to
+keep working.
+
+The logo is a small ray machine beaming a page into existence, in the deep blue that the redesign
+was built around. That redesign went by the code name Klein, after Yves Klein and his famous blue,
+which is why you will still find a `klein` palette and a `klein` branch name.
+
+<sub>Portfolio-inator is a fan's nod and is not affiliated with or endorsed by Disney.</sub>
